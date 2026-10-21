@@ -97,6 +97,7 @@ export const App: React.FC = () => {
               currentUser={mockCurrentUser}
               routines={mockUserRoutines}
               onShareToFeed={handleSharePrToFeed}
+              onNavigateToChat={() => setActiveTab('chat')}
             />
           )}
 

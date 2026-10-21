@@ -130,3 +130,76 @@ export interface Challenge {
     checkins: number;
   }[];
 }
+
+export type WorkoutObjective = 'hipertrofia' | 'emagrecimento' | 'funcional' | 'forca';
+export type WorkoutLevel = 'iniciante' | 'intermediario' | 'avancado';
+export type TrainerModality = 'presencial' | 'online' | 'hibrido';
+
+export interface PreBuiltWorkout {
+  id: string;
+  title: string;
+  description: string;
+  objective: WorkoutObjective;
+  level: WorkoutLevel;
+  durationMin: number;
+  frequency: string;
+  muscleGroups: string[];
+  intensity: 'Leve' | 'Moderada' | 'Alta' | 'Intensa';
+  exercisesCount: number;
+  previewExercises: {
+    name: string;
+    sets: string;
+    reps: string;
+    muscleGroup: string;
+  }[];
+  routineTemplate: UserWorkoutRoutine;
+}
+
+export interface PersonalTrainerPlan {
+  id: string;
+  name: string;
+  price: number;
+  period: string; // ex: '/mês', '/sessão', '/trimestre'
+  features: string[];
+  isPopular?: boolean;
+}
+
+export interface PersonalTrainerReview {
+  id: string;
+  studentName: string;
+  studentAvatar: string;
+  rating: number;
+  comment: string;
+  date: string;
+}
+
+export interface PersonalTrainer {
+  id: string;
+  name: string;
+  cref: string;
+  avatarUrl: string;
+  coverUrl: string;
+  bio: string;
+  city: string;
+  neighborhood: string;
+  distanceKm?: number;
+  modalities: TrainerModality[];
+  specialties: string[];
+  rating: number;
+  reviewsCount: number;
+  priceTier: 1 | 2 | 3 | 4 | 5;
+  priceRangeText: string;
+  certifications: string[];
+  portfolioImages: {
+    url: string;
+    caption: string;
+    result: string;
+  }[];
+  plans: PersonalTrainerPlan[];
+  availability: {
+    days: string;
+    shifts: string[];
+  };
+  reviews?: PersonalTrainerReview[];
+}
+

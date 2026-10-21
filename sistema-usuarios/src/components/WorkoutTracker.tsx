@@ -11,22 +11,41 @@ import {
   RotateCcw,
   Sparkles,
   Share2,
-  X
+  X,
+  Compass,
+  ArrowLeft
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
-import type { UserWorkoutRoutine, CurrentUserProfile, UserExerciseItem } from '../types';
+import type { 
+  UserWorkoutRoutine, 
+  CurrentUserProfile, 
+  UserExerciseItem,
+  PersonalTrainer,
+  PersonalTrainerPlan
+} from '../types';
+import { mockPreBuiltWorkouts, mockPersonalTrainers } from '../data/mockData';
+import { TrainingModeSelector } from './TrainingModeSelector';
+import { PreBuiltWorkoutsView } from './PreBuiltWorkoutsView';
+import { PersonalTrainerDirectory } from './PersonalTrainerDirectory';
 
 interface WorkoutTrackerProps {
   currentUser: CurrentUserProfile;
   routines: UserWorkoutRoutine[];
   onShareToFeed: (exercise: string, weight: string) => void;
+  onNavigateToChat?: (trainerName?: string) => void;
 }
+
+export type TrainingHubViewMode = 'selector' | 'catalog' | 'personal-directory' | 'active-tracker';
 
 export const WorkoutTracker: React.FC<WorkoutTrackerProps> = ({
   currentUser,
   routines: initialRoutines,
-  onShareToFeed
+  onShareToFeed,
+  onNavigateToChat
 }) => {
+  // Navigation State inside Training Hub
+  const [viewMode, setViewMode] = useState<TrainingHubViewMode>('selector');
+
   const [routines, setRoutines] = useState<UserWorkoutRoutine[]>(initialRoutines);
   const [selectedRoutineId, setSelectedRoutineId] = useState<string>(routines[0]?.id || '');
   const [timerSeconds, setTimerSeconds] = useState(90);
@@ -126,8 +145,127 @@ export const WorkoutTracker: React.FC<WorkoutTrackerProps> = ({
     setShowAddCustomModal(false);
   };
 
+  // Handler for activating a pre-built routine from Catalog
+  const handleActivatePreBuiltRoutine = (routineTemplate: UserWorkoutRoutine) => {
+    const existingIndex = routines.findIndex(r => r.id === routineTemplate.id);
+    if (existingIndex >= 0) {
+      setSelectedRoutineId(routineTemplate.id);
+    } else {
+      setRoutines(prev => [routineTemplate, ...prev]);
+      setSelectedRoutineId(routineTemplate.id);
+    }
+    setViewMode('active-tracker');
+  };
+
+  // Handler for hiring a personal trainer
+  const handleTrainerHired = (trainer: PersonalTrainer, plan: PersonalTrainerPlan) => {
+    // Vincular novo treino prescrito pelo personal contratado
+    const newPrescribedRoutine: UserWorkoutRoutine = {
+      id: `rt-prescribed-${Date.now()}`,
+      divisionLetter: 'P',
+      title: `Protocolo Personal (${trainer.name.split(' ')[0]})`,
+      isAutonomous: false,
+      prescribedBy: `${trainer.name} (${trainer.cref})`,
+      exercises: [
+        {
+          id: `ex-prescribed-1`,
+          name: 'Supino Reto com Halteres (Pausa Isométrica)',
+          muscleGroup: 'Peitoral',
+          restSeconds: 90,
+          techniqueNotes: `Prescrito por ${trainer.name}: Escápulas em retração total, foco em cadência 3-1-1.`,
+          sets: [
+            { setNumber: 1, targetReps: '10-12', suggestedWeightKg: 28, completed: false },
+            { setNumber: 2, targetReps: '10', suggestedWeightKg: 32, completed: false },
+            { setNumber: 3, targetReps: '8-10', suggestedWeightKg: 34, completed: false }
+          ]
+        },
+        {
+          id: `ex-prescribed-2`,
+          name: 'Crucifixo Inclinado com Halteres',
+          muscleGroup: 'Peitoral',
+          restSeconds: 60,
+          techniqueNotes: 'Alongamento sem projetar ombros para frente.',
+          sets: [
+            { setNumber: 1, targetReps: '12', suggestedWeightKg: 18, completed: false },
+            { setNumber: 2, targetReps: '12', suggestedWeightKg: 20, completed: false }
+          ]
+        }
+      ]
+    };
+
+    setRoutines(prev => [newPrescribedRoutine, ...prev]);
+    setSelectedRoutineId(newPrescribedRoutine.id);
+  };
+
+  // ==========================================
+  // VIEW: ETAPA 1 - Decision Gate (TrainingModeSelector)
+  // ==========================================
+  if (viewMode === 'selector') {
+    return (
+      <TrainingModeSelector
+        onSelectAutonomous={() => setViewMode('catalog')}
+        onSelectPersonal={() => setViewMode('personal-directory')}
+        activeRoutine={activeRoutine}
+        onContinueActiveWorkout={() => setViewMode('active-tracker')}
+      />
+    );
+  }
+
+  // ==========================================
+  // VIEW: ETAPA 2 - Caminho A (PreBuiltWorkoutsView)
+  // ==========================================
+  if (viewMode === 'catalog') {
+    return (
+      <PreBuiltWorkoutsView
+        preBuiltWorkouts={mockPreBuiltWorkouts}
+        onSelectAndActivateRoutine={handleActivatePreBuiltRoutine}
+        onOpenCustomCreator={() => {
+          setViewMode('active-tracker');
+          setShowAddCustomModal(true);
+        }}
+        onBack={() => setViewMode('selector')}
+      />
+    );
+  }
+
+  // ==========================================
+  // VIEW: ETAPA 3 - Caminho B (PersonalTrainerDirectory)
+  // ==========================================
+  if (viewMode === 'personal-directory') {
+    return (
+      <PersonalTrainerDirectory
+        trainers={mockPersonalTrainers}
+        onBack={() => setViewMode('selector')}
+        onStartChatWithTrainer={(trainer) => {
+          if (onNavigateToChat) {
+            onNavigateToChat(trainer.name);
+          }
+        }}
+        onTrainerHired={handleTrainerHired}
+      />
+    );
+  }
+
+  // ==========================================
+  // VIEW: ACTIVE WORKOUT TRACKER & EXECUTION
+  // ==========================================
   return (
-    <div className="w-full max-w-2xl mx-auto space-y-4 sm:space-y-6 pb-28">
+    <div className="w-full max-w-2xl mx-auto space-y-4 sm:space-y-6 pb-28 animate-fade-in">
+      {/* Switcher Navigation Pill: Back to Training Hub */}
+      <div className="flex items-center justify-between gap-3 px-1">
+        <button
+          onClick={() => setViewMode('selector')}
+          className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white/5 hover:bg-white/10 text-slate-300 hover:text-white text-xs font-semibold transition-all border border-white/5 active:scale-95"
+        >
+          <Compass className="w-4 h-4 text-indigo-400" />
+          <span>Hub de Treinos & Personais</span>
+        </button>
+
+        <span className="text-[11px] text-slate-400 font-mono">
+          Rotina Ativa: {activeRoutine.divisionLetter}
+        </span>
+      </div>
+
       {/* Top Header Card */}
       <div className="antigravity-card rounded-2xl sm:rounded-3xl p-4 sm:p-6 border border-white/5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div>
@@ -163,18 +301,16 @@ export const WorkoutTracker: React.FC<WorkoutTrackerProps> = ({
               onClick={() => setTimerRunning(!timerRunning)}
               className="min-w-[40px] min-h-[40px] flex items-center justify-center rounded-xl bg-indigo-600 text-white hover:bg-indigo-500 active:scale-95 transition-all"
               title={timerRunning ? 'Pausar descanso' : 'Iniciar descanso'}
-              aria-label="Iniciar/pausar timer"
             >
-              {timerRunning ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4" />}
+              {timerRunning ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4 fill-white" />}
             </button>
             <button
               onClick={() => {
-                setTimerSeconds(90);
                 setTimerRunning(false);
+                setTimerSeconds(90);
               }}
-              className="min-w-[40px] min-h-[40px] flex items-center justify-center rounded-xl bg-white/5 text-slate-400 hover:text-white active:scale-95 transition-all"
-              title="Resetar para 90s"
-              aria-label="Resetar timer"
+              className="min-w-[40px] min-h-[40px] flex items-center justify-center rounded-xl bg-white/5 text-slate-300 hover:bg-white/10 active:scale-95 transition-all"
+              title="Resetar 90s"
             >
               <RotateCcw className="w-4 h-4" />
             </button>
@@ -182,151 +318,158 @@ export const WorkoutTracker: React.FC<WorkoutTrackerProps> = ({
         </div>
       </div>
 
-      {/* Routine Division Selector & Add Custom Exercise Button */}
-      <div className="flex items-center justify-between gap-2">
-        <div className="flex items-center gap-2 overflow-x-auto no-scrollbar py-1">
-          {routines.map(routine => {
-            const isSelected = routine.id === selectedRoutineId;
-            return (
-              <button
-                key={routine.id}
-                onClick={() => setSelectedRoutineId(routine.id)}
-                className={`flex items-center gap-2 px-3.5 sm:px-4 py-2 rounded-2xl text-xs font-bold transition-all whitespace-nowrap min-h-[44px] ${
-                  isSelected 
-                    ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-600/30 border border-indigo-400/30' 
-                    : 'bg-white/5 text-slate-400 hover:text-white hover:bg-white/10 border border-white/5'
-                }`}
-              >
-                <span className="w-5 h-5 rounded-lg bg-black/30 flex items-center justify-center text-[10px]">
-                  {routine.divisionLetter}
+      {/* PR Celebration Banner */}
+      {prCelebration && (
+        <div className="antigravity-card p-4 rounded-2xl sm:rounded-3xl border border-emerald-500/40 bg-gradient-to-r from-emerald-950/40 via-indigo-950/30 to-emerald-950/20 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 animate-fade-in shadow-xl shadow-emerald-950/40">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-2xl bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center text-emerald-400">
+              <Trophy className="w-5 h-5" />
+            </div>
+            <div>
+              <div className="flex items-center gap-2">
+                <span className="text-xs font-bold text-emerald-400 uppercase tracking-wider">
+                  Novo Recorde Pessoal Batido!
                 </span>
-                <span>{routine.title}</span>
-                {routine.isAutonomous && (
-                  <span className="text-[8px] px-1.5 py-0.2 rounded-md bg-emerald-500/20 text-emerald-300">
-                    Próprio
-                  </span>
-                )}
-              </button>
-            );
-          })}
+                <Sparkles className="w-3.5 h-3.5 text-amber-400 animate-spin" />
+              </div>
+              <p className="text-sm font-black text-white mt-0.5">
+                {prCelebration.exercise} • <span className="text-emerald-300 font-mono">{prCelebration.weight}</span>
+              </p>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-2 w-full sm:w-auto">
+            <button
+              onClick={() => onShareToFeed(prCelebration.exercise, prCelebration.weight)}
+              className="flex-1 sm:flex-none min-h-[44px] px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold flex items-center justify-center gap-1.5 shadow-md shadow-emerald-950/60 active:scale-95 transition-all"
+            >
+              <Share2 className="w-3.5 h-3.5" />
+              <span>Publicar no Feed</span>
+            </button>
+            <button
+              onClick={() => setPrCelebration(null)}
+              className="min-h-[44px] min-w-[44px] flex items-center justify-center rounded-xl bg-white/5 text-slate-400 hover:text-white"
+            >
+              <X className="w-4 h-4" />
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* Routine Tabs & Add Custom Exercise Button */}
+      <div className="flex items-center justify-between gap-2 overflow-x-auto pb-1">
+        <div className="flex items-center gap-1.5 sm:gap-2">
+          {routines.map(r => (
+            <button
+              key={r.id}
+              onClick={() => setSelectedRoutineId(r.id)}
+              className={`min-h-[44px] px-3.5 sm:px-4 py-2 rounded-2xl text-xs font-bold transition-all duration-200 flex items-center gap-2 shrink-0 ${
+                selectedRoutineId === r.id
+                  ? 'bg-gradient-to-r from-indigo-600 to-indigo-700 text-white shadow-lg shadow-indigo-950/50'
+                  : 'bg-white/5 text-slate-400 hover:bg-white/10 hover:text-slate-200'
+              }`}
+            >
+              <span className="w-5 h-5 rounded-lg bg-black/30 flex items-center justify-center text-[11px] font-mono">
+                {r.divisionLetter}
+              </span>
+              <span className="truncate max-w-[120px] sm:max-w-none">{r.title}</span>
+            </button>
+          ))}
         </div>
 
         <button
           onClick={() => setShowAddCustomModal(true)}
-          className="min-h-[44px] px-3 rounded-2xl bg-white/5 hover:bg-white/10 text-indigo-400 border border-indigo-500/30 flex items-center gap-1.5 text-xs font-bold shrink-0 transition-colors"
-          title="Adicionar exercício autônomo a este treino"
+          className="min-h-[44px] px-3 py-2 rounded-2xl bg-white/5 hover:bg-white/10 border border-white/5 text-indigo-400 text-xs font-semibold flex items-center gap-1.5 shrink-0 active:scale-95 transition-all"
         >
           <Plus className="w-4 h-4" />
           <span className="hidden sm:inline">Adicionar Exercício</span>
         </button>
       </div>
 
-      {/* PR Celebration Banner */}
-      {prCelebration && (
-        <div className="p-4 rounded-2xl sm:rounded-3xl bg-gradient-to-r from-emerald-950/40 via-slate-900 to-indigo-950/40 border border-emerald-500/50 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 shadow-xl shadow-emerald-500/10">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-2xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center border border-emerald-500/40 shrink-0">
-              <Trophy className="w-5 h-5" />
-            </div>
-            <div>
-              <div className="text-[10px] sm:text-xs font-extrabold text-emerald-400 uppercase tracking-wider">
-                Novo Recorde Pessoal (PR) Conquistado! 💥
-              </div>
-              <div className="text-xs sm:text-sm font-bold text-white">
-                {prCelebration.exercise} • {prCelebration.weight}
-              </div>
-            </div>
-          </div>
-
-          <button
-            onClick={() => {
-              onShareToFeed(prCelebration.exercise, prCelebration.weight);
-              setPrCelebration(null);
-            }}
-            className="w-full sm:w-auto min-h-[44px] flex items-center justify-center gap-1.5 px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs shadow-md shadow-emerald-600/30 transition-all active:scale-95"
-          >
-            <Share2 className="w-4 h-4" />
-            <span>Compartilhar no Feed</span>
-          </button>
-        </div>
-      )}
-
-      {/* Exercise Cards */}
-      <div className="space-y-3.5 sm:space-y-4">
-        {activeRoutine.exercises.map((exercise, exIndex) => (
+      {/* Exercises List in Active Routine */}
+      <div className="space-y-4">
+        {activeRoutine.exercises.map(exercise => (
           <div 
             key={exercise.id}
-            className="antigravity-card rounded-2xl sm:rounded-3xl p-4 sm:p-5 border border-white/5 space-y-3 sm:space-y-4"
+            className="antigravity-card rounded-2xl sm:rounded-3xl p-4 sm:p-5 border border-white/5 space-y-3"
           >
-            <div className="flex items-center justify-between pb-3 border-b border-white/10 gap-2">
-              <div className="flex items-center gap-2.5 sm:gap-3 min-w-0">
-                <div className="w-7 h-7 rounded-xl bg-white/5 text-slate-400 flex items-center justify-center font-mono text-xs font-bold shrink-0">
-                  {exIndex + 1}
+            {/* Exercise Header */}
+            <div className="flex items-start justify-between gap-3">
+              <div>
+                <div className="flex items-center gap-2">
+                  <span className="px-2 py-0.5 rounded-lg text-[10px] font-bold bg-indigo-500/20 text-indigo-300 border border-indigo-500/30">
+                    {exercise.muscleGroup}
+                  </span>
+                  <span className="text-[11px] text-slate-400 flex items-center gap-1">
+                    <Clock className="w-3 h-3 text-slate-500" />
+                    {exercise.restSeconds}s descanso
+                  </span>
                 </div>
-                <div className="min-w-0">
-                  <h3 className="text-xs sm:text-sm font-bold text-white leading-tight truncate">
-                    {exercise.name}
-                  </h3>
-                  <div className="flex items-center gap-2 text-[10px] sm:text-[11px] text-slate-400 mt-0.5 truncate">
-                    <span className="text-indigo-400 font-semibold">{exercise.muscleGroup}</span>
-                    <span>• {exercise.techniqueNotes}</span>
-                  </div>
-                </div>
+                <h3 className="text-sm sm:text-base font-extrabold text-white mt-1">
+                  {exercise.name}
+                </h3>
+                {exercise.techniqueNotes && (
+                  <p className="text-[11px] text-slate-400 mt-0.5 italic">
+                    💡 {exercise.techniqueNotes}
+                  </p>
+                )}
               </div>
 
-              {/* Bater PR Button */}
+              {/* Action to simulate PR test */}
               <button
                 onClick={() => handleTriggerPr(exercise.name, exercise.sets[0]?.suggestedWeightKg || 30)}
-                className="min-h-[40px] px-2.5 sm:px-3 py-1.5 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-300 hover:bg-emerald-500/20 active:scale-95 text-[11px] font-bold transition-all shrink-0 flex items-center gap-1"
-                aria-label={`Bater PR no ${exercise.name}`}
+                className="min-h-[40px] px-2.5 py-1.5 rounded-xl bg-amber-500/10 hover:bg-amber-500/20 border border-amber-500/20 text-amber-300 text-[11px] font-semibold flex items-center gap-1 shrink-0 active:scale-95 transition-all"
+                title="Simular quebra de recorde pessoal neste exercício"
               >
-                <Sparkles className="w-3.5 h-3.5 text-emerald-400" />
-                <span>Bater PR!</span>
+                <Trophy className="w-3.5 h-3.5 text-amber-400" />
+                <span className="hidden sm:inline">Testar PR</span>
               </button>
             </div>
 
-            {/* Sets Checklist Table (Touch-friendly 48px rows) */}
-            <div className="space-y-2">
-              <div className="grid grid-cols-12 text-[9px] sm:text-[10px] uppercase font-bold text-slate-500 px-2 sm:px-3">
+            {/* Sets Table / Rows */}
+            <div className="space-y-1.5">
+              <div className="grid grid-cols-12 text-[10px] font-mono uppercase text-slate-500 px-2 py-1">
                 <span className="col-span-2">Série</span>
-                <span className="col-span-3">Alvo</span>
-                <span className="col-span-4">Carga</span>
-                <span className="col-span-3 text-right">Feito</span>
+                <span className="col-span-3">Meta (Reps)</span>
+                <span className="col-span-3">Sugerido</span>
+                <span className="col-span-4 text-right">Check</span>
               </div>
 
               {exercise.sets.map(set => (
                 <div
                   key={set.setNumber}
-                  onClick={() => toggleSetComplete(exercise.id, set.setNumber)}
-                  className={`grid grid-cols-12 items-center p-2.5 sm:p-3 rounded-2xl cursor-pointer min-h-[48px] active:scale-[0.99] transition-all select-none ${
+                  className={`grid grid-cols-12 items-center px-3 py-2.5 rounded-xl text-xs font-mono transition-all duration-200 ${
                     set.completed 
-                      ? 'bg-emerald-950/20 border border-emerald-500/30 text-white' 
-                      : 'bg-white/[0.03] border border-white/5 hover:border-white/20 text-slate-300'
+                      ? 'bg-emerald-950/20 border border-emerald-500/30 text-emerald-200' 
+                      : 'bg-white/[0.02] border border-white/5 text-slate-300'
                   }`}
                 >
-                  <div className="col-span-2 text-xs font-mono font-bold flex items-center gap-1">
-                    <span>{set.setNumber}ª</span>
+                  <span className="col-span-2 font-bold flex items-center gap-1">
+                    #{set.setNumber}
                     {set.isPr && (
-                      <Flame className="w-3.5 h-3.5 text-amber-400 fill-amber-400" />
+                      <span className="px-1 py-0.2 rounded text-[9px] bg-amber-500 text-black font-extrabold">
+                        PR
+                      </span>
                     )}
-                  </div>
-
-                  <div className="col-span-3 text-xs font-semibold">
-                    {set.targetReps}
-                  </div>
-
-                  <div className="col-span-4 text-xs font-mono font-bold text-indigo-400">
-                    {set.doneWeightKg || set.suggestedWeightKg} kg
-                  </div>
-
-                  <div className="col-span-3 flex justify-end">
-                    <div className={`w-7 h-7 rounded-xl flex items-center justify-center transition-all ${
-                      set.completed 
-                        ? 'bg-emerald-500 text-white' 
-                        : 'border border-white/20 text-transparent'
-                    }`}>
-                      <CheckCircle2 className="w-4 h-4" />
-                    </div>
+                  </span>
+                  <span className="col-span-3 text-slate-300">{set.targetReps} reps</span>
+                  <span className="col-span-3 font-semibold text-white">
+                    {set.suggestedWeightKg} kg
+                  </span>
+                  <div className="col-span-4 flex justify-end">
+                    <button
+                      onClick={() => toggleSetComplete(exercise.id, set.setNumber)}
+                      className={`min-h-[40px] min-w-[40px] sm:min-w-[70px] px-3 py-1.5 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 active:scale-95 transition-all ${
+                        set.completed
+                          ? 'bg-emerald-500 text-black shadow-md shadow-emerald-500/30'
+                          : 'bg-white/10 hover:bg-white/15 text-slate-300'
+                      }`}
+                    >
+                      <CheckCircle2 className={`w-4 h-4 ${set.completed ? 'text-black' : 'text-slate-400'}`} />
+                      <span className="hidden sm:inline">
+                        {set.completed ? 'Feito' : 'Fazer'}
+                      </span>
+                    </button>
                   </div>
                 </div>
               ))}
@@ -335,47 +478,49 @@ export const WorkoutTracker: React.FC<WorkoutTrackerProps> = ({
         ))}
       </div>
 
-      {/* Modal: Adicionar Exercício Autônomo */}
+      {/* Modal: Add Custom Exercise */}
       {showAddCustomModal && (
-        <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/80 backdrop-blur-sm p-0 sm:p-4">
-          <div className="antigravity-card rounded-t-3xl sm:rounded-3xl p-5 sm:p-6 w-full max-w-md border border-white/10 shadow-2xl space-y-4">
-            <div className="flex items-center justify-between pb-2 border-b border-white/10">
-              <h3 className="text-base font-bold text-white flex items-center gap-2">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-fade-in">
+          <div className="antigravity-card rounded-3xl p-5 sm:p-6 w-full max-w-md border border-white/10 bg-[#0B0D12] shadow-2xl space-y-4">
+            <div className="flex items-center justify-between pb-3 border-b border-white/5">
+              <div className="flex items-center gap-2">
                 <Dumbbell className="w-5 h-5 text-indigo-400" />
-                <span>Adicionar Exercício Próprio</span>
-              </h3>
+                <h3 className="text-base font-bold text-white">
+                  Novo Exercício Autônomo
+                </h3>
+              </div>
               <button
                 onClick={() => setShowAddCustomModal(false)}
-                className="w-9 h-9 rounded-full bg-white/5 flex items-center justify-center text-slate-400 hover:text-white text-xs"
+                className="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center text-slate-400 hover:text-white"
               >
                 <X className="w-4 h-4" />
               </button>
             </div>
 
-            <form onSubmit={handleAddCustomExercise} className="space-y-3.5">
+            <form onSubmit={handleAddCustomExercise} className="space-y-4">
               <div>
                 <label className="text-xs font-semibold text-slate-300 mb-1 block">
                   Nome do Exercício:
                 </label>
                 <input
                   type="text"
-                  required
-                  placeholder="Ex: Crucifixo na Polia Baixa"
+                  placeholder="Ex: Elevação Lateral com Halteres"
                   value={customExerciseName}
                   onChange={e => setCustomExerciseName(e.target.value)}
-                  className="w-full bg-white/5 border border-white/10 rounded-2xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-indigo-500"
+                  className="w-full bg-white/5 border border-white/10 rounded-2xl px-4 py-2.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500"
+                  required
                 />
               </div>
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
                   <label className="text-xs font-semibold text-slate-300 mb-1 block">
-                    Grupo Muscular:
+                    Grupamento:
                   </label>
                   <select
                     value={customMuscleGroup}
                     onChange={e => setCustomMuscleGroup(e.target.value)}
-                    className="w-full bg-[#12141A] border border-white/10 rounded-2xl px-3 py-2.5 text-xs text-white focus:outline-none focus:border-indigo-500"
+                    className="w-full bg-[#12151D] border border-white/10 rounded-2xl px-3 py-2.5 text-xs text-white focus:outline-none focus:border-indigo-500"
                   >
                     <option value="Peitoral">Peitoral</option>
                     <option value="Dorsais">Dorsais</option>
