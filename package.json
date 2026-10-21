@@ -1,0 +1,26 @@
+{
+  "name": "o-domo-fit",
+  "version": "1.0.0",
+  "private": true,
+  "description": "O Domo FIT — Ecossistema de Performance Fitness, Consultoria Multidisciplinar e Rede Social",
+  "workspaces": [
+    "sistema-profissionais",
+    "sistema-usuarios"
+  ],
+  "scripts": {
+    "dev:profissionais": "npm --prefix sistema-profissionais run dev",
+    "dev:usuarios": "npm --prefix sistema-usuarios run dev",
+    "build:profissionais": "npm --prefix sistema-profissionais run build",
+    "build:usuarios": "npm --prefix sistema-usuarios run build"
+  },
+  "keywords": [
+    "fitness",
+    "personal-trainer",
+    "nutrition",
+    "social-network",
+    "stripe-connect",
+    "supabase"
+  ],
+  "author": "O Domo FIT Team",
+  "license": "UNLICENSED"
+}
