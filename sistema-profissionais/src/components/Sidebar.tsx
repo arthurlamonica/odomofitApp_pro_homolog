@@ -1,14 +1,13 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
-  LayoutDashboard, 
+  Home,
   Dumbbell, 
   UtensilsCrossed, 
   Users, 
-  DollarSign, 
+  TrendingUp, 
   ShieldCheck, 
-  Settings,
-  HelpCircle,
-  X
+  X,
+  Radio
 } from 'lucide-react';
 import { DomoFitLogo } from './DomoFitLogo';
 
@@ -23,6 +22,14 @@ interface SidebarProps {
   onCloseMobile: () => void;
 }
 
+const TELEMETRY_MESSAGES = [
+  'Lucas Brandão concluiu Push A • RPE @8.5',
+  'Sincronizando metas CRN • 2.850 kcal',
+  'Split Stripe 85% liquidado • +R$ 238,00',
+  'Camila atingiu 94% de adesão semanal',
+  'Prontuário LGPD criptografado • AES-256'
+];
+
 export const Sidebar: React.FC<SidebarProps> = ({
   activeTab,
   onTabChange,
@@ -31,41 +38,65 @@ export const Sidebar: React.FC<SidebarProps> = ({
   mobileOpen,
   onCloseMobile
 }) => {
+  // Telemetry Typewriter state (SKILL: GEMINI-Construtor-de-Sites)
+  const [msgIndex, setMsgIndex] = useState(0);
+  const [displayedText, setDisplayedText] = useState('');
+  const [charIndex, setCharIndex] = useState(0);
+
+  useEffect(() => {
+    const currentMessage = TELEMETRY_MESSAGES[msgIndex];
+    if (charIndex < currentMessage.length) {
+      const timeout = setTimeout(() => {
+        setDisplayedText(currentMessage.slice(0, charIndex + 1));
+        setCharIndex(charIndex + 1);
+      }, 38);
+      return () => clearTimeout(timeout);
+    } else {
+      const pause = setTimeout(() => {
+        setCharIndex(0);
+        setDisplayedText('');
+        setMsgIndex((prev) => (prev + 1) % TELEMETRY_MESSAGES.length);
+      }, 2800);
+      return () => clearTimeout(pause);
+    }
+  }, [charIndex, msgIndex]);
+
   const navItems = [
     {
       id: 'overview' as TabType,
       label: 'Visão Geral',
-      icon: LayoutDashboard,
-      badge: null,
+      shortLabel: 'Home',
+      icon: Home,
+      badge: 'Lvl 3',
     },
     {
       id: 'workouts' as TabType,
       label: 'Montar Treinos',
+      shortLabel: 'Workouts',
       icon: Dumbbell,
-      badge: 'Ativo',
-      badgeColor: 'bg-indigo-500/20 text-indigo-400 border border-indigo-500/30',
+      badge: '24 Ex',
     },
     {
       id: 'nutrition' as TabType,
       label: 'Planos Alimentares',
+      shortLabel: 'Nutri',
       icon: UtensilsCrossed,
-      badge: 'Nutri',
-      badgeColor: 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30',
+      badge: 'CRN',
     },
     {
       id: 'students' as TabType,
       label: 'Meus Alunos',
+      shortLabel: 'Alunos',
       icon: Users,
       badge: `${activeStudentsCount}`,
       alert: criticalStudentsCount > 0,
-      badgeColor: 'bg-white/10 text-slate-300',
     },
     {
       id: 'finance' as TabType,
-      label: 'Financeiro (Stripe)',
-      icon: DollarSign,
-      badge: 'Split 85%',
-      badgeColor: 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30',
+      label: 'Meu Progresso & Split',
+      shortLabel: 'Progress',
+      icon: TrendingUp,
+      badge: '85%',
     },
   ];
 
@@ -75,27 +106,28 @@ export const Sidebar: React.FC<SidebarProps> = ({
   };
 
   const SidebarContent = (
-    <div className="flex flex-col justify-between h-full p-4 select-none">
+    <div className="flex flex-col justify-between h-full p-5 select-none">
       <div>
-        {/* Branding & Close on Mobile */}
-        <div className="px-2 py-3 mb-6 flex items-center justify-between">
+        {/* Official DomoFit® Branding & Close on Mobile */}
+        <div className="px-2 py-2 mb-7 flex items-center justify-between">
           <DomoFitLogo size="md" variant="full" badgeText="PRO" />
           <button
             onClick={onCloseMobile}
-            className="lg:hidden p-2 rounded-xl text-slate-400 hover:text-white hover:bg-white/5"
+            className="lg:hidden w-9 h-9 rounded-full flex items-center justify-center text-[#9BA394] hover:text-white bg-[#23281E] border border-white/10"
             aria-label="Fechar menu"
           >
-            <X className="w-5 h-5" />
+            <X className="w-4 h-4" />
           </button>
         </div>
 
         {/* Section Label */}
-        <div className="px-3 mb-2 text-[10px] uppercase font-bold tracking-wider text-slate-500">
-          Painel do Profissional
+        <div className="px-3 mb-3 flex items-center justify-between text-[10px] uppercase font-mono font-bold tracking-widest text-[#7E8777]">
+          <span>Instrumento Profissional</span>
+          <span className="text-[#CEFA03]">v4.2</span>
         </div>
 
-        {/* Navigation List */}
-        <nav className="space-y-1.5">
+        {/* Navigation List (Pill-First Design from Mockup) */}
+        <nav className="space-y-2">
           {navItems.map((item) => {
             const Icon = item.icon;
             const isActive = activeTab === item.id;
@@ -104,28 +136,32 @@ export const Sidebar: React.FC<SidebarProps> = ({
               <button
                 key={item.id}
                 onClick={() => handleSelectTab(item.id)}
-                className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-2xl text-xs font-semibold min-h-[44px] transition-all group ${
+                className={`btn-magnetic w-full flex items-center justify-between px-3.5 py-2.5 rounded-full text-xs font-bold min-h-[48px] transition-all group ${
                   isActive
-                    ? 'bg-gradient-to-r from-indigo-600/20 to-indigo-500/10 text-white border border-indigo-500/30 shadow-lg shadow-indigo-600/10'
-                    : 'text-slate-400 hover:text-slate-200 hover:bg-white/[0.03]'
+                    ? 'bg-[#CEFA03] text-[#0B0D0A] shadow-[0_10px_28px_-4px_rgba(206,250,3,0.4)]'
+                    : 'text-[#A6B09F] hover:text-white bg-[#181B15]/70 hover:bg-[#22261D] border border-white/[0.06]'
                 }`}
               >
                 <div className="flex items-center gap-3">
                   <div
-                    className={`p-1.5 rounded-xl transition-colors ${
+                    className={`w-8 h-8 rounded-full flex items-center justify-center transition-colors ${
                       isActive 
-                        ? 'bg-indigo-600 text-white shadow-md shadow-indigo-600/50' 
-                        : 'bg-white/5 text-slate-400 group-hover:text-slate-200 group-hover:bg-white/10'
+                        ? 'bg-[#0B0D0A] text-[#CEFA03]' 
+                        : 'bg-[#23281E] text-[#9BA394] group-hover:text-[#CEFA03] border border-white/10'
                     }`}
                   >
                     <Icon className="w-4 h-4" />
                   </div>
-                  <span>{item.label}</span>
+                  <span className="tracking-tight">{item.label}</span>
                 </div>
 
                 {item.badge && (
                   <span
-                    className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${item.badgeColor}`}
+                    className={`text-[10px] font-mono font-extrabold px-2.5 py-0.5 rounded-full ${
+                      isActive
+                        ? 'bg-[#0B0D0A]/15 text-[#0B0D0A]'
+                        : 'bg-[#23281E] text-[#CEFA03] border border-[#CEFA03]/20'
+                    }`}
                   >
                     {item.badge}
                   </span>
@@ -136,14 +172,36 @@ export const Sidebar: React.FC<SidebarProps> = ({
         </nav>
       </div>
 
-      {/* Bottom: LGPD Compliance */}
-      <div className="space-y-2 pt-4 border-t border-white/5">
-        <div className="p-3 rounded-2xl bg-indigo-950/20 border border-indigo-500/20">
-          <div className="flex items-center gap-2 text-indigo-400 font-semibold text-xs mb-1">
-            <ShieldCheck className="w-4 h-4 text-emerald-400" />
-            <span>LGPD Saúde &amp; ECA</span>
+      {/* Bottom: Live Telemetry Typewriter & System Operational Status */}
+      <div className="space-y-3 pt-4 border-t border-white/[0.07]">
+        {/* Telemetry Typewriter Card (SKILL: GEMINI-Construtor-de-Sites) */}
+        <div className="p-3.5 rounded-[1.5rem] bg-[#161913] border border-white/[0.07] space-y-2">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-1.5 text-[10px] font-mono font-bold uppercase tracking-wider text-[#CEFA03]">
+              <Radio className="w-3 h-3 animate-pulse" />
+              <span>Live Telemetry Feed</span>
+            </div>
+            <span className="w-2 h-2 rounded-full bg-[#CEFA03] animate-ping" />
           </div>
-          <p className="text-[10px] text-slate-400 leading-tight">
+          <div className="min-h-[32px] font-mono text-[11px] text-[#D8E0D2] leading-snug">
+            {displayedText}
+            <span className="inline-block w-1.5 h-3.5 ml-0.5 align-middle bg-[#CEFA03] animate-pulse" />
+          </div>
+        </div>
+
+        {/* LGPD & System Operational Pill */}
+        <div className="p-3.5 rounded-[1.5rem] bg-[#181B15] border border-[#CEFA03]/20">
+          <div className="flex items-center justify-between mb-1">
+            <div className="flex items-center gap-2 text-white font-bold text-xs">
+              <ShieldCheck className="w-4 h-4 text-[#CEFA03]" />
+              <span>LGPD Saúde &amp; ECA</span>
+            </div>
+            <span className="flex items-center gap-1 text-[9px] font-mono font-semibold text-[#CEFA03]">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#CEFA03] animate-pulse" />
+              ONLINE
+            </span>
+          </div>
+          <p className="text-[10px] text-[#9BA394] leading-tight">
             Prontuários e fotos corporais blindados com consentimento explícito.
           </p>
         </div>
@@ -154,29 +212,29 @@ export const Sidebar: React.FC<SidebarProps> = ({
   return (
     <>
       {/* 1. Desktop Sticky Sidebar */}
-      <aside className="hidden lg:flex w-64 shrink-0 h-screen sticky top-0 flex-col border-r border-white/5 bg-[#08090C]/90 backdrop-blur-xl z-30">
+      <aside className="hidden lg:flex w-72 shrink-0 h-screen sticky top-0 flex-col border-r border-white/[0.07] bg-[#0B0D0A]/95 backdrop-blur-2xl z-30">
         {SidebarContent}
       </aside>
 
       {/* 2. Mobile Slide-over Drawer with Backdrop */}
       {mobileOpen && (
         <div className="lg:hidden fixed inset-0 z-50 flex">
-          {/* Backdrop */}
           <div 
             onClick={onCloseMobile}
-            className="fixed inset-0 bg-black/80 backdrop-blur-sm transition-opacity" 
+            className="fixed inset-0 bg-black/85 backdrop-blur-md transition-opacity" 
           />
-
-          {/* Drawer Pane */}
-          <div className="relative w-72 max-w-[85vw] h-full bg-[#0C0D14] border-r border-white/10 z-10 shadow-2xl flex flex-col animate-in slide-in-from-left duration-300">
+          <div className="relative w-72 max-w-[85vw] h-full bg-[#0F120D] border-r border-white/10 z-10 shadow-2xl flex flex-col">
             {SidebarContent}
           </div>
         </div>
       )}
 
-      {/* 3. Mobile Bottom Quick Bar on Phones */}
-      <nav className="lg:hidden fixed bottom-0 inset-x-0 z-40 border-t border-white/5 bg-[#08090C]/95 backdrop-blur-xl pb-[max(env(safe-area-inset-bottom),8px)] pt-1 px-2 shadow-2xl">
-        <div className="max-w-md mx-auto flex items-center justify-around">
+      {/* 3. Mobile Floating Pill Dock (Exact 1:1 Match with Attached Reference Mockup) */}
+      <nav
+        aria-label="Navegação rápida inferior"
+        className="lg:hidden fixed bottom-4 inset-x-0 z-40 flex justify-center px-4 pointer-events-none"
+      >
+        <div className="pointer-events-auto flex items-center gap-1.5 p-1.5 rounded-full bg-[#242820]/90 backdrop-blur-2xl border border-white/15 shadow-[0_20px_50px_rgba(0,0,0,0.9)]">
           {navItems.map((item) => {
             const Icon = item.icon;
             const isActive = activeTab === item.id;
@@ -185,19 +243,19 @@ export const Sidebar: React.FC<SidebarProps> = ({
               <button
                 key={item.id}
                 onClick={() => onTabChange(item.id)}
-                className={`flex-1 min-h-[48px] flex flex-col items-center justify-center gap-1 rounded-2xl transition-all active:scale-95 ${
-                  isActive ? 'text-indigo-400' : 'text-slate-400 hover:text-slate-200'
+                className={`transition-all duration-300 flex items-center justify-center ${
+                  isActive
+                    ? 'bg-[#CEFA03] text-[#0B0D0A] rounded-full px-4 py-2.5 gap-2 font-extrabold text-xs shadow-[0_0_24px_rgba(206,250,3,0.45)] scale-[1.02]'
+                    : 'w-11 h-11 rounded-full bg-[#181B15]/90 text-white/80 hover:text-white border border-white/10'
                 }`}
                 aria-label={item.label}
               >
-                <div className={`p-1 rounded-xl transition-all ${
-                  isActive ? 'bg-indigo-600/20 shadow-md shadow-indigo-600/30' : ''
-                }`}>
-                  <Icon className="w-4 h-4" />
-                </div>
-                <span className="text-[9px] font-bold leading-none truncate max-w-[60px]">
-                  {item.label.split(' ')[0]}
-                </span>
+                <Icon className="w-4 h-4 shrink-0" />
+                {isActive && (
+                  <span className="tracking-tight whitespace-nowrap">
+                    {item.shortLabel}
+                  </span>
+                )}
               </button>
             );
           })}

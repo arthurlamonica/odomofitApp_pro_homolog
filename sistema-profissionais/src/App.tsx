@@ -6,6 +6,7 @@ import { WorkoutBuilder } from './components/WorkoutBuilder';
 import { NutritionBuilder } from './components/NutritionBuilder';
 import { StudentAnamnesis } from './components/StudentAnamnesis';
 import { StripeSplitPanel } from './components/StripeSplitPanel';
+import { DomoFitLogo } from './components/DomoFitLogo';
 import { 
   mockProfessional, 
   mockStudents, 
@@ -31,13 +32,13 @@ export const App: React.FC = () => {
       case 'workouts': return 'Prescrição de Treinos';
       case 'nutrition': return 'Planos Alimentares (CRN)';
       case 'students': return 'Gestão de Alunos (LGPD)';
-      case 'finance': return 'Stripe Connect (Split)';
+      case 'finance': return 'My Progress & Stripe Split';
     }
   };
 
   return (
-    <div className="flex min-h-screen bg-[#08090C] text-slate-100 bg-spatial-grid antialiased">
-      {/* Navigation Sidebar & Mobile Drawer */}
+    <div className="flex min-h-screen bg-[#0B0D0A] text-[#F4F7F0] bg-spatial-grid antialiased">
+      {/* Navigation Sidebar & Mobile Floating Pill Dock */}
       <Sidebar 
         activeTab={activeTab} 
         onTabChange={setActiveTab}
@@ -58,13 +59,13 @@ export const App: React.FC = () => {
         />
 
         {toastMessage && (
-          <div className="mx-4 sm:mx-8 mt-4 p-3.5 rounded-2xl bg-indigo-600/20 border border-indigo-500/40 text-indigo-300 text-xs font-semibold flex items-center justify-between shadow-lg shadow-indigo-600/10">
-            <span>{toastMessage}</span>
-            <button onClick={() => setToastMessage(null)} className="text-slate-400 hover:text-white p-1">✕</button>
+          <div className="mx-4 sm:mx-8 mt-4 px-5 py-3.5 rounded-full bg-[#CEFA03] text-[#0B0D0A] text-xs font-extrabold flex items-center justify-between shadow-[0_12px_30px_rgba(206,250,3,0.3)]">
+            <span>⚡ {toastMessage}</span>
+            <button onClick={() => setToastMessage(null)} className="text-[#0B0D0A]/70 hover:text-[#0B0D0A] p-1 font-black">✕</button>
           </div>
         )}
 
-        <div className="p-4 sm:p-6 md:p-8 space-y-6 overflow-y-auto pb-24 lg:pb-8">
+        <div className="p-4 sm:p-6 md:p-8 space-y-6 overflow-y-auto pb-28 lg:pb-10 flex-1">
           {activeTab === 'overview' && (
             <div className="space-y-6">
               <MetricCards 
@@ -106,6 +107,18 @@ export const App: React.FC = () => {
             />
           )}
         </div>
+
+        {/* Footer Instrument Bar (SKILL: GEMINI-Construtor-de-Sites) */}
+        <footer className="hidden lg:flex items-center justify-between px-8 py-4 border-t border-white/[0.06] bg-[#0B0D0A]/80 text-[11px] text-[#8B9484]">
+          <div className="flex items-center gap-4">
+            <DomoFitLogo size="sm" variant="icon" />
+            <span>DomoFit® PRO — Instrumento Digital de Alta Performance Biomecânica &amp; Nutricional</span>
+          </div>
+          <div className="flex items-center gap-2 font-mono text-[10px] text-[#CEFA03] bg-[#181B15] border border-[#CEFA03]/25 px-3 py-1 rounded-full">
+            <span className="w-2 h-2 rounded-full bg-[#CEFA03] animate-pulse" />
+            <span>SYSTEM OPERATIONAL • LATENCY 12ms</span>
+          </div>
+        </footer>
       </main>
     </div>
   );

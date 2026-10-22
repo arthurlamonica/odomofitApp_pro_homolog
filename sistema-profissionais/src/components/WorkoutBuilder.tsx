@@ -7,7 +7,11 @@ import {
   Flame, 
   Clock, 
   CheckCircle,
-  Info
+  Play,
+  Check,
+  ChevronLeft,
+  MoreHorizontal,
+  Calendar
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import type { WorkoutRoutine, ExerciseItem, StudentRecord } from '../types';
@@ -17,6 +21,28 @@ interface WorkoutBuilderProps {
   initialRoutines: WorkoutRoutine[];
 }
 
+const EXERCISE_THUMBNAILS: Record<string, string> = {
+  Peitoral: 'https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?auto=format&fit=crop&q=80&w=300',
+  Dorsais: 'https://images.unsplash.com/photo-1605296867304-46d5465a13f1?auto=format&fit=crop&q=80&w=300',
+  Ombros: 'https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?auto=format&fit=crop&q=80&w=300',
+  Braços: 'https://images.unsplash.com/photo-1583454110551-21f2fa2afe61?auto=format&fit=crop&q=80&w=300',
+  Quadríceps: 'https://images.unsplash.com/photo-1574680096145-d05b474e2155?auto=format&fit=crop&q=80&w=300',
+  Posteriores: 'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&q=80&w=300',
+  Glúteos: 'https://images.unsplash.com/photo-1518611012118-696072aa579a?auto=format&fit=crop&q=80&w=300',
+  Core: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?auto=format&fit=crop&q=80&w=300',
+  Cardio: 'https://images.unsplash.com/photo-1538805060514-97d9cc17730c?auto=format&fit=crop&q=80&w=300',
+};
+
+const WEEK_DAYS = [
+  { key: 'S', label: 'Seg', defaultDivision: 'A' },
+  { key: 'T', label: 'Ter', defaultDivision: 'B' },
+  { key: 'Q', label: 'Qua', defaultDivision: 'Rest' },
+  { key: 'QI', label: 'Qui', defaultDivision: 'A' },
+  { key: 'SX', label: 'Sex', defaultDivision: 'B' },
+  { key: 'SB', label: 'Sáb', defaultDivision: 'C' },
+  { key: 'D', label: 'Dom', defaultDivision: 'Rest' },
+];
+
 export const WorkoutBuilder: React.FC<WorkoutBuilderProps> = ({ 
   students, 
   initialRoutines 
@@ -25,6 +51,13 @@ export const WorkoutBuilder: React.FC<WorkoutBuilderProps> = ({
   const [activeDivision, setActiveDivision] = useState<'A' | 'B' | 'C' | 'D'>('A');
   const [routines, setRoutines] = useState<WorkoutRoutine[]>(initialRoutines);
   const [savedSuccess, setSavedSuccess] = useState(false);
+  const [checkedExercises, setCheckedExercises] = useState<Record<string, boolean>>({
+    'ex-1': true,
+    'ex-2': true,
+    'ex-3': true,
+  });
+  const [activePreviewEx, setActivePreviewEx] = useState<ExerciseItem | null>(null);
+  const [scheduledDays, setScheduledDays] = useState<string[]>(['S', 'T', 'QI', 'SX', 'SB']);
 
   const [showAddModal, setShowAddModal] = useState(false);
   const [newExercise, setNewExercise] = useState<Partial<ExerciseItem>>({
@@ -39,6 +72,16 @@ export const WorkoutBuilder: React.FC<WorkoutBuilderProps> = ({
 
   const currentRoutine = routines.find(r => r.divisionLetter === activeDivision) || routines[0];
   const selectedStudent = students.find(s => s.id === selectedStudentId);
+
+  const toggleCheckExercise = (id: string) => {
+    setCheckedExercises(prev => ({ ...prev, [id]: !prev[id] }));
+  };
+
+  const toggleDaySchedule = (key: string) => {
+    setScheduledDays(prev =>
+      prev.includes(key) ? prev.filter(d => d !== key) : [...prev, key]
+    );
+  };
 
   const handleAddExercise = (e: React.FormEvent) => {
     e.preventDefault();
@@ -62,6 +105,7 @@ export const WorkoutBuilder: React.FC<WorkoutBuilderProps> = ({
       return r;
     }));
 
+    setCheckedExercises(prev => ({ ...prev, [item.id]: true }));
     setNewExercise({
       name: '',
       muscleGroup: 'Peitoral',
@@ -86,10 +130,10 @@ export const WorkoutBuilder: React.FC<WorkoutBuilderProps> = ({
   const handlePublishWorkout = () => {
     try {
       confetti({
-        particleCount: 80,
-        spread: 70,
-        origin: { y: 0.6 },
-        colors: ['#6366F1', '#10B981', '#06B6D4', '#F43F5E']
+        particleCount: 85,
+        spread: 75,
+        origin: { y: 0.65 },
+        colors: ['#CEFA03', '#A3E635', '#FFFFFF', '#22C55E']
       });
     } catch (e) {
       // safe fallback
@@ -101,58 +145,85 @@ export const WorkoutBuilder: React.FC<WorkoutBuilderProps> = ({
 
   return (
     <div className="space-y-6">
-      {/* Top Banner: Aluno Selector & Quick Actions */}
-      <div className="antigravity-card rounded-3xl p-6 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+      {/* Top Banner: Aluno Selector & Protocol Scheduler */}
+      <div className="antigravity-card p-6 flex flex-col xl:flex-row items-start xl:items-center justify-between gap-5">
         <div className="flex items-center gap-4">
-          <div className="w-12 h-12 rounded-2xl bg-indigo-600/20 text-indigo-400 flex items-center justify-center border border-indigo-500/30">
-            <Dumbbell className="w-6 h-6" />
+          <div className="w-12 h-12 rounded-full bg-[#CEFA03] text-[#0B0D0A] flex items-center justify-center shadow-[0_0_20px_rgba(206,250,3,0.35)] shrink-0">
+            <Dumbbell className="w-6 h-6 stroke-[2.5]" />
           </div>
           <div>
-            <h2 className="text-lg font-bold text-white tracking-tight">
-              Construtor de Treinos Periodizados
-            </h2>
-            <p className="text-xs text-slate-400">
-              Prescrição com escala RPE, volume por grupo muscular e telemetria de descanso
+            <div className="flex items-center gap-2">
+              <h2 className="text-lg font-extrabold text-white tracking-tight">
+                Construtor de Treinos Periodizados
+              </h2>
+              <span className="text-[10px] font-mono font-black px-2.5 py-0.5 rounded-full bg-[#CEFA03]/15 text-[#CEFA03] border border-[#CEFA03]/30">
+                PRO ENGINE
+              </span>
+            </div>
+            <p className="text-xs text-[#9BA394]">
+              Prescrição com escala RPE, volume por grupo muscular e preview fiel do App do Aluno
             </p>
           </div>
         </div>
 
-        {/* Student Selector */}
-        <div className="flex items-center gap-3 w-full md:w-auto">
-          <label className="text-xs font-semibold text-slate-400 whitespace-nowrap">
-            Prescrever para:
-          </label>
-          <select
-            value={selectedStudentId}
-            onChange={(e) => setSelectedStudentId(e.target.value)}
-            className="bg-white/5 border border-white/10 rounded-2xl px-4 py-2 text-xs text-white focus:outline-none focus:border-indigo-500 transition-all cursor-pointer"
-          >
-            {students.map(s => (
-              <option key={s.id} value={s.id} className="bg-[#0C0D14] text-white">
-                {s.name} ({s.goal})
-              </option>
-            ))}
-          </select>
+        {/* Protocol Scheduler Micro-UI (SKILL: GEMINI-Construtor-de-Sites) + Student Selector */}
+        <div className="flex flex-wrap items-center gap-3 w-full xl:w-auto justify-between xl:justify-end">
+          {/* Weekly Scheduler Pill (S T Q Q S S D) */}
+          <div className="flex items-center gap-1.5 bg-[#121510] border border-white/[0.07] rounded-full px-3 py-1.5">
+            <Calendar className="w-3.5 h-3.5 text-[#CEFA03] mr-1" />
+            {WEEK_DAYS.map((d) => {
+              const isScheduled = scheduledDays.includes(d.key);
+              return (
+                <button
+                  key={d.key}
+                  type="button"
+                  onClick={() => toggleDaySchedule(d.key)}
+                  className={`w-7 h-7 rounded-full text-[10px] font-mono font-extrabold transition-all ${
+                    isScheduled
+                      ? 'bg-[#CEFA03] text-[#0B0D0A] shadow-[0_0_10px_rgba(206,250,3,0.35)] scale-105'
+                      : 'bg-[#1D211A] text-[#8B9484] hover:text-white'
+                  }`}
+                  title={`Alternar treino na ${d.label}`}
+                >
+                  {d.label[0]}
+                </button>
+              );
+            })}
+          </div>
 
-          <button
-            onClick={handlePublishWorkout}
-            className="flex items-center gap-2 px-5 py-2.5 rounded-2xl bg-gradient-to-r from-emerald-600 to-teal-600 text-white font-bold text-xs shadow-lg shadow-emerald-600/30 hover:shadow-emerald-600/50 hover:scale-[1.02] active:scale-[0.98] transition-all whitespace-nowrap"
-          >
-            <Smartphone className="w-4 h-4" />
-            <span>Publicar no App do Aluno</span>
-          </button>
+          <div className="flex items-center gap-2.5">
+            <select
+              value={selectedStudentId}
+              onChange={(e) => setSelectedStudentId(e.target.value)}
+              className="olive-pill rounded-full px-4 py-2.5 text-xs font-bold text-white focus:outline-none focus:border-[#CEFA03] transition-all cursor-pointer"
+            >
+              {students.map(s => (
+                <option key={s.id} value={s.id} className="bg-[#0B0D0A] text-white">
+                  {s.name} ({s.goal})
+                </option>
+              ))}
+            </select>
+
+            <button
+              onClick={() => setShowAddModal(true)}
+              className="btn-magnetic flex items-center gap-1.5 px-4 py-2.5 rounded-full bg-[#23281E] hover:bg-[#2E3528] text-[#CEFA03] border border-[#CEFA03]/35 font-extrabold text-xs transition-all whitespace-nowrap"
+            >
+              <Plus className="w-4 h-4 stroke-[2.5]" />
+              <span>Novo Exercício</span>
+            </button>
+          </div>
         </div>
       </div>
 
       {savedSuccess && (
-        <div className="p-4 rounded-2xl bg-emerald-500/15 border border-emerald-500/30 text-emerald-300 text-xs font-semibold flex items-center gap-2.5 shadow-lg shadow-emerald-500/10">
-          <CheckCircle className="w-4 h-4 text-emerald-400" />
-          <span>Treino enviado com sucesso para o smartphone de {selectedStudent?.name}! O aluno receberá push notification.</span>
+        <div className="p-4 rounded-full bg-[#CEFA03]/15 border border-[#CEFA03]/40 text-[#CEFA03] text-xs font-bold flex items-center gap-2.5 shadow-lg shadow-[#CEFA03]/10">
+          <CheckCircle className="w-4 h-4 text-[#CEFA03] shrink-0" />
+          <span>Treino sincronizado com sucesso no smartphone de <strong>{selectedStudent?.name}</strong>! Notificação push enviada.</span>
         </div>
       )}
 
-      {/* Routine Division Tabs (A, B, C, D) */}
-      <div className="flex items-center gap-2 border-b border-white/10 pb-4">
+      {/* Routine Division Pill Tabs (A, B, C, D) */}
+      <div className="flex flex-wrap items-center gap-2.5">
         {(['A', 'B', 'C', 'D'] as const).map(div => {
           const routine = routines.find(r => r.divisionLetter === div);
           const isActive = activeDivision === div;
@@ -161,17 +232,21 @@ export const WorkoutBuilder: React.FC<WorkoutBuilderProps> = ({
             <button
               key={div}
               onClick={() => setActiveDivision(div)}
-              className={`flex items-center gap-3 px-5 py-2.5 rounded-2xl text-xs font-bold transition-all ${
+              className={`btn-magnetic flex items-center gap-3 px-5 py-2.5 rounded-full text-xs font-extrabold transition-all ${
                 isActive
-                  ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-600/30 border border-indigo-400/30 scale-[1.02]'
-                  : 'bg-white/5 text-slate-400 hover:text-white hover:bg-white/10 border border-white/5'
+                  ? 'bg-[#CEFA03] text-[#0B0D0A] shadow-[0_8px_25px_rgba(206,250,3,0.35)]'
+                  : 'bg-[#181B15] text-[#9BA394] hover:text-white border border-white/[0.07]'
               }`}
             >
-              <span className="w-5 h-5 rounded-lg bg-black/30 flex items-center justify-center text-[10px]">
+              <span className={`w-6 h-6 rounded-full flex items-center justify-center text-[11px] font-mono font-black ${
+                isActive ? 'bg-[#0B0D0A] text-[#CEFA03]' : 'bg-[#23281E] text-[#CEFA03]'
+              }`}>
                 {div}
               </span>
               <span>{routine ? routine.name : `Divisão ${div}`}</span>
-              <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-white/10 text-slate-300">
+              <span className={`text-[10px] font-mono px-2 py-0.5 rounded-full ${
+                isActive ? 'bg-[#0B0D0A]/15 text-[#0B0D0A]' : 'bg-[#23281E] text-[#D8E0D2]'
+              }`}>
                 {routine?.items.length || 0} ex
               </span>
             </button>
@@ -179,117 +254,230 @@ export const WorkoutBuilder: React.FC<WorkoutBuilderProps> = ({
         })}
       </div>
 
-      {/* Exercise List & Details */}
-      <div className="space-y-4">
-        <div className="flex items-center justify-between">
-          <div>
-            <h3 className="text-sm font-bold text-white flex items-center gap-2">
-              <span>{currentRoutine?.name || `Treino ${activeDivision}`}</span>
-              <span className="text-xs text-slate-400 font-normal">
-                — {currentRoutine?.targetFocus || 'Foco em hipertrofia e tensão mecânica'}
+      {/* MAIN WORKOUT CARD — Exact 1:1 Match with Screen 2 (Center Phone) of Reference Mockup */}
+      <div className="antigravity-card overflow-hidden border border-white/[0.08]">
+        {/* Hero Athlete Banner with Dark Olive Gradient & Circular Controls */}
+        <div className="relative h-56 sm:h-64 w-full overflow-hidden bg-[#0E110C]">
+          <img
+            src="https://images.unsplash.com/photo-1583454110551-21f2fa2afe61?auto=format&fit=crop&q=85&w=1200"
+            alt="Atleta executando treino"
+            className="w-full h-full object-cover object-center opacity-75 scale-105 transition-transform duration-700 hover:scale-100"
+          />
+          {/* Radial Olive Glow + Bottom Dark Gradient Fade */}
+          <div
+            className="absolute inset-0"
+            style={{
+              background:
+                'radial-gradient(circle at 75% 25%, rgba(206, 250, 3, 0.22), transparent 45%), linear-gradient(to top, #161913 8%, rgba(14, 17, 12, 0.45) 55%, rgba(11, 13, 10, 0.7) 100%)',
+            }}
+          />
+
+          {/* Top Floating Circular Controls (< and ••• from Reference Mockup) */}
+          <div className="absolute top-5 inset-x-6 flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <button
+                type="button"
+                className="w-11 h-11 rounded-full bg-white/10 backdrop-blur-md border border-white/15 flex items-center justify-center text-white hover:bg-[#CEFA03] hover:text-[#0B0D0A] transition-colors"
+                aria-label="Voltar divisão"
+              >
+                <ChevronLeft className="w-5 h-5" />
+              </button>
+              <span className="px-3.5 py-1.5 rounded-full bg-black/50 backdrop-blur-md border border-[#CEFA03]/30 text-[11px] font-mono font-bold text-[#CEFA03]">
+                Aluno: {selectedStudent?.name}
               </span>
-            </h3>
+            </div>
+
+            <button
+              type="button"
+              onClick={() => setShowAddModal(true)}
+              className="w-11 h-11 rounded-full bg-white/10 backdrop-blur-md border border-white/15 flex items-center justify-center text-white hover:bg-[#CEFA03] hover:text-[#0B0D0A] transition-colors"
+              title="Opções da rotina"
+            >
+              <MoreHorizontal className="w-5 h-5" />
+            </button>
           </div>
 
-          <button
-            onClick={() => setShowAddModal(true)}
-            className="flex items-center gap-2 px-4 py-2 rounded-2xl bg-indigo-600/20 text-indigo-400 border border-indigo-500/30 hover:bg-indigo-600/30 font-semibold text-xs transition-all"
-          >
-            <Plus className="w-4 h-4" />
-            <span>Adicionar Exercício</span>
-          </button>
+          {/* Bottom Title Overlay ("Full Body Workout" + "Exercise 1 of 24" in Volt Green) */}
+          <div className="absolute bottom-4 inset-x-6 flex flex-wrap items-end justify-between gap-2">
+            <div>
+              <span className="text-[11px] font-mono uppercase tracking-wider text-[#CEFA03] font-bold">
+                Divisão {activeDivision} • {currentRoutine?.targetFocus || 'Hipertrofia & Força'}
+              </span>
+              <h3 className="text-xl sm:text-2xl font-black text-white tracking-tight mt-0.5">
+                {currentRoutine?.name || `Full Body Workout ${activeDivision}`}
+              </h3>
+            </div>
+
+            <span className="text-xs sm:text-sm font-bold text-[#CEFA03] tracking-tight">
+              Exercise 1 of {currentRoutine?.items.length || 0} (24 séries totais)
+            </span>
+          </div>
         </div>
 
-        {/* Exercises Table / Cards */}
-        <div className="space-y-3">
-          {currentRoutine?.items.map((ex, index) => (
-            <div
-              key={ex.id}
-              className="antigravity-card rounded-2xl p-4 flex flex-col md:flex-row md:items-center justify-between gap-4 group hover:border-indigo-500/30 transition-all"
-            >
-              <div className="flex items-center gap-4">
-                <div className="w-8 h-8 rounded-xl bg-white/5 border border-white/10 text-slate-400 font-mono text-xs flex items-center justify-center font-bold">
-                  {index + 1}
-                </div>
-                <div>
-                  <h4 className="text-sm font-bold text-white group-hover:text-indigo-300 transition-colors">
-                    {ex.name}
-                  </h4>
-                  <div className="flex items-center gap-2 text-xs text-slate-400 mt-0.5">
-                    <span className="px-2 py-0.5 rounded-md bg-white/5 text-[10px] font-semibold text-slate-300">
+        {/* Exercise Cards List (Exact Match to Bench Press / Back Squat / Overhead Press Cards) */}
+        <div className="p-5 sm:p-6 bg-[#151812] space-y-3.5">
+          {currentRoutine?.items.map((ex) => {
+            const isChecked = !!checkedExercises[ex.id];
+            const thumbUrl = EXERCISE_THUMBNAILS[ex.muscleGroup] || EXERCISE_THUMBNAILS.Peitoral;
+
+            return (
+              <div
+                key={ex.id}
+                className="rounded-[1.75rem] bg-[#1E221B] hover:bg-[#242920] border border-white/[0.06] hover:border-[#CEFA03]/35 p-3.5 sm:p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4 transition-all group"
+              >
+                {/* Left: Checkbox + Thumbnail + Title & Set/Reps */}
+                <div className="flex items-center gap-3.5 sm:gap-4">
+                  {/* Custom Rounded Checkbox with Lime Checkmark */}
+                  <button
+                    type="button"
+                    onClick={() => toggleCheckExercise(ex.id)}
+                    className={`w-6 h-6 rounded-lg flex items-center justify-center transition-all shrink-0 ${
+                      isChecked
+                        ? 'bg-[#2A3023] border border-[#CEFA03]/50 text-[#CEFA03]'
+                        : 'bg-[#141711] border border-white/15 text-transparent hover:border-[#CEFA03]/40'
+                    }`}
+                    aria-label={`Marcar ${ex.name}`}
+                  >
+                    <Check className="w-3.5 h-3.5 stroke-[3]" />
+                  </button>
+
+                  {/* Square/Rounded-2xl Exercise Photo Thumbnail */}
+                  <div className="relative w-16 h-16 rounded-2xl overflow-hidden shrink-0 border border-white/10 bg-[#0B0D0A]">
+                    <img
+                      src={thumbUrl}
+                      alt={ex.name}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                    />
+                    <span className="absolute bottom-1 right-1 px-1.5 py-0.2 rounded bg-black/75 text-[9px] font-mono font-bold text-[#CEFA03]">
                       {ex.muscleGroup}
                     </span>
-                    <span>• {ex.techniqueNotes}</span>
                   </div>
+
+                  {/* Exercise Name & "Set X • Y Reps" Subtitle */}
+                  <div>
+                    <h4 className="text-sm sm:text-base font-extrabold text-white group-hover:text-[#CEFA03] transition-colors">
+                      {ex.name}
+                    </h4>
+                    <div className="flex flex-wrap items-center gap-2 text-xs text-[#9BA394] font-medium mt-1">
+                      <span>Set {ex.sets}</span>
+                      <span className="text-[#CEFA03]">•</span>
+                      <span>{ex.reps} Reps</span>
+                      <span className="text-[#CEFA03]">•</span>
+                      <span className="inline-flex items-center gap-1 text-[#CEFA03] font-mono font-bold">
+                        <Flame className="w-3 h-3" />
+                        RPE @{ex.targetRpe}
+                      </span>
+                      <span className="hidden md:inline text-[#7E8777]">• {ex. techniqueNotes}</span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Right: Rest Pill + Play Button + Delete */}
+                <div className="flex items-center justify-end gap-2.5">
+                  <div className="px-3 py-1.5 rounded-full bg-[#141711] border border-white/[0.06] flex items-center gap-1.5 text-xs font-mono text-[#D8E0D2]">
+                    <Clock className="w-3.5 h-3.5 text-[#CEFA03]" />
+                    <span>{ex.restSeconds}s</span>
+                  </div>
+
+                  {/* Circular White Play Button (Exact Match to Mockup) */}
+                  <button
+                    type="button"
+                    onClick={() => setActivePreviewEx(ex)}
+                    className="w-9 h-9 rounded-full bg-white hover:bg-[#CEFA03] text-[#0B0D0A] flex items-center justify-center shadow-md transition-all hover:scale-105 shrink-0"
+                    title="Visualizar execução biomecânica"
+                  >
+                    <Play className="w-4 h-4 fill-current ml-0.5" />
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => handleRemoveExercise(ex.id)}
+                    className="w-9 h-9 rounded-full bg-[#141711] hover:bg-rose-500/20 text-[#7E8777] hover:text-rose-400 flex items-center justify-center transition-colors shrink-0"
+                    title="Remover exercício"
+                  >
+                    <Trash2 className="w-4 h-4" />
+                  </button>
                 </div>
               </div>
-
-              {/* Set Metrics (Sets, Reps, RPE, Rest) */}
-              <div className="flex items-center gap-3">
-                <div className="px-3 py-1.5 rounded-xl bg-white/5 border border-white/5 text-center">
-                  <div className="text-[10px] text-slate-400 font-medium">Séries</div>
-                  <div className="text-xs font-bold text-white">{ex.sets}x</div>
-                </div>
-
-                <div className="px-3 py-1.5 rounded-xl bg-white/5 border border-white/5 text-center">
-                  <div className="text-[10px] text-slate-400 font-medium">Reps</div>
-                  <div className="text-xs font-bold text-white">{ex.reps}</div>
-                </div>
-
-                <div className="px-3 py-1.5 rounded-xl bg-indigo-950/30 border border-indigo-500/20 text-center">
-                  <div className="text-[10px] text-indigo-300 font-medium flex items-center justify-center gap-0.5">
-                    <Flame className="w-3 h-3 text-rose-400" />
-                    <span>RPE</span>
-                  </div>
-                  <div className="text-xs font-bold text-indigo-400">@{ex.targetRpe}</div>
-                </div>
-
-                <div className="px-3 py-1.5 rounded-xl bg-white/5 border border-white/5 text-center">
-                  <div className="text-[10px] text-slate-400 font-medium flex items-center justify-center gap-0.5">
-                    <Clock className="w-3 h-3 text-cyan-400" />
-                    <span>Descanso</span>
-                  </div>
-                  <div className="text-xs font-bold text-white">{ex.restSeconds}s</div>
-                </div>
-
-                <button
-                  onClick={() => handleRemoveExercise(ex.id)}
-                  className="p-2 rounded-xl text-slate-500 hover:text-rose-400 hover:bg-rose-500/10 transition-colors ml-2"
-                  title="Remover exercício"
-                >
-                  <Trash2 className="w-4 h-4" />
-                </button>
-              </div>
-            </div>
-          ))}
+            );
+          })}
 
           {(!currentRoutine?.items || currentRoutine.items.length === 0) && (
-            <div className="p-8 text-center border border-dashed border-white/10 rounded-3xl">
-              <Dumbbell className="w-8 h-8 text-slate-600 mx-auto mb-2" />
-              <p className="text-xs text-slate-400">Nenhum exercício prescrito nesta divisão.</p>
+            <div className="p-8 text-center border border-dashed border-white/10 rounded-[2rem]">
+              <Dumbbell className="w-8 h-8 text-[#7E8777] mx-auto mb-2" />
+              <p className="text-xs text-[#9BA394]">Nenhum exercício prescrito nesta divisão.</p>
               <button
                 onClick={() => setShowAddModal(true)}
-                className="mt-3 text-xs text-indigo-400 hover:underline font-semibold"
+                className="mt-3 text-xs text-[#CEFA03] hover:underline font-extrabold"
               >
                 + Adicionar primeiro exercício
               </button>
             </div>
           )}
+
+          {/* Bottom Full-Width Volt Green Pill CTA ("Start Workout" from Reference Mockup) */}
+          <div className="pt-3">
+            <button
+              type="button"
+              onClick={handlePublishWorkout}
+              className="btn-magnetic w-full py-4 px-6 rounded-full bg-[#CEFA03] hover:bg-[#D8FF29] text-[#0B0D0A] font-black text-sm tracking-tight shadow-[0_12px_35px_rgba(206,250,3,0.35)] flex items-center justify-center gap-2.5"
+            >
+              <Smartphone className="w-4 h-4 stroke-[2.5]" />
+              <span>Start Workout • Publicar Treino {activeDivision} no App de {selectedStudent?.name.split(' ')[0]}</span>
+            </button>
+          </div>
         </div>
       </div>
 
+      {/* Modal: Preview de Execução Biomecânica */}
+      {activePreviewEx && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-md p-4">
+          <div className="antigravity-card p-6 w-full max-w-md border border-[#CEFA03]/30 space-y-4">
+            <div className="flex items-center justify-between">
+              <span className="text-[10px] font-mono font-black uppercase px-2.5 py-0.5 rounded-full bg-[#CEFA03] text-[#0B0D0A]">
+                Telemetria Biomecânica
+              </span>
+              <button
+                onClick={() => setActivePreviewEx(null)}
+                className="w-8 h-8 rounded-full bg-[#23281E] text-white flex items-center justify-center text-xs"
+              >
+                ✕
+              </button>
+            </div>
+            <h3 className="text-lg font-extrabold text-white">{activePreviewEx.name}</h3>
+            <p className="text-xs text-[#9BA394] leading-relaxed">
+              {activePreviewEx.techniqueNotes}
+            </p>
+            <div className="grid grid-cols-3 gap-2.5 pt-2">
+              <div className="p-3 rounded-2xl bg-[#121510] text-center">
+                <div className="text-[10px] text-[#9BA394]">Volume</div>
+                <div className="text-sm font-black text-white">{activePreviewEx.sets} x {activePreviewEx.reps}</div>
+              </div>
+              <div className="p-3 rounded-2xl bg-[#121510] text-center">
+                <div className="text-[10px] text-[#9BA394]">Intensidade</div>
+                <div className="text-sm font-black text-[#CEFA03]">RPE @{activePreviewEx.targetRpe}</div>
+              </div>
+              <div className="p-3 rounded-2xl bg-[#121510] text-center">
+                <div className="text-[10px] text-[#9BA394]">Intervalo</div>
+                <div className="text-sm font-black text-white">{activePreviewEx.restSeconds}s</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Modal: Adicionar Exercício */}
       {showAddModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4">
-          <div className="antigravity-card rounded-3xl p-6 w-full max-w-lg border border-white/10 shadow-2xl space-y-4">
-            <div className="flex items-center justify-between pb-2 border-b border-white/10">
-              <h3 className="text-base font-bold text-white flex items-center gap-2">
-                <Plus className="w-5 h-5 text-indigo-400" />
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/85 backdrop-blur-md p-4">
+          <div className="antigravity-card p-6 w-full max-w-lg border border-[#CEFA03]/30 shadow-2xl space-y-4">
+            <div className="flex items-center justify-between pb-3 border-b border-white/10">
+              <h3 className="text-base font-extrabold text-white flex items-center gap-2">
+                <Plus className="w-5 h-5 text-[#CEFA03]" />
                 <span>Adicionar Exercício ao Treino {activeDivision}</span>
               </h3>
               <button
                 onClick={() => setShowAddModal(false)}
-                className="text-slate-400 hover:text-white text-xs"
+                className="w-8 h-8 rounded-full bg-[#23281E] text-[#9BA394] hover:text-white text-xs flex items-center justify-center"
               >
                 ✕
               </button>
@@ -297,7 +485,7 @@ export const WorkoutBuilder: React.FC<WorkoutBuilderProps> = ({
 
             <form onSubmit={handleAddExercise} className="space-y-4">
               <div>
-                <label className="text-xs font-semibold text-slate-300 mb-1 block">
+                <label className="text-xs font-bold text-[#D8E0D2] mb-1.5 block">
                   Nome do Exercício:
                 </label>
                 <input
@@ -306,34 +494,34 @@ export const WorkoutBuilder: React.FC<WorkoutBuilderProps> = ({
                   placeholder="Ex: Supino Inclinado com Halteres (30°)"
                   value={newExercise.name}
                   onChange={e => setNewExercise({ ...newExercise, name: e.target.value })}
-                  className="w-full bg-white/5 border border-white/10 rounded-2xl px-4 py-2 text-xs text-white focus:outline-none focus:border-indigo-500"
+                  className="w-full olive-pill rounded-full px-4 py-2.5 text-xs text-white focus:outline-none focus:border-[#CEFA03]"
                 />
               </div>
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="text-xs font-semibold text-slate-300 mb-1 block">
+                  <label className="text-xs font-bold text-[#D8E0D2] mb-1.5 block">
                     Grupo Muscular:
                   </label>
                   <select
                     value={newExercise.muscleGroup}
                     onChange={e => setNewExercise({ ...newExercise, muscleGroup: e.target.value as any })}
-                    className="w-full bg-[#12141A] border border-white/10 rounded-2xl px-3 py-2 text-xs text-white focus:outline-none focus:border-indigo-500"
+                    className="w-full olive-pill rounded-full px-4 py-2.5 text-xs text-white focus:outline-none focus:border-[#CEFA03]"
                   >
-                    <option value="Peitoral">Peitoral</option>
-                    <option value="Dorsais">Dorsais</option>
-                    <option value="Ombros">Ombros</option>
-                    <option value="Braços">Braços (Bíceps/Tríceps)</option>
-                    <option value="Quadríceps">Quadríceps</option>
-                    <option value="Posteriores">Posteriores</option>
-                    <option value="Glúteos">Glúteos</option>
-                    <option value="Core">Core / Abdômen</option>
-                    <option value="Cardio">Cardio</option>
+                    <option value="Peitoral" className="bg-[#0B0D0A]">Peitoral</option>
+                    <option value="Dorsais" className="bg-[#0B0D0A]">Dorsais</option>
+                    <option value="Ombros" className="bg-[#0B0D0A]">Ombros</option>
+                    <option value="Braços" className="bg-[#0B0D0A]">Braços (Bíceps/Tríceps)</option>
+                    <option value="Quadríceps" className="bg-[#0B0D0A]">Quadríceps</option>
+                    <option value="Posteriores" className="bg-[#0B0D0A]">Posteriores</option>
+                    <option value="Glúteos" className="bg-[#0B0D0A]">Glúteos</option>
+                    <option value="Core" className="bg-[#0B0D0A]">Core / Abdômen</option>
+                    <option value="Cardio" className="bg-[#0B0D0A]">Cardio</option>
                   </select>
                 </div>
 
                 <div>
-                  <label className="text-xs font-semibold text-slate-300 mb-1 block">
+                  <label className="text-xs font-bold text-[#D8E0D2] mb-1.5 block">
                     Séries:
                   </label>
                   <input
@@ -342,14 +530,14 @@ export const WorkoutBuilder: React.FC<WorkoutBuilderProps> = ({
                     max="10"
                     value={newExercise.sets}
                     onChange={e => setNewExercise({ ...newExercise, sets: Number(e.target.value) })}
-                    className="w-full bg-white/5 border border-white/10 rounded-2xl px-4 py-2 text-xs text-white focus:outline-none focus:border-indigo-500"
+                    className="w-full olive-pill rounded-full px-4 py-2.5 text-xs text-white focus:outline-none focus:border-[#CEFA03]"
                   />
                 </div>
               </div>
 
               <div className="grid grid-cols-3 gap-3">
                 <div>
-                  <label className="text-xs font-semibold text-slate-300 mb-1 block">
+                  <label className="text-xs font-bold text-[#D8E0D2] mb-1.5 block">
                     Repetições:
                   </label>
                   <input
@@ -357,12 +545,12 @@ export const WorkoutBuilder: React.FC<WorkoutBuilderProps> = ({
                     placeholder="8-12"
                     value={newExercise.reps}
                     onChange={e => setNewExercise({ ...newExercise, reps: e.target.value })}
-                    className="w-full bg-white/5 border border-white/10 rounded-2xl px-4 py-2 text-xs text-white focus:outline-none focus:border-indigo-500"
+                    className="w-full olive-pill rounded-full px-4 py-2.5 text-xs text-white focus:outline-none focus:border-[#CEFA03]"
                   />
                 </div>
 
                 <div>
-                  <label className="text-xs font-semibold text-slate-300 mb-1 block">
+                  <label className="text-xs font-bold text-[#D8E0D2] mb-1.5 block">
                     RPE Alvo:
                   </label>
                   <input
@@ -372,12 +560,12 @@ export const WorkoutBuilder: React.FC<WorkoutBuilderProps> = ({
                     max="10"
                     value={newExercise.targetRpe}
                     onChange={e => setNewExercise({ ...newExercise, targetRpe: Number(e.target.value) })}
-                    className="w-full bg-white/5 border border-white/10 rounded-2xl px-4 py-2 text-xs text-white focus:outline-none focus:border-indigo-500"
+                    className="w-full olive-pill rounded-full px-4 py-2.5 text-xs text-white focus:outline-none focus:border-[#CEFA03]"
                   />
                 </div>
 
                 <div>
-                  <label className="text-xs font-semibold text-slate-300 mb-1 block">
+                  <label className="text-xs font-bold text-[#D8E0D2] mb-1.5 block">
                     Descanso (s):
                   </label>
                   <input
@@ -387,13 +575,13 @@ export const WorkoutBuilder: React.FC<WorkoutBuilderProps> = ({
                     max="300"
                     value={newExercise.restSeconds}
                     onChange={e => setNewExercise({ ...newExercise, restSeconds: Number(e.target.value) })}
-                    className="w-full bg-white/5 border border-white/10 rounded-2xl px-4 py-2 text-xs text-white focus:outline-none focus:border-indigo-500"
+                    className="w-full olive-pill rounded-full px-4 py-2.5 text-xs text-white focus:outline-none focus:border-[#CEFA03]"
                   />
                 </div>
               </div>
 
               <div>
-                <label className="text-xs font-semibold text-slate-300 mb-1 block">
+                <label className="text-xs font-bold text-[#D8E0D2] mb-1.5 block">
                   Orientações Técnicas:
                 </label>
                 <input
@@ -401,7 +589,7 @@ export const WorkoutBuilder: React.FC<WorkoutBuilderProps> = ({
                   placeholder="Ex: Pausa isométrica de 1s na contração máxima."
                   value={newExercise.techniqueNotes}
                   onChange={e => setNewExercise({ ...newExercise, techniqueNotes: e.target.value })}
-                  className="w-full bg-white/5 border border-white/10 rounded-2xl px-4 py-2 text-xs text-white focus:outline-none focus:border-indigo-500"
+                  className="w-full olive-pill rounded-full px-4 py-2.5 text-xs text-white focus:outline-none focus:border-[#CEFA03]"
                 />
               </div>
 
@@ -409,13 +597,13 @@ export const WorkoutBuilder: React.FC<WorkoutBuilderProps> = ({
                 <button
                   type="button"
                   onClick={() => setShowAddModal(false)}
-                  className="px-4 py-2 rounded-2xl bg-white/5 text-slate-300 text-xs hover:bg-white/10"
+                  className="px-5 py-2.5 rounded-full bg-[#23281E] text-[#D8E0D2] text-xs font-bold hover:bg-[#2C3326]"
                 >
                   Cancelar
                 </button>
                 <button
                   type="submit"
-                  className="px-5 py-2 rounded-2xl bg-indigo-600 text-white font-bold text-xs hover:bg-indigo-500 shadow-md shadow-indigo-600/30"
+                  className="btn-magnetic px-6 py-2.5 rounded-full bg-[#CEFA03] text-[#0B0D0A] font-extrabold text-xs shadow-[0_6px_20px_rgba(206,250,3,0.3)]"
                 >
                   Salvar Exercício
                 </button>

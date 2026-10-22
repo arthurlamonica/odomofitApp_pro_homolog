@@ -28,32 +28,32 @@ export const StudentAnamnesis: React.FC<StudentAnamnesisProps> = ({ students }) 
   return (
     <div className="space-y-6">
       {/* LGPD & Compliance Top Banner */}
-      <div className="antigravity-card rounded-3xl p-5 border-emerald-500/20 bg-gradient-to-r from-emerald-950/20 via-slate-900/60 to-indigo-950/20 flex flex-wrap items-center justify-between gap-4">
-        <div className="flex items-center gap-3.5">
-          <div className="w-10 h-10 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 flex items-center justify-center">
-            <ShieldCheck className="w-5 h-5" />
+      <div className="antigravity-card p-6 border-[#CEFA03]/25 flex flex-wrap items-center justify-between gap-4">
+        <div className="flex items-center gap-4">
+          <div className="w-12 h-12 rounded-full bg-[#CEFA03] text-[#0B0D0A] flex items-center justify-center shadow-[0_0_20px_rgba(206,250,3,0.35)] shrink-0">
+            <ShieldCheck className="w-6 h-6 stroke-[2.5]" />
           </div>
           <div>
-            <h3 className="text-sm font-bold text-white flex items-center gap-2">
-              Prontuário Antropométrico &amp; Proteção LGPD
-              <span className="text-[10px] px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
+            <h3 className="text-base font-extrabold text-white flex flex-wrap items-center gap-2">
+              <span>Prontuário Antropométrico &amp; Proteção LGPD</span>
+              <span className="text-[10px] font-mono font-black px-2.5 py-0.5 rounded-full bg-[#CEFA03]/15 text-[#CEFA03] border border-[#CEFA03]/30">
                 Art. 11, I - Consentimento Válido
               </span>
             </h3>
-            <p className="text-xs text-slate-400">
+            <p className="text-xs text-[#9BA394] mt-0.5">
               Fotos corporais e anamnese médica enquadradas como dados sensíveis com controle estrito de exibição.
             </p>
           </div>
         </div>
 
-        <div className="text-xs text-slate-400 font-mono">
-          Criptografia de Repouso: <span className="text-emerald-400 font-bold">AES-256 / RLS</span>
+        <div className="px-4 py-2 rounded-full bg-[#121510] border border-white/[0.07] text-xs text-[#9BA394] font-mono">
+          Criptografia de Repouso: <span className="text-[#CEFA03] font-extrabold">AES-256 / RLS</span>
         </div>
       </div>
 
       {notificationSent && (
-        <div className="p-3.5 rounded-2xl bg-indigo-950/40 border border-indigo-500/40 text-indigo-300 text-xs flex items-center gap-2">
-          <CheckCircle2 className="w-4 h-4 text-indigo-400" />
+        <div className="p-4 rounded-full bg-[#CEFA03]/15 border border-[#CEFA03]/40 text-[#CEFA03] text-xs font-bold flex items-center gap-2">
+          <CheckCircle2 className="w-4 h-4 text-[#CEFA03]" />
           <span>Notificação push enviada para <strong>{notificationSent}</strong> pelo app mobile!</span>
         </div>
       )}
@@ -62,16 +62,16 @@ export const StudentAnamnesis: React.FC<StudentAnamnesisProps> = ({ students }) 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         {/* Left Column: Student Master List */}
         <div className="lg:col-span-4 space-y-3">
-          <div className="text-xs font-bold text-slate-400 uppercase tracking-wider px-1">
+          <div className="text-xs font-mono font-bold text-[#9BA394] uppercase tracking-wider px-2">
             Alunos Matriculados ({students.length})
           </div>
 
-          <div className="space-y-2.5">
+          <div className="space-y-3">
             {students.map((student) => {
               const isSelected = student.id === selectedStudent.id;
               const statusColor = 
                 student.status === 'active' 
-                  ? 'bg-emerald-400' 
+                  ? 'bg-[#CEFA03]' 
                   : student.status === 'warning' 
                   ? 'bg-amber-400' 
                   : 'bg-rose-500';
@@ -83,45 +83,45 @@ export const StudentAnamnesis: React.FC<StudentAnamnesisProps> = ({ students }) 
                     setSelectedStudent(student);
                     setShowConfidentialPhotos(false);
                   }}
-                  className={`antigravity-card rounded-2xl p-4 cursor-pointer transition-all ${
+                  className={`antigravity-card p-4 cursor-pointer transition-all ${
                     isSelected
-                      ? 'border-indigo-500/60 bg-indigo-950/20 shadow-lg shadow-indigo-500/10'
+                      ? 'border-[#CEFA03]/60 bg-[#23281E]/90 shadow-[0_12px_30px_rgba(206,250,3,0.12)]'
                       : 'hover:border-white/20'
                   }`}
                 >
                   <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-3">
+                    <div className="flex items-center gap-3.5">
                       <div className="relative">
                         <img 
                           src={student.avatarUrl} 
                           alt={student.name}
-                          className="w-10 h-10 rounded-xl object-cover ring-1 ring-white/10" 
+                          className="w-12 h-12 rounded-full object-cover ring-2 ring-[#CEFA03]/30" 
                         />
-                        <span className={`absolute -bottom-1 -right-1 w-3 h-3 rounded-full ${statusColor} ring-2 ring-[#08090C]`}></span>
+                        <span className={`absolute bottom-0 right-0 w-3 h-3 rounded-full ${statusColor} ring-2 ring-[#0B0D0A]`} />
                       </div>
                       <div>
-                        <h4 className="text-xs font-bold text-white leading-tight">
+                        <h4 className="text-sm font-extrabold text-white leading-tight">
                           {student.name}
                         </h4>
-                        <span className="text-[10px] text-slate-400 font-mono">
+                        <span className="text-[10px] text-[#9BA394] font-mono">
                           {student.username}
                         </span>
-                        <div className="text-[10px] text-indigo-400 font-semibold mt-0.5">
+                        <div className="text-[11px] text-[#CEFA03] font-bold mt-0.5">
                           {student.plan} • R$ {student.monthlyFee}/mês
                         </div>
                       </div>
                     </div>
 
                     <div className="text-right">
-                      <div className="text-xs font-extrabold text-white">
+                      <div className="text-sm font-black text-white font-mono">
                         {student.adherenceRate}%
                       </div>
-                      <div className="text-[9px] text-slate-400">
+                      <div className="text-[9px] text-[#9BA394] uppercase font-mono">
                         Adesão
                       </div>
                       {student.daysInactive > 0 && (
-                        <div className="text-[9px] font-semibold text-rose-400">
-                          {student.daysInactive}d inativo
+                        <div className="text-[10px] font-bold text-rose-400 mt-0.5">
+                          {student.daysInactive}d off
                         </div>
                       )}
                     </div>
@@ -135,29 +135,29 @@ export const StudentAnamnesis: React.FC<StudentAnamnesisProps> = ({ students }) 
         {/* Right Column: Detailed Medical Chart & Anamnesis */}
         <div className="lg:col-span-8 space-y-5">
           {/* Student Header Summary Card */}
-          <div className="antigravity-card rounded-3xl p-6 border border-white/5 flex flex-wrap items-center justify-between gap-4">
+          <div className="antigravity-card p-6 flex flex-wrap items-center justify-between gap-4">
             <div className="flex items-center gap-4">
               <img 
                 src={selectedStudent.avatarUrl} 
                 alt={selectedStudent.name}
-                className="w-16 h-16 rounded-2xl object-cover ring-2 ring-indigo-500/40"
+                className="w-16 h-16 rounded-full object-cover ring-2 ring-[#CEFA03]/50 shadow-[0_0_20px_rgba(206,250,3,0.2)]"
               />
               <div>
                 <div className="flex items-center gap-2">
-                  <h3 className="text-lg font-bold text-white tracking-tight">
+                  <h3 className="text-lg font-extrabold text-white tracking-tight">
                     {selectedStudent.name}
                   </h3>
-                  <span className="text-[10px] px-2 py-0.5 rounded-full bg-white/10 text-slate-300 font-mono">
+                  <span className="text-[10px] px-2.5 py-0.5 rounded-full bg-[#23281E] text-[#CEFA03] font-mono font-bold">
                     {selectedStudent.username}
                   </span>
                 </div>
-                <p className="text-xs text-indigo-400 font-semibold mt-0.5">
+                <p className="text-xs text-[#CEFA03] font-bold mt-0.5">
                   Objetivo: {selectedStudent.goal}
                 </p>
-                <div className="flex items-center gap-3 text-[11px] text-slate-400 mt-2">
-                  <span>Último treino: <strong>{selectedStudent.lastWorkoutDate}</strong></span>
+                <div className="flex items-center gap-3 text-[11px] text-[#9BA394] mt-2">
+                  <span>Último treino: <strong className="text-white">{selectedStudent.lastWorkoutDate}</strong></span>
                   <span>•</span>
-                  <span>Plano: <strong>{selectedStudent.plan}</strong></span>
+                  <span>Plano: <strong className="text-white">{selectedStudent.plan}</strong></span>
                 </div>
               </div>
             </div>
@@ -165,40 +165,40 @@ export const StudentAnamnesis: React.FC<StudentAnamnesisProps> = ({ students }) 
             <div className="flex items-center gap-2">
               <button
                 onClick={() => handleSendMotivation(selectedStudent.name)}
-                className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-white/5 border border-white/10 text-slate-200 text-xs font-semibold hover:bg-white/10 transition-colors"
+                className="btn-magnetic flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#CEFA03] text-[#0B0D0A] text-xs font-extrabold shadow-[0_8px_24px_rgba(206,250,3,0.3)]"
               >
-                <MessageCircle className="w-4 h-4 text-indigo-400" />
+                <MessageCircle className="w-4 h-4 stroke-[2.5]" />
                 <span>Enviar Mensagem</span>
               </button>
             </div>
           </div>
 
           {/* Antropometria & Dados Clínicos */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-            <div className="p-4 rounded-2xl bg-white/[0.03] border border-white/5">
-              <div className="text-[10px] text-slate-400 font-semibold uppercase">Peso Atual</div>
-              <div className="text-lg font-extrabold text-white mt-1">
-                {selectedStudent.anamnesis.weightKg} <span className="text-xs font-normal text-slate-400">kg</span>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3.5">
+            <div className="p-4 rounded-[1.5rem] bg-[#181B15] border border-white/[0.06]">
+              <div className="text-[10px] text-[#9BA394] font-mono font-bold uppercase">Peso Atual</div>
+              <div className="text-xl font-black text-white mt-1">
+                {selectedStudent.anamnesis.weightKg} <span className="text-xs font-normal text-[#9BA394]">kg</span>
               </div>
             </div>
 
-            <div className="p-4 rounded-2xl bg-white/[0.03] border border-white/5">
-              <div className="text-[10px] text-slate-400 font-semibold uppercase">Estatura</div>
-              <div className="text-lg font-extrabold text-white mt-1">
-                {selectedStudent.anamnesis.heightCm} <span className="text-xs font-normal text-slate-400">cm</span>
+            <div className="p-4 rounded-[1.5rem] bg-[#181B15] border border-white/[0.06]">
+              <div className="text-[10px] text-[#9BA394] font-mono font-bold uppercase">Estatura</div>
+              <div className="text-xl font-black text-white mt-1">
+                {selectedStudent.anamnesis.heightCm} <span className="text-xs font-normal text-[#9BA394]">cm</span>
               </div>
             </div>
 
-            <div className="p-4 rounded-2xl bg-white/[0.03] border border-white/5">
-              <div className="text-[10px] text-slate-400 font-semibold uppercase">% Gordura (BF)</div>
-              <div className="text-lg font-extrabold text-emerald-400 mt-1">
+            <div className="p-4 rounded-[1.5rem] bg-[#CEFA03] text-[#0B0D0A]">
+              <div className="text-[10px] text-[#0B0D0A]/75 font-mono font-black uppercase">% Gordura (BF)</div>
+              <div className="text-xl font-black text-[#0B0D0A] mt-1">
                 {selectedStudent.anamnesis.bodyFatPercent}%
               </div>
             </div>
 
-            <div className="p-4 rounded-2xl bg-white/[0.03] border border-white/5">
-              <div className="text-[10px] text-slate-400 font-semibold uppercase">Tipo Sanguíneo</div>
-              <div className="text-lg font-extrabold text-indigo-400 mt-1">
+            <div className="p-4 rounded-[1.5rem] bg-[#181B15] border border-white/[0.06]">
+              <div className="text-[10px] text-[#9BA394] font-mono font-bold uppercase">Tipo Sanguíneo</div>
+              <div className="text-xl font-black text-[#CEFA03] mt-1">
                 {selectedStudent.anamnesis.bloodType}
               </div>
             </div>
@@ -206,83 +206,83 @@ export const StudentAnamnesis: React.FC<StudentAnamnesisProps> = ({ students }) 
 
           {/* Lesões, Medicamentos e Restrições */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="p-4 rounded-2xl bg-rose-950/10 border border-rose-500/20">
-              <div className="flex items-center gap-2 text-rose-400 text-xs font-bold mb-2">
+            <div className="p-5 rounded-[1.75rem] bg-[#181B15] border border-rose-500/25">
+              <div className="flex items-center gap-2 text-rose-400 text-xs font-extrabold mb-2.5">
                 <AlertCircle className="w-4 h-4" />
                 <span>Lesões &amp; Restrições Articulares</span>
               </div>
               {selectedStudent.anamnesis.injuries.length > 0 ? (
-                <ul className="space-y-1">
+                <ul className="space-y-1.5">
                   {selectedStudent.anamnesis.injuries.map((inj, i) => (
-                    <li key={i} className="text-xs text-rose-200 flex items-start gap-1.5">
-                      <span className="text-rose-400">•</span>
+                    <li key={i} className="text-xs text-[#D8E0D2] flex items-start gap-2">
+                      <span className="text-rose-400 font-bold">•</span>
                       <span>{inj}</span>
                     </li>
                   ))}
                 </ul>
               ) : (
-                <div className="text-xs text-slate-400">Nenhuma lesão relatada.</div>
+                <div className="text-xs text-[#9BA394]">Nenhuma lesão relatada.</div>
               )}
             </div>
 
-            <div className="p-4 rounded-2xl bg-white/[0.03] border border-white/5">
-              <div className="flex items-center gap-2 text-indigo-400 text-xs font-bold mb-2">
+            <div className="p-5 rounded-[1.75rem] bg-[#181B15] border border-[#CEFA03]/20">
+              <div className="flex items-center gap-2 text-[#CEFA03] text-xs font-extrabold mb-2.5">
                 <FileText className="w-4 h-4" />
                 <span>Medicamentos &amp; Suplementação</span>
               </div>
               {selectedStudent.anamnesis.medications.length > 0 ? (
-                <ul className="space-y-1">
+                <ul className="space-y-1.5">
                   {selectedStudent.anamnesis.medications.map((med, i) => (
-                    <li key={i} className="text-xs text-slate-300 flex items-start gap-1.5">
-                      <span className="text-indigo-400">•</span>
+                    <li key={i} className="text-xs text-[#D8E0D2] flex items-start gap-2">
+                      <span className="text-[#CEFA03] font-bold">•</span>
                       <span>{med}</span>
                     </li>
                   ))}
                 </ul>
               ) : (
-                <div className="text-xs text-slate-400">Nenhum medicamento ativo.</div>
+                <div className="text-xs text-[#9BA394]">Nenhum medicamento ativo.</div>
               )}
             </div>
           </div>
 
           {/* Notas Confidenciais do Personal */}
-          <div className="p-4 rounded-2xl bg-white/[0.03] border border-white/5 space-y-1.5">
-            <div className="flex items-center gap-2 text-xs font-bold text-slate-300">
-              <Lock className="w-3.5 h-3.5 text-indigo-400" />
+          <div className="p-5 rounded-[1.75rem] bg-[#181B15] border border-white/[0.06] space-y-2">
+            <div className="flex items-center gap-2 text-xs font-extrabold text-white">
+              <Lock className="w-3.5 h-3.5 text-[#CEFA03]" />
               <span>Observações Confidenciais do Treinador / Nutrólogo</span>
             </div>
-            <p className="text-xs text-slate-300 leading-relaxed bg-black/30 p-3 rounded-xl border border-white/5">
+            <p className="text-xs text-[#D8E0D2] leading-relaxed bg-[#11140E] p-3.5 rounded-2xl border border-white/[0.05]">
               {selectedStudent.anamnesis.confidentialNotes}
             </p>
           </div>
 
           {/* Fotos de Evolução com Máscara Blur LGPD */}
-          <div className="antigravity-card rounded-3xl p-5 border border-white/5 space-y-4">
-            <div className="flex items-center justify-between">
+          <div className="antigravity-card p-6 space-y-4">
+            <div className="flex flex-wrap items-center justify-between gap-3">
               <div>
-                <h4 className="text-sm font-bold text-white flex items-center gap-2">
+                <h4 className="text-sm font-extrabold text-white flex items-center gap-2">
                   <span>Fotos de Evolução Antropométrica</span>
-                  <span className="text-[10px] px-2 py-0.5 rounded-full bg-indigo-500/10 text-indigo-300 border border-indigo-500/20">
+                  <span className="text-[10px] font-mono px-2.5 py-0.5 rounded-full bg-[#CEFA03]/15 text-[#CEFA03] border border-[#CEFA03]/30">
                     Blur Ativo por Padrão
                   </span>
                 </h4>
-                <p className="text-xs text-slate-400">
+                <p className="text-xs text-[#9BA394]">
                   Imagens íntimas protegidas contra visualização acidental por terceiros.
                 </p>
               </div>
 
               <button
                 onClick={() => setShowConfidentialPhotos(!showConfidentialPhotos)}
-                className="flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-white/5 border border-white/10 text-xs font-semibold text-slate-200 hover:bg-white/10 transition-colors"
+                className="btn-magnetic flex items-center gap-2 px-4 py-2 rounded-full bg-[#23281E] border border-[#CEFA03]/30 text-xs font-extrabold text-white hover:bg-[#CEFA03] hover:text-[#0B0D0A] transition-colors"
               >
                 {showConfidentialPhotos ? (
                   <>
-                    <EyeOff className="w-4 h-4 text-slate-400" />
+                    <EyeOff className="w-4 h-4" />
                     <span>Ocultar Fotos</span>
                   </>
                 ) : (
                   <>
-                    <Eye className="w-4 h-4 text-emerald-400" />
+                    <Eye className="w-4 h-4 text-[#CEFA03]" />
                     <span>Visualizar Fotos</span>
                   </>
                 )}
@@ -292,7 +292,7 @@ export const StudentAnamnesis: React.FC<StudentAnamnesisProps> = ({ students }) 
             {selectedStudent.evolutionPhotos.length > 0 ? (
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                 {selectedStudent.evolutionPhotos.map((photo) => (
-                  <div key={photo.id} className="relative rounded-2xl overflow-hidden border border-white/10 group aspect-[3/4]">
+                  <div key={photo.id} className="relative rounded-[1.5rem] overflow-hidden border border-white/10 group aspect-[3/4]">
                     <img 
                       src={photo.url} 
                       alt={photo.type}
@@ -301,20 +301,20 @@ export const StudentAnamnesis: React.FC<StudentAnamnesisProps> = ({ students }) 
                       }`}
                     />
                     {!showConfidentialPhotos && (
-                      <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/40 text-center p-2">
-                        <Lock className="w-6 h-6 text-slate-400 mb-1" />
-                        <span className="text-[10px] text-slate-300 font-semibold">Protegido por LGPD</span>
+                      <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/50 text-center p-2">
+                        <Lock className="w-6 h-6 text-[#CEFA03] mb-1" />
+                        <span className="text-[10px] text-white font-bold">Protegido por LGPD</span>
                       </div>
                     )}
-                    <div className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/80 to-transparent p-2 text-white">
-                      <div className="text-xs font-bold">{photo.type}</div>
-                      <div className="text-[10px] text-slate-300">{photo.date}</div>
+                    <div className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/85 to-transparent p-3 text-white">
+                      <div className="text-xs font-extrabold">{photo.type}</div>
+                      <div className="text-[10px] font-mono text-[#CEFA03]">{photo.date}</div>
                     </div>
                   </div>
                 ))}
               </div>
             ) : (
-              <div className="p-8 text-center border border-dashed border-white/10 rounded-2xl text-xs text-slate-500">
+              <div className="p-8 text-center border border-dashed border-white/10 rounded-[1.75rem] text-xs text-[#9BA394]">
                 Nenhuma foto corporal enviada pelo aluno até o momento.
               </div>
             )}

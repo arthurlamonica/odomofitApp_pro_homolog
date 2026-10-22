@@ -7,28 +7,34 @@
     color-scheme: dark;
     --sat: env(safe-area-inset-top, 0px);
     --sab: env(safe-area-inset-bottom, 16px);
+    --domo-volt: #CEFA03;
+    --domo-black: #0B0D0A;
+    --domo-card: #181B15;
+    --domo-olive: #23281E;
   }
   
   html, body {
-    background-color: #08090C;
-    font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+    background-color: #0B0D0A;
+    color: #F4F7F0;
+    font-family: 'Plus Jakarta Sans', 'Outfit', system-ui, -apple-system, sans-serif;
     -webkit-tap-highlight-color: transparent;
     touch-action: manipulation;
+    overflow-x: hidden;
   }
 
   ::-webkit-scrollbar {
-    width: 4px;
-    height: 4px;
+    width: 5px;
+    height: 5px;
   }
   ::-webkit-scrollbar-track {
-    background: rgba(8, 9, 12, 0.8);
+    background: #0B0D0A;
   }
   ::-webkit-scrollbar-thumb {
-    background: rgba(99, 102, 241, 0.3);
+    background: rgba(206, 250, 3, 0.28);
     border-radius: 9999px;
   }
   ::-webkit-scrollbar-thumb:hover {
-    background: rgba(99, 102, 241, 0.6);
+    background: rgba(206, 250, 3, 0.65);
   }
 }
 
@@ -41,36 +47,70 @@
   transform-style: preserve-3d;
 }
 
+/* Matte Obsidian-Olive Card Surface (Reference App Design) */
 .antigravity-card {
-  background: rgba(18, 20, 26, 0.7);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.7), 0 0 20px -5px rgba(99, 102, 241, 0.12);
-  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.35s ease;
+  background: linear-gradient(165deg, rgba(30, 34, 26, 0.92) 0%, rgba(22, 25, 19, 0.96) 100%);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 2rem;
+  box-shadow: 0 20px 45px -15px rgba(0, 0, 0, 0.85), inset 0 1px 0 0 rgba(255, 255, 255, 0.06);
+  transition: transform 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94), box-shadow 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94), border-color 0.35s ease;
   will-change: transform;
 }
 
 .antigravity-card:hover {
-  border-color: rgba(99, 102, 241, 0.35);
-  box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.85), 0 0 30px 2px rgba(99, 102, 241, 0.25);
+  border-color: rgba(206, 250, 3, 0.32);
+  box-shadow: 0 28px 55px -15px rgba(0, 0, 0, 0.92), 0 0 28px -4px rgba(206, 250, 3, 0.14), inset 0 1px 0 0 rgba(206, 250, 3, 0.15);
 }
 
-.glass-pill {
-  background: rgba(255, 255, 255, 0.05);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+/* Solid Electric Volt Card (Like "Sleep Hours 7.5 Hrs" in Reference Mockup) */
+.volt-feature-card {
+  background: linear-gradient(145deg, #CEFA03 0%, #B8E600 100%);
+  color: #0B0D0A;
+  border-radius: 2rem;
+  box-shadow: 0 20px 45px -12px rgba(206, 250, 3, 0.28), inset 0 1px 1px rgba(255, 255, 255, 0.45);
+  transition: transform 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94), box-shadow 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
+.volt-feature-card:hover {
+  transform: translateY(-2px) scale(1.01);
+  box-shadow: 0 28px 55px -10px rgba(206, 250, 3, 0.4);
+}
+
+/* Magnetic Button Micro-Interaction (SKILL: GEMINI-Construtor-de-Sites) */
+.btn-magnetic {
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94), box-shadow 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.btn-magnetic:hover {
+  transform: scale(1.03) translateY(-1px);
+}
+
+.btn-magnetic:active {
+  transform: scale(0.98);
+}
+
+/* Olive Pill Search & Controls Surface */
+.olive-pill {
+  background: rgba(36, 41, 30, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* Ambient Top Olive-Lime Canopy Glow (Matches Reference Phone Header Glow) */
 .bg-spatial-grid {
+  background-color: #0B0D0A;
   background-image: 
-    radial-gradient(circle at 15% 20%, rgba(99, 102, 241, 0.15) 0%, transparent 40%),
-    radial-gradient(circle at 85% 80%, rgba(16, 185, 129, 0.10) 0%, transparent 45%),
-    radial-gradient(circle at 50% 50%, rgba(6, 182, 212, 0.08) 0%, transparent 50%),
-    linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
-  background-size: 100% 100%, 100% 100%, 100% 100%, 48px 48px, 48px 48px;
+    radial-gradient(circle at 50% -5%, rgba(206, 250, 3, 0.16) 0%, rgba(74, 110, 18, 0.10) 32%, transparent 65%),
+    radial-gradient(circle at 12% 22%, rgba(206, 250, 3, 0.07) 0%, transparent 40%),
+    radial-gradient(circle at 88% 78%, rgba(206, 250, 3, 0.06) 0%, transparent 45%),
+    linear-gradient(to right, rgba(206, 250, 3, 0.018) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(206, 250, 3, 0.018) 1px, transparent 1px);
+  background-size: 100% 100%, 100% 100%, 100% 100%, 56px 56px, 56px 56px;
 }
 
 .no-scrollbar::-webkit-scrollbar {
