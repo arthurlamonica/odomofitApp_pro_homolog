@@ -39,10 +39,10 @@ export const App: React.FC = () => {
 
   const getFrameContainerClass = () => {
     if (viewportMode === 'mobile') {
-      return 'w-full max-w-[412px] mx-auto my-0 lg:my-6 rounded-none lg:rounded-[44px] border-0 lg:border-8 border-[#1A1F16] shadow-none lg:shadow-[0_25px_60px_-15px_rgba(0,0,0,0.9),0_0_40px_rgba(206,250,3,0.15)] overflow-hidden bg-[#0B0D0A] min-h-screen lg:min-h-[860px] relative flex flex-col transition-all duration-300';
+      return 'w-full max-w-[430px] mx-auto my-0 lg:my-6 rounded-none lg:rounded-[44px] border-0 lg:border-8 border-[#1A1F16] shadow-none lg:shadow-[0_25px_60px_-15px_rgba(0,0,0,0.9),0_0_40px_rgba(206,250,3,0.15)] overflow-x-hidden bg-[#0B0D0A] min-h-screen lg:min-h-[860px] relative flex flex-col transition-all duration-300';
     }
     if (viewportMode === 'tablet') {
-      return 'w-full max-w-[820px] mx-auto my-0 lg:my-6 rounded-none lg:rounded-[36px] border-0 lg:border-8 border-[#1A1F16] shadow-none lg:shadow-[0_25px_60px_-15px_rgba(0,0,0,0.9),0_0_30px_rgba(206,250,3,0.12)] overflow-hidden bg-[#0B0D0A] min-h-screen relative flex flex-col transition-all duration-300';
+      return 'w-full max-w-[820px] mx-auto my-0 lg:my-6 rounded-none lg:rounded-[36px] border-0 lg:border-8 border-[#1A1F16] shadow-none lg:shadow-[0_25px_60px_-15px_rgba(0,0,0,0.9),0_0_30px_rgba(206,250,3,0.12)] overflow-x-hidden bg-[#0B0D0A] min-h-screen relative flex flex-col transition-all duration-300';
     }
     return 'w-full min-h-screen bg-[#0B0D0A] flex flex-col transition-all duration-300';
   };
@@ -92,7 +92,7 @@ export const App: React.FC = () => {
               </div>
             )}
 
-            <div className="p-4 sm:p-6 md:p-8 space-y-6 overflow-y-auto pb-28 lg:pb-10 flex-1">
+            <div className="p-3 sm:p-6 md:p-8 space-y-6 overflow-y-auto overflow-x-hidden pb-28 lg:pb-10 flex-1">
           {activeTab === 'overview' && (
             <div className="space-y-6">
               <MetricCards 

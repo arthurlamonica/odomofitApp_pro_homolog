@@ -69,8 +69,8 @@ export const MetricCards: React.FC<MetricCardsProps> = ({
 
   return (
     <div ref={containerRef} className="space-y-6">
-      {/* ROW 1: 4 Primary KPI Cards (With Solid Volt Feature Card & Matte Obsidian Cards) */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
+      {/* ROW 1: 4 Primary KPI Cards (Responsive: 1 col on mobile, 2 on tablet, 4 on desktop) */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 sm:gap-5">
         {/* 1. SOLID VOLT FEATURE CARD: MRR Líquido + Equalizer Bars (Matches "Sleep Hours 7.5 Hrs" Card in Reference Mockup) */}
         <div className="bento-anim-item volt-feature-card p-6 relative overflow-hidden flex flex-col justify-between">
           <div className="flex items-center justify-between">
@@ -256,10 +256,10 @@ export const MetricCards: React.FC<MetricCardsProps> = ({
         </div>
       </div>
 
-      {/* ROW 2: Signature 3-Column Bento from Attached Mockup (Concentric Rings + Quests Level Capsules + Weekly Calories Burn Spline) */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-        {/* LEFT CARD (4 cols): Concentric Activity Rings + Area Sparkline + Muscle XP List (Screen 1 Top Card) */}
-        <div className="bento-anim-item lg:col-span-5 antigravity-card p-6 space-y-5">
+      {/* ROW 2: Signature 3-Column Bento (Concentric Rings + Quests Level Capsules + Weekly Calories Burn) */}
+      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-12 gap-5 sm:gap-6">
+        {/* LEFT CARD: Concentric Activity Rings + Sparkline + Muscle XP List */}
+        <div className="bento-anim-item md:col-span-2 xl:col-span-5 antigravity-card p-4 sm:p-6 space-y-5">
           <div className="flex items-center justify-between">
             <div>
               <h3 className="text-sm font-extrabold text-white tracking-tight">
@@ -372,8 +372,8 @@ export const MetricCards: React.FC<MetricCardsProps> = ({
           </div>
         </div>
 
-        {/* CENTER CARD (4 cols): Quests Level Lvl 3 + 5 Vertical Capsule Pill Gauges (Exact Match to Screen 1 Bottom Card) */}
-        <div className="bento-anim-item lg:col-span-4 antigravity-card p-6 flex flex-col justify-between space-y-4">
+        {/* CENTER CARD: Quests Level Lvl 3 + 5 Vertical Capsule Pill Gauges */}
+        <div className="bento-anim-item md:col-span-1 xl:col-span-4 antigravity-card p-4 sm:p-6 flex flex-col justify-between space-y-4">
           <div>
             <div className="flex items-center justify-between">
               <span className="text-xs font-semibold text-[#9BA394]">Quests Level • Engajamento</span>
@@ -393,12 +393,12 @@ export const MetricCards: React.FC<MetricCardsProps> = ({
           </div>
 
           {/* 5 Vertical Capsule Pill Gauges (Abs, Chest, Glutes, Cardio, Biceps) */}
-          <div className="grid grid-cols-5 gap-2.5 pt-2">
+          <div className="grid grid-cols-5 gap-1.5 sm:gap-2.5 pt-2">
             {CAPSULE_QUESTS.map((cap) => (
-              <div key={cap.label} className="flex flex-col items-center gap-2">
-                <div className="w-full h-36 rounded-full bg-[#11140E] border border-white/[0.05] p-1 flex items-end justify-center overflow-hidden">
+              <div key={cap.label} className="flex flex-col items-center gap-1.5 sm:gap-2">
+                <div className="w-full h-28 sm:h-36 rounded-full bg-[#11140E] border border-white/[0.05] p-1 flex items-end justify-center overflow-hidden">
                   <div
-                    className="w-full rounded-full flex flex-col items-center justify-start pt-1.5 transition-all duration-500 shadow-md"
+                    className="w-full rounded-full flex flex-col items-center justify-start pt-1 sm:pt-1.5 transition-all duration-500 shadow-md"
                     style={{
                       height: `${cap.heightPct}%`,
                       backgroundColor: cap.bg,
@@ -406,21 +406,21 @@ export const MetricCards: React.FC<MetricCardsProps> = ({
                     }}
                   >
                     <div
-                      className="w-9 h-9 rounded-full flex items-center justify-center text-[8px] font-mono font-black tracking-tighter shadow-inner"
+                      className="w-6 h-6 sm:w-9 sm:h-9 rounded-full flex items-center justify-center text-[7px] sm:text-[8px] font-mono font-black tracking-tighter shadow-inner"
                       style={{ backgroundColor: cap.circleBg }}
                     >
-                      {cap.xp}
+                      {cap.xp.replace(' XP', '')}
                     </div>
                   </div>
                 </div>
-                <span className="text-[11px] font-semibold text-[#D8E0D2]">{cap.label}</span>
+                <span className="text-[10px] sm:text-[11px] font-semibold text-[#D8E0D2] truncate max-w-full">{cap.label}</span>
               </div>
             ))}
           </div>
         </div>
 
-        {/* RIGHT CARD (3 cols): Calories Burn / Weekly Load Spline Chart (Exact Match to Screen 3 Middle Card) */}
-        <div className="bento-anim-item lg:col-span-3 antigravity-card p-6 flex flex-col justify-between">
+        {/* RIGHT CARD: Calories Burn / Weekly Load Spline Chart */}
+        <div className="bento-anim-item md:col-span-1 xl:col-span-3 antigravity-card p-4 sm:p-6 flex flex-col justify-between">
           <div className="flex items-center justify-between">
             <div>
               <h3 className="text-sm font-extrabold text-white">Calories Burn</h3>
