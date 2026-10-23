@@ -7,14 +7,14 @@
     color-scheme: dark;
     --sat: env(safe-area-inset-top, 0px);
     --sab: env(safe-area-inset-bottom, 16px);
-    --domo-volt: #CEFA03;
-    --domo-black: #0B0D0A;
-    --domo-card: #181B15;
-    --domo-olive: #23281E;
+    --domo-volt: #CFFA06;
+    --domo-black: #1E1E1E;
+    --domo-card: #282828;
+    --domo-olive: #323232;
   }
   
   html, body {
-    background-color: #0B0D0A;
+    background-color: #1E1E1E;
     color: #F4F7F0;
     font-family: 'Plus Jakarta Sans', 'Outfit', system-ui, -apple-system, sans-serif;
     -webkit-tap-highlight-color: transparent;
@@ -27,14 +27,14 @@
     height: 5px;
   }
   ::-webkit-scrollbar-track {
-    background: #0B0D0A;
+    background: #1E1E1E;
   }
   ::-webkit-scrollbar-thumb {
-    background: rgba(206, 250, 3, 0.28);
+    background: rgba(207, 250, 6, 0.28);
     border-radius: 9999px;
   }
   ::-webkit-scrollbar-thumb:hover {
-    background: rgba(206, 250, 3, 0.65);
+    background: rgba(207, 250, 6, 0.65);
   }
 }
 
@@ -49,10 +49,10 @@
 
 /* Matte Obsidian-Olive Card Surface (Reference App Design) */
 .antigravity-card {
-  background: linear-gradient(165deg, rgba(30, 34, 26, 0.92) 0%, rgba(22, 25, 19, 0.96) 100%);
+  background: linear-gradient(165deg, rgba(40, 40, 40, 0.95) 0%, rgba(30, 30, 30, 0.98) 100%);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 2rem;
   box-shadow: 0 20px 45px -15px rgba(0, 0, 0, 0.85), inset 0 1px 0 0 rgba(255, 255, 255, 0.06);
   transition: transform 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94), box-shadow 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94), border-color 0.35s ease;
@@ -60,25 +60,25 @@
 }
 
 .antigravity-card:hover {
-  border-color: rgba(206, 250, 3, 0.32);
-  box-shadow: 0 28px 55px -15px rgba(0, 0, 0, 0.92), 0 0 28px -4px rgba(206, 250, 3, 0.14), inset 0 1px 0 0 rgba(206, 250, 3, 0.15);
+  border-color: rgba(207, 250, 6, 0.45);
+  box-shadow: 0 28px 55px -15px rgba(0, 0, 0, 0.92), 0 0 28px -4px rgba(207, 250, 6, 0.18), inset 0 1px 0 0 rgba(207, 250, 6, 0.15);
 }
 
-/* Solid Electric Volt Card (Like "Sleep Hours 7.5 Hrs" in Reference Mockup) */
+/* Solid Electric Volt Card */
 .volt-feature-card {
-  background: linear-gradient(145deg, #CEFA03 0%, #B8E600 100%);
-  color: #0B0D0A;
+  background: linear-gradient(145deg, #CFFA06 0%, #B8E600 100%);
+  color: #1E1E1E;
   border-radius: 2rem;
-  box-shadow: 0 20px 45px -12px rgba(206, 250, 3, 0.28), inset 0 1px 1px rgba(255, 255, 255, 0.45);
+  box-shadow: 0 20px 45px -12px rgba(207, 250, 6, 0.32), inset 0 1px 1px rgba(255, 255, 255, 0.45);
   transition: transform 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94), box-shadow 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
 .volt-feature-card:hover {
   transform: translateY(-2px) scale(1.01);
-  box-shadow: 0 28px 55px -10px rgba(206, 250, 3, 0.4);
+  box-shadow: 0 28px 55px -10px rgba(207, 250, 6, 0.45);
 }
 
-/* Magnetic Button Micro-Interaction (SKILL: GEMINI-Construtor-de-Sites) */
+/* Magnetic Button Micro-Interaction */
 .btn-magnetic {
   position: relative;
   overflow: hidden;
@@ -93,23 +93,23 @@
   transform: scale(0.98);
 }
 
-/* Olive Pill Search & Controls Surface */
+/* Pill Search & Controls Surface */
 .olive-pill {
-  background: rgba(36, 41, 30, 0.85);
+  background: rgba(45, 45, 45, 0.85);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
-/* Ambient Top Olive-Lime Canopy Glow (Matches Reference Phone Header Glow) */
+/* Ambient Top Gray-Volt Canopy Glow */
 .bg-spatial-grid {
-  background-color: #0B0D0A;
+  background-color: #1E1E1E;
   background-image: 
-    radial-gradient(circle at 50% -5%, rgba(206, 250, 3, 0.16) 0%, rgba(74, 110, 18, 0.10) 32%, transparent 65%),
-    radial-gradient(circle at 12% 22%, rgba(206, 250, 3, 0.07) 0%, transparent 40%),
-    radial-gradient(circle at 88% 78%, rgba(206, 250, 3, 0.06) 0%, transparent 45%),
-    linear-gradient(to right, rgba(206, 250, 3, 0.018) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(206, 250, 3, 0.018) 1px, transparent 1px);
+    radial-gradient(circle at 50% -5%, rgba(207, 250, 6, 0.18) 0%, rgba(50, 50, 50, 0.30) 35%, transparent 70%),
+    radial-gradient(circle at 12% 22%, rgba(207, 250, 6, 0.08) 0%, transparent 40%),
+    radial-gradient(circle at 88% 78%, rgba(207, 250, 6, 0.06) 0%, transparent 45%),
+    linear-gradient(to right, rgba(207, 250, 6, 0.02) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(207, 250, 6, 0.02) 1px, transparent 1px);
   background-size: 100% 100%, 100% 100%, 100% 100%, 56px 56px, 56px 56px;
 }
 

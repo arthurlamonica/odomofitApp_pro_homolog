@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+﻿import React, { useState, useEffect } from 'react';
 import { 
   Home,
   Dumbbell, 
@@ -115,7 +115,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
           <DomoFitLogo size="md" variant="full" badgeText="PRO" />
           <button
             onClick={onCloseMobile}
-            className="lg:hidden w-9 h-9 rounded-full flex items-center justify-center text-[#9BA394] hover:text-white bg-[#23281E] border border-white/10"
+            className="lg:hidden w-9 h-9 rounded-full flex items-center justify-center text-[#9BA394] hover:text-white bg-[#323232] border border-white/10"
             aria-label="Fechar menu"
           >
             <X className="w-4 h-4" />
@@ -125,7 +125,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
         {/* Section Label */}
         <div className="px-3 mb-3 flex items-center justify-between text-[10px] uppercase font-mono font-bold tracking-widest text-[#7E8777]">
           <span>Instrumento Profissional</span>
-          <span className="text-[#CEFA03]">v4.2</span>
+          <span className="text-[#CFFA06]">v4.2</span>
         </div>
 
         {/* Navigation List (Pill-First Design from Mockup) */}
@@ -140,16 +140,16 @@ export const Sidebar: React.FC<SidebarProps> = ({
                 onClick={() => handleSelectTab(item.id)}
                 className={`btn-magnetic w-full flex items-center justify-between px-3.5 py-2.5 rounded-full text-xs font-bold min-h-[48px] transition-all group ${
                   isActive
-                    ? 'bg-[#CEFA03] text-[#0B0D0A] shadow-[0_10px_28px_-4px_rgba(206,250,3,0.4)]'
-                    : 'text-[#A6B09F] hover:text-white bg-[#181B15]/70 hover:bg-[#22261D] border border-white/[0.06]'
+                    ? 'bg-[#CFFA06] text-[#1E1E1E] shadow-[0_10px_28px_-4px_rgba(207,250,6,0.4)]'
+                    : 'text-[#A6B09F] hover:text-white bg-[#282828]/70 hover:bg-[#22261D] border border-white/[0.06]'
                 }`}
               >
                 <div className="flex items-center gap-3">
                   <div
                     className={`w-8 h-8 rounded-full flex items-center justify-center transition-colors ${
                       isActive 
-                        ? 'bg-[#0B0D0A] text-[#CEFA03]' 
-                        : 'bg-[#23281E] text-[#9BA394] group-hover:text-[#CEFA03] border border-white/10'
+                        ? 'bg-[#1E1E1E] text-[#CFFA06]' 
+                        : 'bg-[#323232] text-[#9BA394] group-hover:text-[#CFFA06] border border-white/10'
                     }`}
                   >
                     <Icon className="w-4 h-4" />
@@ -161,8 +161,8 @@ export const Sidebar: React.FC<SidebarProps> = ({
                   <span
                     className={`text-[10px] font-mono font-extrabold px-2.5 py-0.5 rounded-full ${
                       isActive
-                        ? 'bg-[#0B0D0A]/15 text-[#0B0D0A]'
-                        : 'bg-[#23281E] text-[#CEFA03] border border-[#CEFA03]/20'
+                        ? 'bg-[#1E1E1E]/15 text-[#1E1E1E]'
+                        : 'bg-[#323232] text-[#CFFA06] border border-[#CFFA06]/20'
                     }`}
                   >
                     {item.badge}
@@ -179,27 +179,27 @@ export const Sidebar: React.FC<SidebarProps> = ({
         {/* Telemetry Typewriter Card (SKILL: GEMINI-Construtor-de-Sites) */}
         <div className="p-3.5 rounded-[1.5rem] bg-[#161913] border border-white/[0.07] space-y-2">
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-1.5 text-[10px] font-mono font-bold uppercase tracking-wider text-[#CEFA03]">
+            <div className="flex items-center gap-1.5 text-[10px] font-mono font-bold uppercase tracking-wider text-[#CFFA06]">
               <Radio className="w-3 h-3 animate-pulse" />
               <span>Live Telemetry Feed</span>
             </div>
-            <span className="w-2 h-2 rounded-full bg-[#CEFA03] animate-ping" />
+            <span className="w-2 h-2 rounded-full bg-[#CFFA06] animate-ping" />
           </div>
           <div className="min-h-[32px] font-mono text-[11px] text-[#D8E0D2] leading-snug">
             {displayedText}
-            <span className="inline-block w-1.5 h-3.5 ml-0.5 align-middle bg-[#CEFA03] animate-pulse" />
+            <span className="inline-block w-1.5 h-3.5 ml-0.5 align-middle bg-[#CFFA06] animate-pulse" />
           </div>
         </div>
 
         {/* LGPD & System Operational Pill */}
-        <div className="p-3.5 rounded-[1.5rem] bg-[#181B15] border border-[#CEFA03]/20">
+        <div className="p-3.5 rounded-[1.5rem] bg-[#282828] border border-[#CFFA06]/20">
           <div className="flex items-center justify-between mb-1">
             <div className="flex items-center gap-2 text-white font-bold text-xs">
-              <ShieldCheck className="w-4 h-4 text-[#CEFA03]" />
+              <ShieldCheck className="w-4 h-4 text-[#CFFA06]" />
               <span>LGPD Saúde &amp; ECA</span>
             </div>
-            <span className="flex items-center gap-1 text-[9px] font-mono font-semibold text-[#CEFA03]">
-              <span className="w-1.5 h-1.5 rounded-full bg-[#CEFA03] animate-pulse" />
+            <span className="flex items-center gap-1 text-[9px] font-mono font-semibold text-[#CFFA06]">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#CFFA06] animate-pulse" />
               ONLINE
             </span>
           </div>
@@ -215,7 +215,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
     <>
       {/* 1. Desktop Sticky Sidebar (Hidden when simulating mobile/tablet) */}
       {!forceMobileLayout && (
-        <aside className="hidden lg:flex w-72 shrink-0 h-screen sticky top-0 flex-col border-r border-white/[0.07] bg-[#0B0D0A]/95 backdrop-blur-2xl z-30">
+        <aside className="hidden lg:flex w-72 shrink-0 h-screen sticky top-0 flex-col border-r border-white/[0.07] bg-[#1E1E1E]/95 backdrop-blur-2xl z-30">
           {SidebarContent}
         </aside>
       )}
@@ -227,7 +227,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
             onClick={onCloseMobile}
             className="fixed inset-0 bg-black/85 backdrop-blur-md transition-opacity" 
           />
-          <div className="relative w-72 max-w-[85vw] h-full bg-[#0F120D] border-r border-white/10 z-10 shadow-2xl flex flex-col">
+          <div className="relative w-72 max-w-[85vw] h-full bg-[#1C1C1C] border-r border-white/10 z-10 shadow-2xl flex flex-col">
             {SidebarContent}
           </div>
         </div>
@@ -249,8 +249,8 @@ export const Sidebar: React.FC<SidebarProps> = ({
                 onClick={() => onTabChange(item.id)}
                 className={`transition-all duration-300 flex items-center justify-center ${
                   isActive
-                    ? 'bg-[#CEFA03] text-[#0B0D0A] rounded-full px-4 py-2.5 gap-2 font-extrabold text-xs shadow-[0_0_24px_rgba(206,250,3,0.45)] scale-[1.02]'
-                    : 'w-11 h-11 rounded-full bg-[#181B15]/90 text-white/80 hover:text-white border border-white/10'
+                    ? 'bg-[#CFFA06] text-[#1E1E1E] rounded-full px-4 py-2.5 gap-2 font-extrabold text-xs shadow-[0_0_24px_rgba(207,250,6,0.45)] scale-[1.02]'
+                    : 'w-11 h-11 rounded-full bg-[#282828]/90 text-white/80 hover:text-white border border-white/10'
                 }`}
                 aria-label={item.label}
               >

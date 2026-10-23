@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+﻿import React, { useState } from 'react';
 import { 
   ShieldCheck, 
   Eye, 
@@ -28,15 +28,15 @@ export const StudentAnamnesis: React.FC<StudentAnamnesisProps> = ({ students }) 
   return (
     <div className="space-y-6">
       {/* LGPD & Compliance Top Banner */}
-      <div className="antigravity-card p-6 border-[#CEFA03]/25 flex flex-wrap items-center justify-between gap-4">
+      <div className="antigravity-card p-6 border-[#CFFA06]/25 flex flex-wrap items-center justify-between gap-4">
         <div className="flex items-center gap-4">
-          <div className="w-12 h-12 rounded-full bg-[#CEFA03] text-[#0B0D0A] flex items-center justify-center shadow-[0_0_20px_rgba(206,250,3,0.35)] shrink-0">
+          <div className="w-12 h-12 rounded-full bg-[#CFFA06] text-[#1E1E1E] flex items-center justify-center shadow-[0_0_20px_rgba(207,250,6,0.35)] shrink-0">
             <ShieldCheck className="w-6 h-6 stroke-[2.5]" />
           </div>
           <div>
             <h3 className="text-base font-extrabold text-white flex flex-wrap items-center gap-2">
               <span>Prontuário Antropométrico &amp; Proteção LGPD</span>
-              <span className="text-[10px] font-mono font-black px-2.5 py-0.5 rounded-full bg-[#CEFA03]/15 text-[#CEFA03] border border-[#CEFA03]/30">
+              <span className="text-[10px] font-mono font-black px-2.5 py-0.5 rounded-full bg-[#CFFA06]/15 text-[#CFFA06] border border-[#CFFA06]/30">
                 Art. 11, I - Consentimento Válido
               </span>
             </h3>
@@ -47,13 +47,13 @@ export const StudentAnamnesis: React.FC<StudentAnamnesisProps> = ({ students }) 
         </div>
 
         <div className="px-4 py-2 rounded-full bg-[#121510] border border-white/[0.07] text-xs text-[#9BA394] font-mono">
-          Criptografia de Repouso: <span className="text-[#CEFA03] font-extrabold">AES-256 / RLS</span>
+          Criptografia de Repouso: <span className="text-[#CFFA06] font-extrabold">AES-256 / RLS</span>
         </div>
       </div>
 
       {notificationSent && (
-        <div className="p-4 rounded-full bg-[#CEFA03]/15 border border-[#CEFA03]/40 text-[#CEFA03] text-xs font-bold flex items-center gap-2">
-          <CheckCircle2 className="w-4 h-4 text-[#CEFA03]" />
+        <div className="p-4 rounded-full bg-[#CFFA06]/15 border border-[#CFFA06]/40 text-[#CFFA06] text-xs font-bold flex items-center gap-2">
+          <CheckCircle2 className="w-4 h-4 text-[#CFFA06]" />
           <span>Notificação push enviada para <strong>{notificationSent}</strong> pelo app mobile!</span>
         </div>
       )}
@@ -71,7 +71,7 @@ export const StudentAnamnesis: React.FC<StudentAnamnesisProps> = ({ students }) 
               const isSelected = student.id === selectedStudent.id;
               const statusColor = 
                 student.status === 'active' 
-                  ? 'bg-[#CEFA03]' 
+                  ? 'bg-[#CFFA06]' 
                   : student.status === 'warning' 
                   ? 'bg-amber-400' 
                   : 'bg-rose-500';
@@ -85,7 +85,7 @@ export const StudentAnamnesis: React.FC<StudentAnamnesisProps> = ({ students }) 
                   }}
                   className={`antigravity-card p-4 cursor-pointer transition-all ${
                     isSelected
-                      ? 'border-[#CEFA03]/60 bg-[#23281E]/90 shadow-[0_12px_30px_rgba(206,250,3,0.12)]'
+                      ? 'border-[#CFFA06]/60 bg-[#323232]/90 shadow-[0_12px_30px_rgba(207,250,6,0.12)]'
                       : 'hover:border-white/20'
                   }`}
                 >
@@ -95,9 +95,9 @@ export const StudentAnamnesis: React.FC<StudentAnamnesisProps> = ({ students }) 
                         <img 
                           src={student.avatarUrl} 
                           alt={student.name}
-                          className="w-12 h-12 rounded-full object-cover ring-2 ring-[#CEFA03]/30" 
+                          className="w-12 h-12 rounded-full object-cover ring-2 ring-[#CFFA06]/30" 
                         />
-                        <span className={`absolute bottom-0 right-0 w-3 h-3 rounded-full ${statusColor} ring-2 ring-[#0B0D0A]`} />
+                        <span className={`absolute bottom-0 right-0 w-3 h-3 rounded-full ${statusColor} ring-2 ring-[#1E1E1E]`} />
                       </div>
                       <div>
                         <h4 className="text-sm font-extrabold text-white leading-tight">
@@ -106,7 +106,7 @@ export const StudentAnamnesis: React.FC<StudentAnamnesisProps> = ({ students }) 
                         <span className="text-[10px] text-[#9BA394] font-mono">
                           {student.username}
                         </span>
-                        <div className="text-[11px] text-[#CEFA03] font-bold mt-0.5">
+                        <div className="text-[11px] text-[#CFFA06] font-bold mt-0.5">
                           {student.plan} • R$ {student.monthlyFee}/mês
                         </div>
                       </div>
@@ -140,18 +140,18 @@ export const StudentAnamnesis: React.FC<StudentAnamnesisProps> = ({ students }) 
               <img 
                 src={selectedStudent.avatarUrl} 
                 alt={selectedStudent.name}
-                className="w-16 h-16 rounded-full object-cover ring-2 ring-[#CEFA03]/50 shadow-[0_0_20px_rgba(206,250,3,0.2)]"
+                className="w-16 h-16 rounded-full object-cover ring-2 ring-[#CFFA06]/50 shadow-[0_0_20px_rgba(207,250,6,0.2)]"
               />
               <div>
                 <div className="flex items-center gap-2">
                   <h3 className="text-lg font-extrabold text-white tracking-tight">
                     {selectedStudent.name}
                   </h3>
-                  <span className="text-[10px] px-2.5 py-0.5 rounded-full bg-[#23281E] text-[#CEFA03] font-mono font-bold">
+                  <span className="text-[10px] px-2.5 py-0.5 rounded-full bg-[#323232] text-[#CFFA06] font-mono font-bold">
                     {selectedStudent.username}
                   </span>
                 </div>
-                <p className="text-xs text-[#CEFA03] font-bold mt-0.5">
+                <p className="text-xs text-[#CFFA06] font-bold mt-0.5">
                   Objetivo: {selectedStudent.goal}
                 </p>
                 <div className="flex items-center gap-3 text-[11px] text-[#9BA394] mt-2">
@@ -165,7 +165,7 @@ export const StudentAnamnesis: React.FC<StudentAnamnesisProps> = ({ students }) 
             <div className="flex items-center gap-2">
               <button
                 onClick={() => handleSendMotivation(selectedStudent.name)}
-                className="btn-magnetic flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#CEFA03] text-[#0B0D0A] text-xs font-extrabold shadow-[0_8px_24px_rgba(206,250,3,0.3)]"
+                className="btn-magnetic flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#CFFA06] text-[#1E1E1E] text-xs font-extrabold shadow-[0_8px_24px_rgba(207,250,6,0.3)]"
               >
                 <MessageCircle className="w-4 h-4 stroke-[2.5]" />
                 <span>Enviar Mensagem</span>
@@ -175,30 +175,30 @@ export const StudentAnamnesis: React.FC<StudentAnamnesisProps> = ({ students }) 
 
           {/* Antropometria & Dados Clínicos */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3.5">
-            <div className="p-4 rounded-[1.5rem] bg-[#181B15] border border-white/[0.06]">
+            <div className="p-4 rounded-[1.5rem] bg-[#282828] border border-white/[0.06]">
               <div className="text-[10px] text-[#9BA394] font-mono font-bold uppercase">Peso Atual</div>
               <div className="text-xl font-black text-white mt-1">
                 {selectedStudent.anamnesis.weightKg} <span className="text-xs font-normal text-[#9BA394]">kg</span>
               </div>
             </div>
 
-            <div className="p-4 rounded-[1.5rem] bg-[#181B15] border border-white/[0.06]">
+            <div className="p-4 rounded-[1.5rem] bg-[#282828] border border-white/[0.06]">
               <div className="text-[10px] text-[#9BA394] font-mono font-bold uppercase">Estatura</div>
               <div className="text-xl font-black text-white mt-1">
                 {selectedStudent.anamnesis.heightCm} <span className="text-xs font-normal text-[#9BA394]">cm</span>
               </div>
             </div>
 
-            <div className="p-4 rounded-[1.5rem] bg-[#CEFA03] text-[#0B0D0A]">
-              <div className="text-[10px] text-[#0B0D0A]/75 font-mono font-black uppercase">% Gordura (BF)</div>
-              <div className="text-xl font-black text-[#0B0D0A] mt-1">
+            <div className="p-4 rounded-[1.5rem] bg-[#CFFA06] text-[#1E1E1E]">
+              <div className="text-[10px] text-[#1E1E1E]/75 font-mono font-black uppercase">% Gordura (BF)</div>
+              <div className="text-xl font-black text-[#1E1E1E] mt-1">
                 {selectedStudent.anamnesis.bodyFatPercent}%
               </div>
             </div>
 
-            <div className="p-4 rounded-[1.5rem] bg-[#181B15] border border-white/[0.06]">
+            <div className="p-4 rounded-[1.5rem] bg-[#282828] border border-white/[0.06]">
               <div className="text-[10px] text-[#9BA394] font-mono font-bold uppercase">Tipo Sanguíneo</div>
-              <div className="text-xl font-black text-[#CEFA03] mt-1">
+              <div className="text-xl font-black text-[#CFFA06] mt-1">
                 {selectedStudent.anamnesis.bloodType}
               </div>
             </div>
@@ -206,7 +206,7 @@ export const StudentAnamnesis: React.FC<StudentAnamnesisProps> = ({ students }) 
 
           {/* Lesões, Medicamentos e Restrições */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="p-5 rounded-[1.75rem] bg-[#181B15] border border-rose-500/25">
+            <div className="p-5 rounded-[1.75rem] bg-[#282828] border border-rose-500/25">
               <div className="flex items-center gap-2 text-rose-400 text-xs font-extrabold mb-2.5">
                 <AlertCircle className="w-4 h-4" />
                 <span>Lesões &amp; Restrições Articulares</span>
@@ -225,8 +225,8 @@ export const StudentAnamnesis: React.FC<StudentAnamnesisProps> = ({ students }) 
               )}
             </div>
 
-            <div className="p-5 rounded-[1.75rem] bg-[#181B15] border border-[#CEFA03]/20">
-              <div className="flex items-center gap-2 text-[#CEFA03] text-xs font-extrabold mb-2.5">
+            <div className="p-5 rounded-[1.75rem] bg-[#282828] border border-[#CFFA06]/20">
+              <div className="flex items-center gap-2 text-[#CFFA06] text-xs font-extrabold mb-2.5">
                 <FileText className="w-4 h-4" />
                 <span>Medicamentos &amp; Suplementação</span>
               </div>
@@ -234,7 +234,7 @@ export const StudentAnamnesis: React.FC<StudentAnamnesisProps> = ({ students }) 
                 <ul className="space-y-1.5">
                   {selectedStudent.anamnesis.medications.map((med, i) => (
                     <li key={i} className="text-xs text-[#D8E0D2] flex items-start gap-2">
-                      <span className="text-[#CEFA03] font-bold">•</span>
+                      <span className="text-[#CFFA06] font-bold">•</span>
                       <span>{med}</span>
                     </li>
                   ))}
@@ -246,9 +246,9 @@ export const StudentAnamnesis: React.FC<StudentAnamnesisProps> = ({ students }) 
           </div>
 
           {/* Notas Confidenciais do Personal */}
-          <div className="p-5 rounded-[1.75rem] bg-[#181B15] border border-white/[0.06] space-y-2">
+          <div className="p-5 rounded-[1.75rem] bg-[#282828] border border-white/[0.06] space-y-2">
             <div className="flex items-center gap-2 text-xs font-extrabold text-white">
-              <Lock className="w-3.5 h-3.5 text-[#CEFA03]" />
+              <Lock className="w-3.5 h-3.5 text-[#CFFA06]" />
               <span>Observações Confidenciais do Treinador / Nutrólogo</span>
             </div>
             <p className="text-xs text-[#D8E0D2] leading-relaxed bg-[#11140E] p-3.5 rounded-2xl border border-white/[0.05]">
@@ -262,7 +262,7 @@ export const StudentAnamnesis: React.FC<StudentAnamnesisProps> = ({ students }) 
               <div>
                 <h4 className="text-sm font-extrabold text-white flex items-center gap-2">
                   <span>Fotos de Evolução Antropométrica</span>
-                  <span className="text-[10px] font-mono px-2.5 py-0.5 rounded-full bg-[#CEFA03]/15 text-[#CEFA03] border border-[#CEFA03]/30">
+                  <span className="text-[10px] font-mono px-2.5 py-0.5 rounded-full bg-[#CFFA06]/15 text-[#CFFA06] border border-[#CFFA06]/30">
                     Blur Ativo por Padrão
                   </span>
                 </h4>
@@ -273,7 +273,7 @@ export const StudentAnamnesis: React.FC<StudentAnamnesisProps> = ({ students }) 
 
               <button
                 onClick={() => setShowConfidentialPhotos(!showConfidentialPhotos)}
-                className="btn-magnetic flex items-center gap-2 px-4 py-2 rounded-full bg-[#23281E] border border-[#CEFA03]/30 text-xs font-extrabold text-white hover:bg-[#CEFA03] hover:text-[#0B0D0A] transition-colors"
+                className="btn-magnetic flex items-center gap-2 px-4 py-2 rounded-full bg-[#323232] border border-[#CFFA06]/30 text-xs font-extrabold text-white hover:bg-[#CFFA06] hover:text-[#1E1E1E] transition-colors"
               >
                 {showConfidentialPhotos ? (
                   <>
@@ -282,7 +282,7 @@ export const StudentAnamnesis: React.FC<StudentAnamnesisProps> = ({ students }) 
                   </>
                 ) : (
                   <>
-                    <Eye className="w-4 h-4 text-[#CEFA03]" />
+                    <Eye className="w-4 h-4 text-[#CFFA06]" />
                     <span>Visualizar Fotos</span>
                   </>
                 )}
@@ -302,13 +302,13 @@ export const StudentAnamnesis: React.FC<StudentAnamnesisProps> = ({ students }) 
                     />
                     {!showConfidentialPhotos && (
                       <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/50 text-center p-2">
-                        <Lock className="w-6 h-6 text-[#CEFA03] mb-1" />
+                        <Lock className="w-6 h-6 text-[#CFFA06] mb-1" />
                         <span className="text-[10px] text-white font-bold">Protegido por LGPD</span>
                       </div>
                     )}
                     <div className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/85 to-transparent p-3 text-white">
                       <div className="text-xs font-extrabold">{photo.type}</div>
-                      <div className="text-[10px] font-mono text-[#CEFA03]">{photo.date}</div>
+                      <div className="text-[10px] font-mono text-[#CFFA06]">{photo.date}</div>
                     </div>
                   </div>
                 ))}

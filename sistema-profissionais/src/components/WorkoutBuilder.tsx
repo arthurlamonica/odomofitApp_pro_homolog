@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+﻿import React, { useState } from 'react';
 import { 
   Dumbbell, 
   Plus, 
@@ -133,7 +133,7 @@ export const WorkoutBuilder: React.FC<WorkoutBuilderProps> = ({
         particleCount: 85,
         spread: 75,
         origin: { y: 0.65 },
-        colors: ['#CEFA03', '#A3E635', '#FFFFFF', '#22C55E']
+        colors: ['#CFFA06', '#A3E635', '#FFFFFF', '#22C55E']
       });
     } catch (e) {
       // safe fallback
@@ -148,7 +148,7 @@ export const WorkoutBuilder: React.FC<WorkoutBuilderProps> = ({
       {/* Top Banner: Aluno Selector & Protocol Scheduler */}
       <div className="antigravity-card p-6 flex flex-col xl:flex-row items-start xl:items-center justify-between gap-5">
         <div className="flex items-center gap-4">
-          <div className="w-12 h-12 rounded-full bg-[#CEFA03] text-[#0B0D0A] flex items-center justify-center shadow-[0_0_20px_rgba(206,250,3,0.35)] shrink-0">
+          <div className="w-12 h-12 rounded-full bg-[#CFFA06] text-[#1E1E1E] flex items-center justify-center shadow-[0_0_20px_rgba(207,250,6,0.35)] shrink-0">
             <Dumbbell className="w-6 h-6 stroke-[2.5]" />
           </div>
           <div>
@@ -156,7 +156,7 @@ export const WorkoutBuilder: React.FC<WorkoutBuilderProps> = ({
               <h2 className="text-lg font-extrabold text-white tracking-tight">
                 Construtor de Treinos Periodizados
               </h2>
-              <span className="text-[10px] font-mono font-black px-2.5 py-0.5 rounded-full bg-[#CEFA03]/15 text-[#CEFA03] border border-[#CEFA03]/30">
+              <span className="text-[10px] font-mono font-black px-2.5 py-0.5 rounded-full bg-[#CFFA06]/15 text-[#CFFA06] border border-[#CFFA06]/30">
                 PRO ENGINE
               </span>
             </div>
@@ -170,7 +170,7 @@ export const WorkoutBuilder: React.FC<WorkoutBuilderProps> = ({
         <div className="flex flex-wrap items-center gap-3 w-full xl:w-auto justify-between xl:justify-end">
           {/* Weekly Scheduler Pill (S T Q Q S S D) */}
           <div className="flex items-center gap-1.5 bg-[#121510] border border-white/[0.07] rounded-full px-3 py-1.5">
-            <Calendar className="w-3.5 h-3.5 text-[#CEFA03] mr-1" />
+            <Calendar className="w-3.5 h-3.5 text-[#CFFA06] mr-1" />
             {WEEK_DAYS.map((d) => {
               const isScheduled = scheduledDays.includes(d.key);
               return (
@@ -180,7 +180,7 @@ export const WorkoutBuilder: React.FC<WorkoutBuilderProps> = ({
                   onClick={() => toggleDaySchedule(d.key)}
                   className={`w-7 h-7 rounded-full text-[10px] font-mono font-extrabold transition-all ${
                     isScheduled
-                      ? 'bg-[#CEFA03] text-[#0B0D0A] shadow-[0_0_10px_rgba(206,250,3,0.35)] scale-105'
+                      ? 'bg-[#CFFA06] text-[#1E1E1E] shadow-[0_0_10px_rgba(207,250,6,0.35)] scale-105'
                       : 'bg-[#1D211A] text-[#8B9484] hover:text-white'
                   }`}
                   title={`Alternar treino na ${d.label}`}
@@ -195,10 +195,10 @@ export const WorkoutBuilder: React.FC<WorkoutBuilderProps> = ({
             <select
               value={selectedStudentId}
               onChange={(e) => setSelectedStudentId(e.target.value)}
-              className="olive-pill rounded-full px-4 py-2.5 text-xs font-bold text-white focus:outline-none focus:border-[#CEFA03] transition-all cursor-pointer"
+              className="olive-pill rounded-full px-4 py-2.5 text-xs font-bold text-white focus:outline-none focus:border-[#CFFA06] transition-all cursor-pointer"
             >
               {students.map(s => (
-                <option key={s.id} value={s.id} className="bg-[#0B0D0A] text-white">
+                <option key={s.id} value={s.id} className="bg-[#1E1E1E] text-white">
                   {s.name} ({s.goal})
                 </option>
               ))}
@@ -206,7 +206,7 @@ export const WorkoutBuilder: React.FC<WorkoutBuilderProps> = ({
 
             <button
               onClick={() => setShowAddModal(true)}
-              className="btn-magnetic flex items-center gap-1.5 px-4 py-2.5 rounded-full bg-[#23281E] hover:bg-[#2E3528] text-[#CEFA03] border border-[#CEFA03]/35 font-extrabold text-xs transition-all whitespace-nowrap"
+              className="btn-magnetic flex items-center gap-1.5 px-4 py-2.5 rounded-full bg-[#323232] hover:bg-[#2E3528] text-[#CFFA06] border border-[#CFFA06]/35 font-extrabold text-xs transition-all whitespace-nowrap"
             >
               <Plus className="w-4 h-4 stroke-[2.5]" />
               <span>Novo Exercício</span>
@@ -216,8 +216,8 @@ export const WorkoutBuilder: React.FC<WorkoutBuilderProps> = ({
       </div>
 
       {savedSuccess && (
-        <div className="p-4 rounded-full bg-[#CEFA03]/15 border border-[#CEFA03]/40 text-[#CEFA03] text-xs font-bold flex items-center gap-2.5 shadow-lg shadow-[#CEFA03]/10">
-          <CheckCircle className="w-4 h-4 text-[#CEFA03] shrink-0" />
+        <div className="p-4 rounded-full bg-[#CFFA06]/15 border border-[#CFFA06]/40 text-[#CFFA06] text-xs font-bold flex items-center gap-2.5 shadow-lg shadow-[#CFFA06]/10">
+          <CheckCircle className="w-4 h-4 text-[#CFFA06] shrink-0" />
           <span>Treino sincronizado com sucesso no smartphone de <strong>{selectedStudent?.name}</strong>! Notificação push enviada.</span>
         </div>
       )}
@@ -234,18 +234,18 @@ export const WorkoutBuilder: React.FC<WorkoutBuilderProps> = ({
               onClick={() => setActiveDivision(div)}
               className={`btn-magnetic flex items-center gap-3 px-5 py-2.5 rounded-full text-xs font-extrabold transition-all ${
                 isActive
-                  ? 'bg-[#CEFA03] text-[#0B0D0A] shadow-[0_8px_25px_rgba(206,250,3,0.35)]'
-                  : 'bg-[#181B15] text-[#9BA394] hover:text-white border border-white/[0.07]'
+                  ? 'bg-[#CFFA06] text-[#1E1E1E] shadow-[0_8px_25px_rgba(207,250,6,0.35)]'
+                  : 'bg-[#282828] text-[#9BA394] hover:text-white border border-white/[0.07]'
               }`}
             >
               <span className={`w-6 h-6 rounded-full flex items-center justify-center text-[11px] font-mono font-black ${
-                isActive ? 'bg-[#0B0D0A] text-[#CEFA03]' : 'bg-[#23281E] text-[#CEFA03]'
+                isActive ? 'bg-[#1E1E1E] text-[#CFFA06]' : 'bg-[#323232] text-[#CFFA06]'
               }`}>
                 {div}
               </span>
               <span>{routine ? routine.name : `Divisão ${div}`}</span>
               <span className={`text-[10px] font-mono px-2 py-0.5 rounded-full ${
-                isActive ? 'bg-[#0B0D0A]/15 text-[#0B0D0A]' : 'bg-[#23281E] text-[#D8E0D2]'
+                isActive ? 'bg-[#1E1E1E]/15 text-[#1E1E1E]' : 'bg-[#323232] text-[#D8E0D2]'
               }`}>
                 {routine?.items.length || 0} ex
               </span>
@@ -268,7 +268,7 @@ export const WorkoutBuilder: React.FC<WorkoutBuilderProps> = ({
             className="absolute inset-0"
             style={{
               background:
-                'radial-gradient(circle at 75% 25%, rgba(206, 250, 3, 0.22), transparent 45%), linear-gradient(to top, #161913 8%, rgba(14, 17, 12, 0.45) 55%, rgba(11, 13, 10, 0.7) 100%)',
+                'radial-gradient(circle at 75% 25%, rgba(207, 250, 6, 0.22), transparent 45%), linear-gradient(to top, #161913 8%, rgba(14, 17, 12, 0.45) 55%, rgba(30, 30, 30, 0.7) 100%)',
             }}
           />
 
@@ -277,12 +277,12 @@ export const WorkoutBuilder: React.FC<WorkoutBuilderProps> = ({
             <div className="flex items-center gap-3">
               <button
                 type="button"
-                className="w-11 h-11 rounded-full bg-white/10 backdrop-blur-md border border-white/15 flex items-center justify-center text-white hover:bg-[#CEFA03] hover:text-[#0B0D0A] transition-colors"
+                className="w-11 h-11 rounded-full bg-white/10 backdrop-blur-md border border-white/15 flex items-center justify-center text-white hover:bg-[#CFFA06] hover:text-[#1E1E1E] transition-colors"
                 aria-label="Voltar divisão"
               >
                 <ChevronLeft className="w-5 h-5" />
               </button>
-              <span className="px-3.5 py-1.5 rounded-full bg-black/50 backdrop-blur-md border border-[#CEFA03]/30 text-[11px] font-mono font-bold text-[#CEFA03]">
+              <span className="px-3.5 py-1.5 rounded-full bg-black/50 backdrop-blur-md border border-[#CFFA06]/30 text-[11px] font-mono font-bold text-[#CFFA06]">
                 Aluno: {selectedStudent?.name}
               </span>
             </div>
@@ -290,7 +290,7 @@ export const WorkoutBuilder: React.FC<WorkoutBuilderProps> = ({
             <button
               type="button"
               onClick={() => setShowAddModal(true)}
-              className="w-11 h-11 rounded-full bg-white/10 backdrop-blur-md border border-white/15 flex items-center justify-center text-white hover:bg-[#CEFA03] hover:text-[#0B0D0A] transition-colors"
+              className="w-11 h-11 rounded-full bg-white/10 backdrop-blur-md border border-white/15 flex items-center justify-center text-white hover:bg-[#CFFA06] hover:text-[#1E1E1E] transition-colors"
               title="Opções da rotina"
             >
               <MoreHorizontal className="w-5 h-5" />
@@ -300,7 +300,7 @@ export const WorkoutBuilder: React.FC<WorkoutBuilderProps> = ({
           {/* Bottom Title Overlay ("Full Body Workout" + "Exercise 1 of 24" in Volt Green) */}
           <div className="absolute bottom-4 inset-x-6 flex flex-wrap items-end justify-between gap-2">
             <div>
-              <span className="text-[11px] font-mono uppercase tracking-wider text-[#CEFA03] font-bold">
+              <span className="text-[11px] font-mono uppercase tracking-wider text-[#CFFA06] font-bold">
                 Divisão {activeDivision} • {currentRoutine?.targetFocus || 'Hipertrofia & Força'}
               </span>
               <h3 className="text-xl sm:text-2xl font-black text-white tracking-tight mt-0.5">
@@ -308,7 +308,7 @@ export const WorkoutBuilder: React.FC<WorkoutBuilderProps> = ({
               </h3>
             </div>
 
-            <span className="text-xs sm:text-sm font-bold text-[#CEFA03] tracking-tight">
+            <span className="text-xs sm:text-sm font-bold text-[#CFFA06] tracking-tight">
               Exercise 1 of {currentRoutine?.items.length || 0} (24 séries totais)
             </span>
           </div>
@@ -323,7 +323,7 @@ export const WorkoutBuilder: React.FC<WorkoutBuilderProps> = ({
             return (
               <div
                 key={ex.id}
-                className="rounded-[1.75rem] bg-[#1E221B] hover:bg-[#242920] border border-white/[0.06] hover:border-[#CEFA03]/35 p-3.5 sm:p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4 transition-all group"
+                className="rounded-[1.75rem] bg-[#1E221B] hover:bg-[#242920] border border-white/[0.06] hover:border-[#CFFA06]/35 p-3.5 sm:p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4 transition-all group"
               >
                 {/* Left: Checkbox + Thumbnail + Title & Set/Reps */}
                 <div className="flex items-center gap-3.5 sm:gap-4">
@@ -333,8 +333,8 @@ export const WorkoutBuilder: React.FC<WorkoutBuilderProps> = ({
                     onClick={() => toggleCheckExercise(ex.id)}
                     className={`w-6 h-6 rounded-lg flex items-center justify-center transition-all shrink-0 ${
                       isChecked
-                        ? 'bg-[#2A3023] border border-[#CEFA03]/50 text-[#CEFA03]'
-                        : 'bg-[#141711] border border-white/15 text-transparent hover:border-[#CEFA03]/40'
+                        ? 'bg-[#2A3023] border border-[#CFFA06]/50 text-[#CFFA06]'
+                        : 'bg-[#141711] border border-white/15 text-transparent hover:border-[#CFFA06]/40'
                     }`}
                     aria-label={`Marcar ${ex.name}`}
                   >
@@ -342,28 +342,28 @@ export const WorkoutBuilder: React.FC<WorkoutBuilderProps> = ({
                   </button>
 
                   {/* Square/Rounded-2xl Exercise Photo Thumbnail */}
-                  <div className="relative w-16 h-16 rounded-2xl overflow-hidden shrink-0 border border-white/10 bg-[#0B0D0A]">
+                  <div className="relative w-16 h-16 rounded-2xl overflow-hidden shrink-0 border border-white/10 bg-[#1E1E1E]">
                     <img
                       src={thumbUrl}
                       alt={ex.name}
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                     />
-                    <span className="absolute bottom-1 right-1 px-1.5 py-0.2 rounded bg-black/75 text-[9px] font-mono font-bold text-[#CEFA03]">
+                    <span className="absolute bottom-1 right-1 px-1.5 py-0.2 rounded bg-black/75 text-[9px] font-mono font-bold text-[#CFFA06]">
                       {ex.muscleGroup}
                     </span>
                   </div>
 
                   {/* Exercise Name & "Set X • Y Reps" Subtitle */}
                   <div>
-                    <h4 className="text-sm sm:text-base font-extrabold text-white group-hover:text-[#CEFA03] transition-colors">
+                    <h4 className="text-sm sm:text-base font-extrabold text-white group-hover:text-[#CFFA06] transition-colors">
                       {ex.name}
                     </h4>
                     <div className="flex flex-wrap items-center gap-2 text-xs text-[#9BA394] font-medium mt-1">
                       <span>Set {ex.sets}</span>
-                      <span className="text-[#CEFA03]">•</span>
+                      <span className="text-[#CFFA06]">•</span>
                       <span>{ex.reps} Reps</span>
-                      <span className="text-[#CEFA03]">•</span>
-                      <span className="inline-flex items-center gap-1 text-[#CEFA03] font-mono font-bold">
+                      <span className="text-[#CFFA06]">•</span>
+                      <span className="inline-flex items-center gap-1 text-[#CFFA06] font-mono font-bold">
                         <Flame className="w-3 h-3" />
                         RPE @{ex.targetRpe}
                       </span>
@@ -375,7 +375,7 @@ export const WorkoutBuilder: React.FC<WorkoutBuilderProps> = ({
                 {/* Right: Rest Pill + Play Button + Delete */}
                 <div className="flex items-center justify-end gap-2.5">
                   <div className="px-3 py-1.5 rounded-full bg-[#141711] border border-white/[0.06] flex items-center gap-1.5 text-xs font-mono text-[#D8E0D2]">
-                    <Clock className="w-3.5 h-3.5 text-[#CEFA03]" />
+                    <Clock className="w-3.5 h-3.5 text-[#CFFA06]" />
                     <span>{ex.restSeconds}s</span>
                   </div>
 
@@ -383,7 +383,7 @@ export const WorkoutBuilder: React.FC<WorkoutBuilderProps> = ({
                   <button
                     type="button"
                     onClick={() => setActivePreviewEx(ex)}
-                    className="w-9 h-9 rounded-full bg-white hover:bg-[#CEFA03] text-[#0B0D0A] flex items-center justify-center shadow-md transition-all hover:scale-105 shrink-0"
+                    className="w-9 h-9 rounded-full bg-white hover:bg-[#CFFA06] text-[#1E1E1E] flex items-center justify-center shadow-md transition-all hover:scale-105 shrink-0"
                     title="Visualizar execução biomecânica"
                   >
                     <Play className="w-4 h-4 fill-current ml-0.5" />
@@ -408,7 +408,7 @@ export const WorkoutBuilder: React.FC<WorkoutBuilderProps> = ({
               <p className="text-xs text-[#9BA394]">Nenhum exercício prescrito nesta divisão.</p>
               <button
                 onClick={() => setShowAddModal(true)}
-                className="mt-3 text-xs text-[#CEFA03] hover:underline font-extrabold"
+                className="mt-3 text-xs text-[#CFFA06] hover:underline font-extrabold"
               >
                 + Adicionar primeiro exercício
               </button>
@@ -420,7 +420,7 @@ export const WorkoutBuilder: React.FC<WorkoutBuilderProps> = ({
             <button
               type="button"
               onClick={handlePublishWorkout}
-              className="btn-magnetic w-full py-4 px-6 rounded-full bg-[#CEFA03] hover:bg-[#D8FF29] text-[#0B0D0A] font-black text-sm tracking-tight shadow-[0_12px_35px_rgba(206,250,3,0.35)] flex items-center justify-center gap-2.5"
+              className="btn-magnetic w-full py-4 px-6 rounded-full bg-[#CFFA06] hover:bg-[#D8FF29] text-[#1E1E1E] font-black text-sm tracking-tight shadow-[0_12px_35px_rgba(207,250,6,0.35)] flex items-center justify-center gap-2.5"
             >
               <Smartphone className="w-4 h-4 stroke-[2.5]" />
               <span>Start Workout • Publicar Treino {activeDivision} no App de {selectedStudent?.name.split(' ')[0]}</span>
@@ -432,14 +432,14 @@ export const WorkoutBuilder: React.FC<WorkoutBuilderProps> = ({
       {/* Modal: Preview de Execução Biomecânica */}
       {activePreviewEx && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-md p-4">
-          <div className="antigravity-card p-6 w-full max-w-md border border-[#CEFA03]/30 space-y-4">
+          <div className="antigravity-card p-6 w-full max-w-md border border-[#CFFA06]/30 space-y-4">
             <div className="flex items-center justify-between">
-              <span className="text-[10px] font-mono font-black uppercase px-2.5 py-0.5 rounded-full bg-[#CEFA03] text-[#0B0D0A]">
+              <span className="text-[10px] font-mono font-black uppercase px-2.5 py-0.5 rounded-full bg-[#CFFA06] text-[#1E1E1E]">
                 Telemetria Biomecânica
               </span>
               <button
                 onClick={() => setActivePreviewEx(null)}
-                className="w-8 h-8 rounded-full bg-[#23281E] text-white flex items-center justify-center text-xs"
+                className="w-8 h-8 rounded-full bg-[#323232] text-white flex items-center justify-center text-xs"
               >
                 ✕
               </button>
@@ -455,7 +455,7 @@ export const WorkoutBuilder: React.FC<WorkoutBuilderProps> = ({
               </div>
               <div className="p-3 rounded-2xl bg-[#121510] text-center">
                 <div className="text-[10px] text-[#9BA394]">Intensidade</div>
-                <div className="text-sm font-black text-[#CEFA03]">RPE @{activePreviewEx.targetRpe}</div>
+                <div className="text-sm font-black text-[#CFFA06]">RPE @{activePreviewEx.targetRpe}</div>
               </div>
               <div className="p-3 rounded-2xl bg-[#121510] text-center">
                 <div className="text-[10px] text-[#9BA394]">Intervalo</div>
@@ -469,15 +469,15 @@ export const WorkoutBuilder: React.FC<WorkoutBuilderProps> = ({
       {/* Modal: Adicionar Exercício */}
       {showAddModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/85 backdrop-blur-md p-4">
-          <div className="antigravity-card p-6 w-full max-w-lg border border-[#CEFA03]/30 shadow-2xl space-y-4">
+          <div className="antigravity-card p-6 w-full max-w-lg border border-[#CFFA06]/30 shadow-2xl space-y-4">
             <div className="flex items-center justify-between pb-3 border-b border-white/10">
               <h3 className="text-base font-extrabold text-white flex items-center gap-2">
-                <Plus className="w-5 h-5 text-[#CEFA03]" />
+                <Plus className="w-5 h-5 text-[#CFFA06]" />
                 <span>Adicionar Exercício ao Treino {activeDivision}</span>
               </h3>
               <button
                 onClick={() => setShowAddModal(false)}
-                className="w-8 h-8 rounded-full bg-[#23281E] text-[#9BA394] hover:text-white text-xs flex items-center justify-center"
+                className="w-8 h-8 rounded-full bg-[#323232] text-[#9BA394] hover:text-white text-xs flex items-center justify-center"
               >
                 ✕
               </button>
@@ -494,7 +494,7 @@ export const WorkoutBuilder: React.FC<WorkoutBuilderProps> = ({
                   placeholder="Ex: Supino Inclinado com Halteres (30°)"
                   value={newExercise.name}
                   onChange={e => setNewExercise({ ...newExercise, name: e.target.value })}
-                  className="w-full olive-pill rounded-full px-4 py-2.5 text-xs text-white focus:outline-none focus:border-[#CEFA03]"
+                  className="w-full olive-pill rounded-full px-4 py-2.5 text-xs text-white focus:outline-none focus:border-[#CFFA06]"
                 />
               </div>
 
@@ -506,17 +506,17 @@ export const WorkoutBuilder: React.FC<WorkoutBuilderProps> = ({
                   <select
                     value={newExercise.muscleGroup}
                     onChange={e => setNewExercise({ ...newExercise, muscleGroup: e.target.value as any })}
-                    className="w-full olive-pill rounded-full px-4 py-2.5 text-xs text-white focus:outline-none focus:border-[#CEFA03]"
+                    className="w-full olive-pill rounded-full px-4 py-2.5 text-xs text-white focus:outline-none focus:border-[#CFFA06]"
                   >
-                    <option value="Peitoral" className="bg-[#0B0D0A]">Peitoral</option>
-                    <option value="Dorsais" className="bg-[#0B0D0A]">Dorsais</option>
-                    <option value="Ombros" className="bg-[#0B0D0A]">Ombros</option>
-                    <option value="Braços" className="bg-[#0B0D0A]">Braços (Bíceps/Tríceps)</option>
-                    <option value="Quadríceps" className="bg-[#0B0D0A]">Quadríceps</option>
-                    <option value="Posteriores" className="bg-[#0B0D0A]">Posteriores</option>
-                    <option value="Glúteos" className="bg-[#0B0D0A]">Glúteos</option>
-                    <option value="Core" className="bg-[#0B0D0A]">Core / Abdômen</option>
-                    <option value="Cardio" className="bg-[#0B0D0A]">Cardio</option>
+                    <option value="Peitoral" className="bg-[#1E1E1E]">Peitoral</option>
+                    <option value="Dorsais" className="bg-[#1E1E1E]">Dorsais</option>
+                    <option value="Ombros" className="bg-[#1E1E1E]">Ombros</option>
+                    <option value="Braços" className="bg-[#1E1E1E]">Braços (Bíceps/Tríceps)</option>
+                    <option value="Quadríceps" className="bg-[#1E1E1E]">Quadríceps</option>
+                    <option value="Posteriores" className="bg-[#1E1E1E]">Posteriores</option>
+                    <option value="Glúteos" className="bg-[#1E1E1E]">Glúteos</option>
+                    <option value="Core" className="bg-[#1E1E1E]">Core / Abdômen</option>
+                    <option value="Cardio" className="bg-[#1E1E1E]">Cardio</option>
                   </select>
                 </div>
 
@@ -530,7 +530,7 @@ export const WorkoutBuilder: React.FC<WorkoutBuilderProps> = ({
                     max="10"
                     value={newExercise.sets}
                     onChange={e => setNewExercise({ ...newExercise, sets: Number(e.target.value) })}
-                    className="w-full olive-pill rounded-full px-4 py-2.5 text-xs text-white focus:outline-none focus:border-[#CEFA03]"
+                    className="w-full olive-pill rounded-full px-4 py-2.5 text-xs text-white focus:outline-none focus:border-[#CFFA06]"
                   />
                 </div>
               </div>
@@ -545,7 +545,7 @@ export const WorkoutBuilder: React.FC<WorkoutBuilderProps> = ({
                     placeholder="8-12"
                     value={newExercise.reps}
                     onChange={e => setNewExercise({ ...newExercise, reps: e.target.value })}
-                    className="w-full olive-pill rounded-full px-4 py-2.5 text-xs text-white focus:outline-none focus:border-[#CEFA03]"
+                    className="w-full olive-pill rounded-full px-4 py-2.5 text-xs text-white focus:outline-none focus:border-[#CFFA06]"
                   />
                 </div>
 
@@ -560,7 +560,7 @@ export const WorkoutBuilder: React.FC<WorkoutBuilderProps> = ({
                     max="10"
                     value={newExercise.targetRpe}
                     onChange={e => setNewExercise({ ...newExercise, targetRpe: Number(e.target.value) })}
-                    className="w-full olive-pill rounded-full px-4 py-2.5 text-xs text-white focus:outline-none focus:border-[#CEFA03]"
+                    className="w-full olive-pill rounded-full px-4 py-2.5 text-xs text-white focus:outline-none focus:border-[#CFFA06]"
                   />
                 </div>
 
@@ -575,7 +575,7 @@ export const WorkoutBuilder: React.FC<WorkoutBuilderProps> = ({
                     max="300"
                     value={newExercise.restSeconds}
                     onChange={e => setNewExercise({ ...newExercise, restSeconds: Number(e.target.value) })}
-                    className="w-full olive-pill rounded-full px-4 py-2.5 text-xs text-white focus:outline-none focus:border-[#CEFA03]"
+                    className="w-full olive-pill rounded-full px-4 py-2.5 text-xs text-white focus:outline-none focus:border-[#CFFA06]"
                   />
                 </div>
               </div>
@@ -589,7 +589,7 @@ export const WorkoutBuilder: React.FC<WorkoutBuilderProps> = ({
                   placeholder="Ex: Pausa isométrica de 1s na contração máxima."
                   value={newExercise.techniqueNotes}
                   onChange={e => setNewExercise({ ...newExercise, techniqueNotes: e.target.value })}
-                  className="w-full olive-pill rounded-full px-4 py-2.5 text-xs text-white focus:outline-none focus:border-[#CEFA03]"
+                  className="w-full olive-pill rounded-full px-4 py-2.5 text-xs text-white focus:outline-none focus:border-[#CFFA06]"
                 />
               </div>
 
@@ -597,13 +597,13 @@ export const WorkoutBuilder: React.FC<WorkoutBuilderProps> = ({
                 <button
                   type="button"
                   onClick={() => setShowAddModal(false)}
-                  className="px-5 py-2.5 rounded-full bg-[#23281E] text-[#D8E0D2] text-xs font-bold hover:bg-[#2C3326]"
+                  className="px-5 py-2.5 rounded-full bg-[#323232] text-[#D8E0D2] text-xs font-bold hover:bg-[#2C3326]"
                 >
                   Cancelar
                 </button>
                 <button
                   type="submit"
-                  className="btn-magnetic px-6 py-2.5 rounded-full bg-[#CEFA03] text-[#0B0D0A] font-extrabold text-xs shadow-[0_6px_20px_rgba(206,250,3,0.3)]"
+                  className="btn-magnetic px-6 py-2.5 rounded-full bg-[#CFFA06] text-[#1E1E1E] font-extrabold text-xs shadow-[0_6px_20px_rgba(207,250,6,0.3)]"
                 >
                   Salvar Exercício
                 </button>
