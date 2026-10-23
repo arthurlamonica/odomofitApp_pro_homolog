@@ -6,9 +6,14 @@ import {
   CheckCircle2, 
   CreditCard,
   Utensils,
-  Menu
+  Menu,
+  Smartphone,
+  Tablet,
+  Monitor
 } from 'lucide-react';
 import type { ProfessionalUser } from '../types';
+
+export type ViewportMode = 'desktop' | 'tablet' | 'mobile';
 
 interface HeaderProps {
   professional: ProfessionalUser;
@@ -16,6 +21,8 @@ interface HeaderProps {
   onNewNutritionClick: () => void;
   activeTabTitle: string;
   onToggleMobileSidebar: () => void;
+  viewportMode: ViewportMode;
+  onViewportChange: (mode: ViewportMode) => void;
 }
 
 export const Header: React.FC<HeaderProps> = ({ 
@@ -23,7 +30,9 @@ export const Header: React.FC<HeaderProps> = ({
   onNewWorkoutClick,
   onNewNutritionClick,
   activeTabTitle,
-  onToggleMobileSidebar 
+  onToggleMobileSidebar,
+  viewportMode,
+  onViewportChange
 }) => {
   return (
     <header className="w-full flex flex-col gap-3 py-4 px-4 sm:px-6 md:px-8 border-b border-white/[0.06] backdrop-blur-2xl sticky top-0 z-20 bg-[#0B0D0A]/85">
@@ -64,17 +73,55 @@ export const Header: React.FC<HeaderProps> = ({
           </div>
         </div>
 
-        {/* Center: Olive Pill Search Bar (Exact Match to "Search Workouts..." in Reference Mockup) */}
-        <div className="hidden xl:flex items-center relative w-80">
-          <Search className="w-4 h-4 text-[#9BA394] absolute left-4 pointer-events-none" />
-          <input 
-            type="text" 
-            placeholder="Search Workouts, Alunos ou Prontuários..."
-            className="w-full olive-pill rounded-full pl-11 pr-14 py-2.5 text-xs text-white placeholder-[#8B9484] focus:outline-none focus:border-[#CEFA03]/50 transition-all"
-          />
-          <kbd className="absolute right-3.5 px-2 py-0.5 text-[10px] text-[#CEFA03] bg-[#0B0D0A]/60 border border-white/10 rounded-full font-mono">
-            ⌘K
-          </kbd>
+        {/* Center: Device Mode Switcher (Mobile / Tablet / Desktop) & Search */}
+        <div className="flex items-center gap-3">
+          <div className="flex items-center gap-1 bg-[#181B15] p-1 rounded-full border border-white/10 shadow-inner">
+            <button
+              onClick={() => onViewportChange('mobile')}
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[11px] font-bold transition-all ${
+                viewportMode === 'mobile'
+                  ? 'bg-[#CEFA03] text-[#0B0D0A] shadow-[0_0_15px_rgba(206,250,3,0.35)]'
+                  : 'text-[#9BA394] hover:text-white'
+              }`}
+              title="Formato Smartphone / Mobile (390px)"
+            >
+              <Smartphone className="w-3.5 h-3.5" />
+              <span className="hidden sm:inline">Mobile</span>
+            </button>
+            <button
+              onClick={() => onViewportChange('tablet')}
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[11px] font-bold transition-all ${
+                viewportMode === 'tablet'
+                  ? 'bg-[#CEFA03] text-[#0B0D0A] shadow-[0_0_15px_rgba(206,250,3,0.35)]'
+                  : 'text-[#9BA394] hover:text-white'
+              }`}
+              title="Formato Tablet / iPad (768px)"
+            >
+              <Tablet className="w-3.5 h-3.5" />
+              <span className="hidden sm:inline">Tablet</span>
+            </button>
+            <button
+              onClick={() => onViewportChange('desktop')}
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[11px] font-bold transition-all ${
+                viewportMode === 'desktop'
+                  ? 'bg-[#CEFA03] text-[#0B0D0A] shadow-[0_0_15px_rgba(206,250,3,0.35)]'
+                  : 'text-[#9BA394] hover:text-white'
+              }`}
+              title="Formato Desktop / Full Screen"
+            >
+              <Monitor className="w-3.5 h-3.5" />
+              <span className="hidden sm:inline">Desktop</span>
+            </button>
+          </div>
+
+          <div className="hidden 2xl:flex items-center relative w-64">
+            <Search className="w-4 h-4 text-[#9BA394] absolute left-4 pointer-events-none" />
+            <input 
+              type="text" 
+              placeholder="Search..."
+              className="w-full olive-pill rounded-full pl-11 pr-10 py-2 text-xs text-white placeholder-[#8B9484] focus:outline-none focus:border-[#CEFA03]/50 transition-all"
+            />
+          </div>
         </div>
 
         {/* Right: Stripe Balance, Volt Action Pills & Circular Notification Bell */}

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Sidebar, type TabType } from './components/Sidebar';
-import { Header } from './components/Header';
+import { Header, type ViewportMode } from './components/Header';
 import { MetricCards } from './components/MetricCards';
 import { WorkoutBuilder } from './components/WorkoutBuilder';
 import { NutritionBuilder } from './components/NutritionBuilder';
@@ -18,6 +18,7 @@ import type { StudentRecord } from './types';
 
 export const App: React.FC = () => {
   const [activeTab, setActiveTab] = useState<TabType>('overview');
+  const [viewportMode, setViewportMode] = useState<ViewportMode>('desktop');
   const [toastMessage, setToastMessage] = useState<string | null>(null);
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
 
@@ -36,36 +37,62 @@ export const App: React.FC = () => {
     }
   };
 
+  const getFrameContainerClass = () => {
+    if (viewportMode === 'mobile') {
+      return 'w-full max-w-[412px] mx-auto my-0 lg:my-6 rounded-none lg:rounded-[44px] border-0 lg:border-8 border-[#1A1F16] shadow-none lg:shadow-[0_25px_60px_-15px_rgba(0,0,0,0.9),0_0_40px_rgba(206,250,3,0.15)] overflow-hidden bg-[#0B0D0A] min-h-screen lg:min-h-[860px] relative flex flex-col transition-all duration-300';
+    }
+    if (viewportMode === 'tablet') {
+      return 'w-full max-w-[820px] mx-auto my-0 lg:my-6 rounded-none lg:rounded-[36px] border-0 lg:border-8 border-[#1A1F16] shadow-none lg:shadow-[0_25px_60px_-15px_rgba(0,0,0,0.9),0_0_30px_rgba(206,250,3,0.12)] overflow-hidden bg-[#0B0D0A] min-h-screen relative flex flex-col transition-all duration-300';
+    }
+    return 'w-full min-h-screen bg-[#0B0D0A] flex flex-col transition-all duration-300';
+  };
+
   return (
-    <div className="flex min-h-screen bg-[#0B0D0A] text-[#F4F7F0] bg-spatial-grid antialiased">
-      {/* Navigation Sidebar & Mobile Floating Pill Dock */}
-      <Sidebar 
-        activeTab={activeTab} 
-        onTabChange={setActiveTab}
-        activeStudentsCount={mockStudents.length}
-        criticalStudentsCount={mockStudents.filter(s => s.status === 'warning').length}
-        mobileOpen={mobileSidebarOpen}
-        onCloseMobile={() => setMobileSidebarOpen(false)}
-      />
-
-      {/* Main Content Area */}
-      <main className="flex-1 flex flex-col min-w-0">
-        <Header 
-          professional={mockProfessional}
-          onNewWorkoutClick={() => setActiveTab('workouts')}
-          onNewNutritionClick={() => setActiveTab('nutrition')}
-          activeTabTitle={getTabTitle(activeTab)}
-          onToggleMobileSidebar={() => setMobileSidebarOpen(!mobileSidebarOpen)}
-        />
-
-        {toastMessage && (
-          <div className="mx-4 sm:mx-8 mt-4 px-5 py-3.5 rounded-full bg-[#CEFA03] text-[#0B0D0A] text-xs font-extrabold flex items-center justify-between shadow-[0_12px_30px_rgba(206,250,3,0.3)]">
-            <span>⚡ {toastMessage}</span>
-            <button onClick={() => setToastMessage(null)} className="text-[#0B0D0A]/70 hover:text-[#0B0D0A] p-1 font-black">✕</button>
+    <div className={`min-h-screen bg-[#060705] text-[#F4F7F0] bg-spatial-grid antialiased ${viewportMode !== 'desktop' ? 'p-0 lg:py-6' : ''}`}>
+      <div className={getFrameContainerClass()}>
+        {/* Dynamic Island bar in simulated mobile view */}
+        {viewportMode === 'mobile' && (
+          <div className="hidden lg:flex items-center justify-between px-7 pt-3 pb-1 text-[#9BA394] text-xs font-mono select-none bg-[#0B0D0A] border-b border-white/5">
+            <span>09:41</span>
+            <div className="w-24 h-5 rounded-full bg-black border border-white/10 flex items-center justify-center">
+              <span className="w-2 h-2 rounded-full bg-[#CEFA03] animate-pulse" />
+            </div>
+            <span>5G 100%</span>
           </div>
         )}
 
-        <div className="p-4 sm:p-6 md:p-8 space-y-6 overflow-y-auto pb-28 lg:pb-10 flex-1">
+        <div className="flex flex-1 min-h-0 relative">
+          {/* Navigation Sidebar & Mobile Floating Pill Dock */}
+          <Sidebar 
+            activeTab={activeTab} 
+            onTabChange={setActiveTab}
+            activeStudentsCount={mockStudents.length}
+            criticalStudentsCount={mockStudents.filter(s => s.status === 'warning').length}
+            mobileOpen={mobileSidebarOpen}
+            onCloseMobile={() => setMobileSidebarOpen(false)}
+            forceMobileLayout={viewportMode === 'mobile' || viewportMode === 'tablet'}
+          />
+
+          {/* Main Content Area */}
+          <main className="flex-1 flex flex-col min-w-0">
+            <Header 
+              professional={mockProfessional}
+              onNewWorkoutClick={() => setActiveTab('workouts')}
+              onNewNutritionClick={() => setActiveTab('nutrition')}
+              activeTabTitle={getTabTitle(activeTab)}
+              onToggleMobileSidebar={() => setMobileSidebarOpen(!mobileSidebarOpen)}
+              viewportMode={viewportMode}
+              onViewportChange={setViewportMode}
+            />
+
+            {toastMessage && (
+              <div className="mx-4 sm:mx-8 mt-4 px-5 py-3.5 rounded-full bg-[#CEFA03] text-[#0B0D0A] text-xs font-extrabold flex items-center justify-between shadow-[0_12px_30px_rgba(206,250,3,0.3)]">
+                <span>⚡ {toastMessage}</span>
+                <button onClick={() => setToastMessage(null)} className="text-[#0B0D0A]/70 hover:text-[#0B0D0A] p-1 font-black">✕</button>
+              </div>
+            )}
+
+            <div className="p-4 sm:p-6 md:p-8 space-y-6 overflow-y-auto pb-28 lg:pb-10 flex-1">
           {activeTab === 'overview' && (
             <div className="space-y-6">
               <MetricCards 
@@ -109,18 +136,22 @@ export const App: React.FC = () => {
         </div>
 
         {/* Footer Instrument Bar (SKILL: GEMINI-Construtor-de-Sites) */}
-        <footer className="hidden lg:flex items-center justify-between px-8 py-4 border-t border-white/[0.06] bg-[#0B0D0A]/80 text-[11px] text-[#8B9484]">
-          <div className="flex items-center gap-4">
-            <DomoFitLogo size="sm" variant="icon" />
-            <span>DomoFit® PRO — Instrumento Digital de Alta Performance Biomecânica &amp; Nutricional</span>
-          </div>
-          <div className="flex items-center gap-2 font-mono text-[10px] text-[#CEFA03] bg-[#181B15] border border-[#CEFA03]/25 px-3 py-1 rounded-full">
-            <span className="w-2 h-2 rounded-full bg-[#CEFA03] animate-pulse" />
-            <span>SYSTEM OPERATIONAL • LATENCY 12ms</span>
-          </div>
-        </footer>
+        {viewportMode === 'desktop' && (
+          <footer className="hidden lg:flex items-center justify-between px-8 py-4 border-t border-white/[0.06] bg-[#0B0D0A]/80 text-[11px] text-[#8B9484]">
+            <div className="flex items-center gap-4">
+              <DomoFitLogo size="sm" variant="icon" />
+              <span>DomoFit® PRO — Instrumento Digital de Alta Performance Biomecânica &amp; Nutricional</span>
+            </div>
+            <div className="flex items-center gap-2 font-mono text-[10px] text-[#CEFA03] bg-[#181B15] border border-[#CEFA03]/25 px-3 py-1 rounded-full">
+              <span className="w-2 h-2 rounded-full bg-[#CEFA03] animate-pulse" />
+              <span>SYSTEM OPERATIONAL • LATENCY 12ms</span>
+            </div>
+          </footer>
+        )}
       </main>
     </div>
+  </div>
+</div>
   );
 };
 

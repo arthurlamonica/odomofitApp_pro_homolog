@@ -20,6 +20,7 @@ interface SidebarProps {
   criticalStudentsCount: number;
   mobileOpen: boolean;
   onCloseMobile: () => void;
+  forceMobileLayout?: boolean;
 }
 
 const TELEMETRY_MESSAGES = [
@@ -36,7 +37,8 @@ export const Sidebar: React.FC<SidebarProps> = ({
   activeStudentsCount,
   criticalStudentsCount,
   mobileOpen,
-  onCloseMobile
+  onCloseMobile,
+  forceMobileLayout = false
 }) => {
   // Telemetry Typewriter state (SKILL: GEMINI-Construtor-de-Sites)
   const [msgIndex, setMsgIndex] = useState(0);
@@ -211,14 +213,16 @@ export const Sidebar: React.FC<SidebarProps> = ({
 
   return (
     <>
-      {/* 1. Desktop Sticky Sidebar */}
-      <aside className="hidden lg:flex w-72 shrink-0 h-screen sticky top-0 flex-col border-r border-white/[0.07] bg-[#0B0D0A]/95 backdrop-blur-2xl z-30">
-        {SidebarContent}
-      </aside>
+      {/* 1. Desktop Sticky Sidebar (Hidden when simulating mobile/tablet) */}
+      {!forceMobileLayout && (
+        <aside className="hidden lg:flex w-72 shrink-0 h-screen sticky top-0 flex-col border-r border-white/[0.07] bg-[#0B0D0A]/95 backdrop-blur-2xl z-30">
+          {SidebarContent}
+        </aside>
+      )}
 
       {/* 2. Mobile Slide-over Drawer with Backdrop */}
       {mobileOpen && (
-        <div className="lg:hidden fixed inset-0 z-50 flex">
+        <div className="fixed inset-0 z-50 flex">
           <div 
             onClick={onCloseMobile}
             className="fixed inset-0 bg-black/85 backdrop-blur-md transition-opacity" 
@@ -229,10 +233,10 @@ export const Sidebar: React.FC<SidebarProps> = ({
         </div>
       )}
 
-      {/* 3. Mobile Floating Pill Dock (Exact 1:1 Match with Attached Reference Mockup) */}
+      {/* 3. Mobile Floating Pill Dock (Visible on Mobile screens or when forceMobileLayout is active) */}
       <nav
         aria-label="Navegação rápida inferior"
-        className="lg:hidden fixed bottom-4 inset-x-0 z-40 flex justify-center px-4 pointer-events-none"
+        className={`${forceMobileLayout ? 'flex' : 'lg:hidden flex'} fixed bottom-4 inset-x-0 z-40 justify-center px-4 pointer-events-none`}
       >
         <div className="pointer-events-auto flex items-center gap-1.5 p-1.5 rounded-full bg-[#242820]/90 backdrop-blur-2xl border border-white/15 shadow-[0_20px_50px_rgba(0,0,0,0.9)]">
           {navItems.map((item) => {
