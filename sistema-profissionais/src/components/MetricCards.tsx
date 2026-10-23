@@ -1,4 +1,4 @@
-﻿import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { 
   DollarSign, 
   Users, 
@@ -72,23 +72,23 @@ export const MetricCards: React.FC<MetricCardsProps> = ({
       {/* ROW 1: 4 Primary KPI Cards (Responsive: 1 col on mobile, 2 on tablet, 4 on desktop) */}
       <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 sm:gap-5">
         {/* 1. SOLID VOLT FEATURE CARD: MRR Líquido + Equalizer Bars (Matches "Sleep Hours 7.5 Hrs" Card in Reference Mockup) */}
-        <div className="bento-anim-item volt-feature-card p-6 relative overflow-hidden flex flex-col justify-between">
+        <div className="bento-anim-item volt-feature-card p-4 sm:p-6 relative overflow-hidden flex flex-col justify-between">
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2.5">
-              <div className="w-9 h-9 rounded-full border border-[#1E1E1E]/25 flex items-center justify-center bg-[#1E1E1E]/10">
+            <div className="flex items-center gap-2 sm:gap-2.5">
+              <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-full border border-[#1E1E1E]/25 flex items-center justify-center bg-[#1E1E1E]/10 shrink-0">
                 <DollarSign className="w-4 h-4 text-[#1E1E1E] stroke-[2.5]" />
               </div>
-              <span className="text-xs font-extrabold tracking-tight text-[#1E1E1E]">
+              <span className="text-[11px] sm:text-xs font-extrabold tracking-tight text-[#1E1E1E] leading-tight">
                 MRR Líquido (85%)
               </span>
             </div>
-            <span className="text-[10px] font-mono font-black px-2 py-0.5 rounded-full bg-[#1E1E1E] text-[#CFFA06]">
+            <span className="text-[9px] sm:text-[10px] font-mono font-black px-2 py-0.5 rounded-full bg-[#1E1E1E] text-[#CFFA06] shrink-0">
               +14.2%
             </span>
           </div>
 
           {/* Vertical Dark Equalizer Bars (Exact Visual Motif from Reference Mockup Bottom-Left Card) */}
-          <div className="my-4 flex items-end justify-between gap-2 h-14 px-2">
+          <div className="my-3 sm:my-4 flex items-end justify-between gap-1.5 sm:gap-2 h-12 sm:h-14 px-1 sm:px-2">
             {EQUALIZER_BARS.map((barH, idx) => (
               <div
                 key={idx}
@@ -102,37 +102,37 @@ export const MetricCards: React.FC<MetricCardsProps> = ({
             ))}
           </div>
 
-          <div className="flex items-baseline justify-between pt-1">
-            <div>
-              <span className="text-2xl sm:text-3xl font-black tracking-tight text-[#1E1E1E]">
+          <div className="flex flex-wrap items-baseline justify-between gap-1 pt-1">
+            <div className="flex items-baseline">
+              <span className="text-xl sm:text-2xl md:text-3xl font-black tracking-tight text-[#1E1E1E]">
                 R$ {professional.monthlyRevenueNet.toLocaleString('pt-BR', { minimumFractionDigits: 0 })}
               </span>
-              <span className="text-xs font-bold text-[#1E1E1E]/75 ml-1">/mês</span>
+              <span className="text-[10px] sm:text-xs font-bold text-[#1E1E1E]/75 ml-1">/mês</span>
             </div>
-            <span className="text-[10px] font-mono font-bold text-[#1E1E1E]/80">
+            <span className="text-[9px] sm:text-[10px] font-mono font-bold text-[#1E1E1E]/80">
               Bruto R$ {professional.monthlyRevenueGross.toLocaleString('pt-BR', { minimumFractionDigits: 0 })}
             </span>
           </div>
         </div>
 
         {/* 2. Overall Progress Semi-Circular Arc Gauge Card (Exact Match to "Overall progress 79%" in Reference Mockup) */}
-        <div className="bento-anim-item antigravity-card p-6 relative overflow-hidden flex flex-col justify-between">
+        <div className="bento-anim-item antigravity-card p-4 sm:p-6 relative overflow-hidden flex flex-col justify-between">
           <div className="flex items-start justify-between gap-2">
-            <div className="space-y-3">
+            <div className="space-y-2 sm:space-y-3">
               <div>
-                <span className="text-xs font-bold text-white block">Adesão Geral</span>
-                <span className="text-[11px] text-[#9BA394]">Consistência da Carteira</span>
+                <span className="text-[11px] sm:text-xs font-bold text-white block">Adesão Geral</span>
+                <span className="text-[10px] sm:text-[11px] text-[#9BA394]">Consistência da Carteira</span>
               </div>
               <button
                 onClick={() => inactiveStudents[0] && onNotifyInactive(inactiveStudents[0])}
-                className="btn-magnetic px-4 py-1.5 rounded-full bg-[#CFFA06] text-[#1E1E1E] text-xs font-extrabold shadow-[0_6px_20px_rgba(207,250,6,0.3)]"
+                className="btn-magnetic px-3 sm:px-4 py-1.5 rounded-full bg-[#CFFA06] text-[#1E1E1E] text-[11px] sm:text-xs font-extrabold shadow-[0_6px_20px_rgba(207,250,6,0.3)]"
               >
                 Gerenciar
               </button>
             </div>
 
             {/* Semi-Circular Arc Gauge SVG (79% / 81%) */}
-            <div className="relative w-32 h-20 flex items-end justify-center shrink-0">
+            <div className="relative w-28 sm:w-32 h-18 sm:h-20 flex items-end justify-center shrink-0">
               <svg viewBox="0 0 120 70" className="w-full h-full overflow-visible">
                 {/* Outer Track */}
                 <path
@@ -172,21 +172,21 @@ export const MetricCards: React.FC<MetricCardsProps> = ({
         </div>
 
         {/* 3. Alunos Ativos & Wave Telemetry Card (Matches Dark Wave "Steps 4.1K" Card in Reference Mockup) */}
-        <div className="bento-anim-item antigravity-card p-6 relative overflow-hidden flex flex-col justify-between">
+        <div className="bento-anim-item antigravity-card p-4 sm:p-6 relative overflow-hidden flex flex-col justify-between">
           <div className="flex items-center justify-between z-10">
-            <div className="flex items-center gap-2.5">
-              <div className="w-9 h-9 rounded-full bg-[#323232] border border-white/10 text-[#CFFA06] flex items-center justify-center">
+            <div className="flex items-center gap-2 sm:gap-2.5">
+              <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-[#323232] border border-white/10 text-[#CFFA06] flex items-center justify-center shrink-0">
                 <Footprints className="w-4 h-4" />
               </div>
-              <span className="text-xs font-bold text-white">Alunos Ativos</span>
+              <span className="text-[11px] sm:text-xs font-bold text-white leading-tight">Alunos Ativos</span>
             </div>
-            <span className="text-[10px] font-mono font-bold text-[#CFFA06] bg-[#CFFA06]/10 border border-[#CFFA06]/25 px-2.5 py-0.5 rounded-full">
+            <span className="text-[9px] sm:text-[10px] font-mono font-bold text-[#CFFA06] bg-[#CFFA06]/10 border border-[#CFFA06]/25 px-2 py-0.5 rounded-full shrink-0">
               76% Ocupação
             </span>
           </div>
 
           {/* Subtle Background Wave Graph like "Steps 4.1K" in Mockup */}
-          <div className="my-2 -mx-6 relative h-14">
+          <div className="my-2 -mx-4 sm:-mx-6 relative h-12 sm:h-14">
             <svg viewBox="0 0 240 60" className="w-full h-full" preserveAspectRatio="none">
               <defs>
                 <linearGradient id="darkWaveFill" x1="0" y1="0" x2="0" y2="1">
@@ -207,43 +207,43 @@ export const MetricCards: React.FC<MetricCardsProps> = ({
             </svg>
           </div>
 
-          <div className="flex items-baseline justify-between z-10">
+          <div className="flex flex-wrap items-baseline justify-between gap-1 z-10">
             <div className="flex items-baseline gap-1.5">
-              <span className="text-3xl font-black text-white tracking-tight">
+              <span className="text-xl sm:text-2xl md:text-3xl font-black text-white tracking-tight">
                 {professional.activeStudents}
               </span>
-              <span className="text-xs text-[#9BA394] font-medium">/ 50 vagas</span>
+              <span className="text-[10px] sm:text-xs text-[#9BA394] font-medium">/ 50 vagas</span>
             </div>
-            <span className="text-[11px] text-[#CFFA06] font-semibold">12 disponíveis</span>
+            <span className="text-[10px] sm:text-[11px] text-[#CFFA06] font-semibold">12 disponíveis</span>
           </div>
         </div>
 
         {/* 4. Risco de Evasão (Alerta de Inatividade & Retenção) */}
-        <div className="bento-anim-item antigravity-card p-6 relative overflow-hidden flex flex-col justify-between">
+        <div className="bento-anim-item antigravity-card p-4 sm:p-6 relative overflow-hidden flex flex-col justify-between">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-bold text-white">Risco de Evasão (Churn)</span>
-            <div className="w-9 h-9 rounded-full bg-[#323232] border border-[#CFFA06]/25 text-[#CFFA06] flex items-center justify-center">
+            <span className="text-[11px] sm:text-xs font-bold text-white">Risco de Evasão (Churn)</span>
+            <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-[#323232] border border-[#CFFA06]/25 text-[#CFFA06] flex items-center justify-center shrink-0">
               <AlertTriangle className="w-4 h-4" />
             </div>
           </div>
 
-          <div className="my-3 flex items-baseline gap-2">
-            <span className="text-3xl font-black text-white tracking-tight">
+          <div className="my-2 sm:my-3 flex flex-wrap items-baseline gap-1.5 sm:gap-2">
+            <span className="text-xl sm:text-2xl md:text-3xl font-black text-white tracking-tight">
               {inactiveStudents.length}
             </span>
-            <span className="text-xs text-[#9BA394] font-medium">
+            <span className="text-[10px] sm:text-xs text-[#9BA394] font-medium">
               {inactiveStudents.length === 1 ? 'aluno inativo (+3 dias)' : 'alunos inativos (+3 dias)'}
             </span>
           </div>
 
-          <div className="pt-3 border-t border-white/[0.06]">
+          <div className="pt-2 sm:pt-3 border-t border-white/[0.06]">
             {inactiveStudents.length > 0 ? (
               <button
                 onClick={() => onNotifyInactive(inactiveStudents[0])}
-                className="btn-magnetic w-full flex items-center justify-between py-2 px-4 rounded-full bg-[#323232] hover:bg-[#CFFA06] text-white hover:text-[#1E1E1E] border border-[#CFFA06]/35 text-xs font-extrabold transition-all group"
+                className="btn-magnetic w-full flex items-center justify-between py-1.5 sm:py-2 px-3 sm:px-4 rounded-full bg-[#323232] hover:bg-[#CFFA06] text-white hover:text-[#1E1E1E] border border-[#CFFA06]/35 text-[11px] sm:text-xs font-extrabold transition-all group"
               >
-                <span>Cutucar {inactiveStudents[0].name.split(' ')[0]}</span>
-                <span className="text-[10px] font-mono bg-[#CFFA06] group-hover:bg-[#1E1E1E] text-[#1E1E1E] group-hover:text-[#CFFA06] px-2 py-0.5 rounded-full font-black">
+                <span className="truncate">Cutucar {inactiveStudents[0].name.split(' ')[0]}</span>
+                <span className="text-[9px] sm:text-[10px] font-mono bg-[#CFFA06] group-hover:bg-[#1E1E1E] text-[#1E1E1E] group-hover:text-[#CFFA06] px-2 py-0.5 rounded-full font-black shrink-0 ml-1">
                   {inactiveStudents[0].daysInactive}d off
                 </span>
               </button>
@@ -276,8 +276,8 @@ export const MetricCards: React.FC<MetricCardsProps> = ({
 
           <div className="grid grid-cols-1 sm:grid-cols-12 gap-4 items-center">
             {/* Concentric SVG Rings + Bottom Sparkline */}
-            <div className="sm:col-span-6 flex flex-col items-center justify-center space-y-4">
-              <div className="relative w-44 h-44 flex items-center justify-center">
+            <div className="sm:col-span-6 flex flex-col items-center justify-center space-y-3 sm:space-y-4">
+              <div className="relative w-36 h-36 sm:w-44 sm:h-44 flex items-center justify-center">
                 <svg viewBox="0 0 200 200" className="w-full h-full -rotate-90 overflow-visible">
                   {MUSCLE_RINGS_DATA.map((ring, idx) => {
                     const radius = 84 - idx * 17;
@@ -312,14 +312,14 @@ export const MetricCards: React.FC<MetricCardsProps> = ({
                   })}
                 </svg>
                 <div className="absolute inset-0 flex flex-col items-center justify-center text-center">
-                  <span className="text-[10px] font-mono uppercase text-[#9BA394]">Score</span>
-                  <span className="text-lg font-black text-[#CFFA06]">94.2</span>
+                  <span className="text-[9px] sm:text-[10px] font-mono uppercase text-[#9BA394]">Score</span>
+                  <span className="text-base sm:text-lg font-black text-[#CFFA06]">94.2</span>
                 </div>
               </div>
 
               {/* Green Area Sparkline Graph (Matches Bottom-Left of Screen 1 in Mockup) */}
-              <div className="w-full bg-[#242424] rounded-2xl p-3 border border-white/[0.05]">
-                <svg viewBox="0 0 200 55" className="w-full h-12 overflow-visible">
+              <div className="w-full bg-[#242424] rounded-2xl p-2.5 sm:p-3 border border-white/[0.05]">
+                <svg viewBox="0 0 200 55" className="w-full h-10 sm:h-12 overflow-visible">
                   <defs>
                     <linearGradient id="sparklineLime" x1="0" y1="0" x2="0" y2="1">
                       <stop offset="0%" stopColor="#CFFA06" stopOpacity="0.45" />

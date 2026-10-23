@@ -1,4 +1,4 @@
-﻿import React, { useState } from 'react';
+import React, { useState } from 'react';
 import { 
   Dumbbell, 
   Plus, 
@@ -146,31 +146,31 @@ export const WorkoutBuilder: React.FC<WorkoutBuilderProps> = ({
   return (
     <div className="space-y-6">
       {/* Top Banner: Aluno Selector & Protocol Scheduler */}
-      <div className="antigravity-card p-6 flex flex-col xl:flex-row items-start xl:items-center justify-between gap-5">
-        <div className="flex items-center gap-4">
-          <div className="w-12 h-12 rounded-full bg-[#CFFA06] text-[#1E1E1E] flex items-center justify-center shadow-[0_0_20px_rgba(207,250,6,0.35)] shrink-0">
-            <Dumbbell className="w-6 h-6 stroke-[2.5]" />
+      <div className="antigravity-card p-4 sm:p-6 flex flex-col xl:flex-row items-start xl:items-center justify-between gap-4 sm:gap-5">
+        <div className="flex items-center gap-3 sm:gap-4">
+          <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-[#CFFA06] text-[#1E1E1E] flex items-center justify-center shadow-[0_0_20px_rgba(207,250,6,0.35)] shrink-0">
+            <Dumbbell className="w-5 h-5 sm:w-6 sm:h-6 stroke-[2.5]" />
           </div>
           <div>
-            <div className="flex items-center gap-2">
-              <h2 className="text-lg font-extrabold text-white tracking-tight">
+            <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
+              <h2 className="text-base sm:text-lg font-extrabold text-white tracking-tight">
                 Construtor de Treinos Periodizados
               </h2>
-              <span className="text-[10px] font-mono font-black px-2.5 py-0.5 rounded-full bg-[#CFFA06]/15 text-[#CFFA06] border border-[#CFFA06]/30">
+              <span className="text-[9px] sm:text-[10px] font-mono font-black px-2 py-0.5 rounded-full bg-[#CFFA06]/15 text-[#CFFA06] border border-[#CFFA06]/30">
                 PRO ENGINE
               </span>
             </div>
-            <p className="text-xs text-[#9BA394]">
+            <p className="text-[11px] sm:text-xs text-[#9BA394]">
               Prescrição com escala RPE, volume por grupo muscular e preview fiel do App do Aluno
             </p>
           </div>
         </div>
 
-        {/* Protocol Scheduler Micro-UI (SKILL: GEMINI-Construtor-de-Sites) + Student Selector */}
-        <div className="flex flex-wrap items-center gap-3 w-full xl:w-auto justify-between xl:justify-end">
+        {/* Protocol Scheduler Micro-UI + Student Selector */}
+        <div className="flex flex-wrap items-center gap-2.5 sm:gap-3 w-full xl:w-auto justify-between xl:justify-end">
           {/* Weekly Scheduler Pill (S T Q Q S S D) */}
-          <div className="flex items-center gap-1.5 bg-[#121510] border border-white/[0.07] rounded-full px-3 py-1.5">
-            <Calendar className="w-3.5 h-3.5 text-[#CFFA06] mr-1" />
+          <div className="flex items-center gap-1 sm:gap-1.5 bg-[#121510] border border-white/[0.07] rounded-full px-2 sm:px-3 py-1.5 overflow-x-auto">
+            <Calendar className="w-3.5 h-3.5 text-[#CFFA06] mr-0.5 sm:mr-1 shrink-0" />
             {WEEK_DAYS.map((d) => {
               const isScheduled = scheduledDays.includes(d.key);
               return (
@@ -178,7 +178,7 @@ export const WorkoutBuilder: React.FC<WorkoutBuilderProps> = ({
                   key={d.key}
                   type="button"
                   onClick={() => toggleDaySchedule(d.key)}
-                  className={`w-7 h-7 rounded-full text-[10px] font-mono font-extrabold transition-all ${
+                  className={`w-6 h-6 sm:w-7 sm:h-7 rounded-full text-[9px] sm:text-[10px] font-mono font-extrabold transition-all shrink-0 ${
                     isScheduled
                       ? 'bg-[#CFFA06] text-[#1E1E1E] shadow-[0_0_10px_rgba(207,250,6,0.35)] scale-105'
                       : 'bg-[#1D211A] text-[#8B9484] hover:text-white'
@@ -191,11 +191,11 @@ export const WorkoutBuilder: React.FC<WorkoutBuilderProps> = ({
             })}
           </div>
 
-          <div className="flex items-center gap-2.5">
+          <div className="flex items-center gap-2 w-full sm:w-auto">
             <select
               value={selectedStudentId}
               onChange={(e) => setSelectedStudentId(e.target.value)}
-              className="olive-pill rounded-full px-4 py-2.5 text-xs font-bold text-white focus:outline-none focus:border-[#CFFA06] transition-all cursor-pointer"
+              className="olive-pill flex-1 sm:flex-none rounded-full px-3 sm:px-4 py-2 sm:py-2.5 text-xs font-bold text-white focus:outline-none focus:border-[#CFFA06] transition-all cursor-pointer truncate max-w-[200px]"
             >
               {students.map(s => (
                 <option key={s.id} value={s.id} className="bg-[#1E1E1E] text-white">
@@ -206,10 +206,11 @@ export const WorkoutBuilder: React.FC<WorkoutBuilderProps> = ({
 
             <button
               onClick={() => setShowAddModal(true)}
-              className="btn-magnetic flex items-center gap-1.5 px-4 py-2.5 rounded-full bg-[#323232] hover:bg-[#2E3528] text-[#CFFA06] border border-[#CFFA06]/35 font-extrabold text-xs transition-all whitespace-nowrap"
+              className="btn-magnetic flex items-center gap-1.5 px-3.5 sm:px-4 py-2 sm:py-2.5 rounded-full bg-[#323232] hover:bg-[#2E3528] text-[#CFFA06] border border-[#CFFA06]/35 font-extrabold text-xs transition-all whitespace-nowrap"
             >
               <Plus className="w-4 h-4 stroke-[2.5]" />
-              <span>Novo Exercício</span>
+              <span className="hidden sm:inline">Novo Exercício</span>
+              <span className="sm:hidden">Novo</span>
             </button>
           </div>
         </div>

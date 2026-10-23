@@ -1,4 +1,4 @@
-﻿import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   Home,
   Dumbbell, 
@@ -21,6 +21,7 @@ interface SidebarProps {
   mobileOpen: boolean;
   onCloseMobile: () => void;
   forceMobileLayout?: boolean;
+  viewportMode?: 'desktop' | 'tablet' | 'mobile';
 }
 
 const TELEMETRY_MESSAGES = [
@@ -38,7 +39,8 @@ export const Sidebar: React.FC<SidebarProps> = ({
   criticalStudentsCount,
   mobileOpen,
   onCloseMobile,
-  forceMobileLayout = false
+  forceMobileLayout = false,
+  viewportMode = 'desktop'
 }) => {
   // Telemetry Typewriter state (SKILL: GEMINI-Construtor-de-Sites)
   const [msgIndex, setMsgIndex] = useState(0);
@@ -236,9 +238,9 @@ export const Sidebar: React.FC<SidebarProps> = ({
       {/* 3. Mobile Floating Pill Dock (Visible on Mobile screens or when forceMobileLayout is active) */}
       <nav
         aria-label="Navegação rápida inferior"
-        className={`${forceMobileLayout ? 'flex' : 'lg:hidden flex'} fixed bottom-4 inset-x-0 z-40 justify-center px-4 pointer-events-none`}
+        className={`${forceMobileLayout ? 'flex' : 'lg:hidden flex'} fixed bottom-3 sm:bottom-4 inset-x-0 z-40 justify-center px-2 sm:px-4 pointer-events-none`}
       >
-        <div className="pointer-events-auto flex items-center gap-1.5 p-1.5 rounded-full bg-[#242820]/90 backdrop-blur-2xl border border-white/15 shadow-[0_20px_50px_rgba(0,0,0,0.9)]">
+        <div className="pointer-events-auto flex items-center justify-between sm:justify-center gap-1 sm:gap-2 p-1.5 rounded-full bg-[#242820]/95 backdrop-blur-2xl border border-white/15 shadow-[0_20px_50px_rgba(0,0,0,0.9)] max-w-[94vw] sm:max-w-none">
           {navItems.map((item) => {
             const Icon = item.icon;
             const isActive = activeTab === item.id;
@@ -247,19 +249,15 @@ export const Sidebar: React.FC<SidebarProps> = ({
               <button
                 key={item.id}
                 onClick={() => onTabChange(item.id)}
-                className={`transition-all duration-300 flex items-center justify-center ${
+                className={`transition-all duration-300 flex items-center justify-center rounded-full ${
                   isActive
-                    ? 'bg-[#CFFA06] text-[#1E1E1E] rounded-full px-4 py-2.5 gap-2 font-extrabold text-xs shadow-[0_0_24px_rgba(207,250,6,0.45)] scale-[1.02]'
-                    : 'w-11 h-11 rounded-full bg-[#282828]/90 text-white/80 hover:text-white border border-white/10'
+                    ? 'bg-[#CFFA06] text-[#1E1E1E] w-10 h-10 sm:w-11 sm:h-11 shadow-[0_0_24px_rgba(207,250,6,0.5)] scale-105'
+                    : 'w-9 h-9 sm:w-11 sm:h-11 bg-[#282828]/90 text-white/80 hover:text-white border border-white/10 hover:border-[#CFFA06]/40'
                 }`}
                 aria-label={item.label}
+                title={item.label}
               >
-                <Icon className="w-4 h-4 shrink-0" />
-                {isActive && (
-                  <span className="tracking-tight whitespace-nowrap">
-                    {item.shortLabel}
-                  </span>
-                )}
+                <Icon className="w-4 h-4 sm:w-4.5 sm:h-4.5 shrink-0" />
               </button>
             );
           })}

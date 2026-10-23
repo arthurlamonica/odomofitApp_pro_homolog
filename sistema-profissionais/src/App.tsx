@@ -1,4 +1,4 @@
-﻿import React, { useState } from 'react';
+import React, { useState } from 'react';
 import { Sidebar, type TabType } from './components/Sidebar';
 import { Header, type ViewportMode } from './components/Header';
 import { MetricCards } from './components/MetricCards';
@@ -71,6 +71,7 @@ export const App: React.FC = () => {
             mobileOpen={mobileSidebarOpen}
             onCloseMobile={() => setMobileSidebarOpen(false)}
             forceMobileLayout={viewportMode === 'mobile' || viewportMode === 'tablet'}
+            viewportMode={viewportMode}
           />
 
           {/* Main Content Area */}
