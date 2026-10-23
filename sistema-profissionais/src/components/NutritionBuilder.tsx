@@ -63,7 +63,7 @@ export const NutritionBuilder: React.FC<NutritionBuilderProps> = ({
         particleCount: 90,
         spread: 80,
         origin: { y: 0.6 },
-        colors: ['#CFFA06', '#A3E635', '#22C55E', '#FFFFFF']
+        colors: ['#cffa06', '#A3E635', '#22C55E', '#FFFFFF']
       });
     } catch (e) {}
 
@@ -113,7 +113,7 @@ export const NutritionBuilder: React.FC<NutritionBuilderProps> = ({
       {/* Top Banner: Aluno Selector & Publish */}
       <div className="antigravity-card p-6 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
         <div className="flex items-center gap-4">
-          <div className="w-12 h-12 rounded-full bg-[#CFFA06] text-[#1E1E1E] flex items-center justify-center shadow-[0_0_20px_rgba(207,250,6,0.35)] shrink-0">
+          <div className="w-12 h-12 rounded-full bg-[#cffa06] text-[#1e1e1e] flex items-center justify-center shadow-[0_0_20px_rgba(207,250,6,0.35)] shrink-0">
             <Utensils className="w-6 h-6 stroke-[2.5]" />
           </div>
           <div>
@@ -121,7 +121,7 @@ export const NutritionBuilder: React.FC<NutritionBuilderProps> = ({
               <h2 className="text-lg font-extrabold text-white tracking-tight">
                 Prescrição Nutricional &amp; Dietética (CRN / CRM)
               </h2>
-              <span className="text-[10px] font-mono font-black px-2.5 py-0.5 rounded-full bg-[#CFFA06]/15 text-[#CFFA06] border border-[#CFFA06]/30">
+              <span className="text-[10px] font-mono font-black px-2.5 py-0.5 rounded-full bg-[#cffa06]/15 text-[#cffa06] border border-[#cffa06]/30">
                 BIO-MACROS
               </span>
             </div>
@@ -138,10 +138,10 @@ export const NutritionBuilder: React.FC<NutritionBuilderProps> = ({
           <select
             value={selectedStudentId}
             onChange={(e) => setSelectedStudentId(e.target.value)}
-            className="olive-pill rounded-full px-4 py-2.5 text-xs font-bold text-white focus:outline-none focus:border-[#CFFA06] transition-all cursor-pointer"
+            className="olive-pill rounded-full px-4 py-2.5 text-xs font-bold text-white focus:outline-none focus:border-[#cffa06] transition-all cursor-pointer"
           >
             {students.map(s => (
-              <option key={s.id} value={s.id} className="bg-[#1E1E1E] text-white">
+              <option key={s.id} value={s.id} className="bg-[#1e1e1e] text-white">
                 {s.name} ({s.goal})
               </option>
             ))}
@@ -149,7 +149,7 @@ export const NutritionBuilder: React.FC<NutritionBuilderProps> = ({
 
           <button
             onClick={handlePublishPlan}
-            className="btn-magnetic flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#CFFA06] hover:bg-[#D8FF29] text-[#1E1E1E] font-extrabold text-xs shadow-[0_8px_24px_rgba(207,250,6,0.35)] whitespace-nowrap"
+            className="btn-magnetic flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#cffa06] hover:bg-[#D8FF29] text-[#1e1e1e] font-extrabold text-xs shadow-[0_8px_24px_rgba(207,250,6,0.35)] whitespace-nowrap"
           >
             <Smartphone className="w-4 h-4 stroke-[2.5]" />
             <span>Publicar Dieta no App</span>
@@ -158,8 +158,8 @@ export const NutritionBuilder: React.FC<NutritionBuilderProps> = ({
       </div>
 
       {savedSuccess && (
-        <div className="p-4 rounded-full bg-[#CFFA06]/15 border border-[#CFFA06]/40 text-[#CFFA06] text-xs font-bold flex items-center gap-2.5 shadow-lg shadow-[#CFFA06]/10">
-          <CheckCircle className="w-4 h-4 text-[#CFFA06]" />
+        <div className="p-4 rounded-full bg-[#cffa06]/15 border border-[#cffa06]/40 text-[#cffa06] text-xs font-bold flex items-center gap-2.5 shadow-lg shadow-[#cffa06]/10">
+          <CheckCircle className="w-4 h-4 text-[#cffa06]" />
           <span>Plano alimentar sincronizado com a conta de <strong>{selectedStudent?.name}</strong>!</span>
         </div>
       )}
@@ -168,14 +168,14 @@ export const NutritionBuilder: React.FC<NutritionBuilderProps> = ({
       <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
         {/* Calorias (Solid Volt Card) */}
         <div className="volt-feature-card p-5 flex flex-col justify-between">
-          <div className="flex items-center justify-between text-xs font-extrabold text-[#1E1E1E] mb-1">
+          <div className="flex items-center justify-between text-xs font-extrabold text-[#1e1e1e] mb-1">
             <span>Meta Calórica</span>
-            <Flame className="w-4 h-4 text-[#1E1E1E] stroke-[2.5]" />
+            <Flame className="w-4 h-4 text-[#1e1e1e] stroke-[2.5]" />
           </div>
-          <div className="text-2xl font-black text-[#1E1E1E] tracking-tight">
-            {plan.targetCalories} <span className="text-xs font-bold text-[#1E1E1E]/75">kcal</span>
+          <div className="text-2xl font-black text-[#1e1e1e] tracking-tight">
+            {plan.targetCalories} <span className="text-xs font-bold text-[#1e1e1e]/75">kcal</span>
           </div>
-          <div className="text-[10px] font-mono font-bold text-[#1E1E1E]/80 mt-2 pt-2 border-t border-[#1E1E1E]/15">
+          <div className="text-[10px] font-mono font-bold text-[#1e1e1e]/80 mt-2 pt-2 border-t border-[#1e1e1e]/15">
             Ativo: <strong>{totals.calories} kcal</strong>
           </div>
         </div>
@@ -184,9 +184,9 @@ export const NutritionBuilder: React.FC<NutritionBuilderProps> = ({
         <div className="antigravity-card p-5 flex flex-col justify-between">
           <div className="flex items-center justify-between text-xs text-[#9BA394] font-bold mb-1">
             <span>Proteínas</span>
-            <span className="w-2.5 h-2.5 rounded-full bg-[#CFFA06] shadow-[0_0_8px_#CFFA06]" />
+            <span className="w-2.5 h-2.5 rounded-full bg-[#cffa06] shadow-[0_0_8px_#cffa06]" />
           </div>
-          <div className="text-2xl font-black text-[#CFFA06]">
+          <div className="text-2xl font-black text-[#cffa06]">
             {plan.targetProteinG}g
           </div>
           <div className="text-[10px] font-mono text-[#9BA394] mt-2">
@@ -226,12 +226,12 @@ export const NutritionBuilder: React.FC<NutritionBuilderProps> = ({
         <div className="antigravity-card p-5 flex flex-col justify-between col-span-2 md:col-span-1">
           <div className="flex items-center justify-between text-xs text-[#9BA394] font-bold mb-1">
             <span>Água Diária</span>
-            <Droplets className="w-4 h-4 text-[#CFFA06]" />
+            <Droplets className="w-4 h-4 text-[#cffa06]" />
           </div>
           <div className="text-2xl font-black text-white">
             {(plan.targetWaterMl / 1000).toFixed(1)}L
           </div>
-          <div className="text-[10px] font-mono text-[#CFFA06] mt-2">
+          <div className="text-[10px] font-mono text-[#cffa06] mt-2">
             ~{(plan.targetWaterMl / 250).toFixed(0)} doses de 250ml
           </div>
         </div>
@@ -247,7 +247,7 @@ export const NutritionBuilder: React.FC<NutritionBuilderProps> = ({
 
           <button
             onClick={() => setShowAddMealModal(true)}
-            className="btn-magnetic flex items-center gap-2 px-4 py-2 rounded-full bg-[#323232] text-[#CFFA06] border border-[#CFFA06]/35 hover:bg-[#CFFA06] hover:text-[#1E1E1E] font-extrabold text-xs transition-all"
+            className="btn-magnetic flex items-center gap-2 px-4 py-2 rounded-full bg-[#323232] text-[#cffa06] border border-[#cffa06]/35 hover:bg-[#cffa06] hover:text-[#1e1e1e] font-extrabold text-xs transition-all"
           >
             <Plus className="w-4 h-4 stroke-[2.5]" />
             <span>Adicionar Refeição</span>
@@ -266,7 +266,7 @@ export const NutritionBuilder: React.FC<NutritionBuilderProps> = ({
               >
                 <div className="flex items-center justify-between pb-3.5 border-b border-white/[0.07]">
                   <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-full bg-[#323232] border border-[#CFFA06]/25 text-[#CFFA06] flex items-center justify-center text-xs font-bold">
+                    <div className="w-10 h-10 rounded-full bg-[#323232] border border-[#cffa06]/25 text-[#cffa06] flex items-center justify-center text-xs font-bold">
                       <Clock className="w-4 h-4" />
                     </div>
                     <div>
@@ -276,7 +276,7 @@ export const NutritionBuilder: React.FC<NutritionBuilderProps> = ({
                   </div>
 
                   <div className="flex items-center gap-2">
-                    <span className="text-xs font-mono font-extrabold text-[#1E1E1E] bg-[#CFFA06] px-3 py-1 rounded-full">
+                    <span className="text-xs font-mono font-extrabold text-[#1e1e1e] bg-[#cffa06] px-3 py-1 rounded-full">
                       {mealCals} kcal • {mealProt.toFixed(0)}g P
                     </span>
                     <button
@@ -294,14 +294,14 @@ export const NutritionBuilder: React.FC<NutritionBuilderProps> = ({
                   {meal.items.map((item) => (
                     <div 
                       key={item.id}
-                      className="flex items-center justify-between text-xs p-3 rounded-2xl bg-[#242424] border border-white/[0.05] hover:border-[#CFFA06]/25 transition-colors"
+                      className="flex items-center justify-between text-xs p-3 rounded-2xl bg-[#242424] border border-white/[0.05] hover:border-[#cffa06]/25 transition-colors"
                     >
                       <div>
                         <div className="font-bold text-white">{item.foodName}</div>
                         <div className="text-[10px] text-[#9BA394] font-medium mt-0.5">Porção: {item.portion}</div>
                       </div>
                       <div className="text-right font-mono">
-                        <div className="text-xs font-extrabold text-[#CFFA06]">{item.calories} kcal</div>
+                        <div className="text-xs font-extrabold text-[#cffa06]">{item.calories} kcal</div>
                         <div className="text-[10px] text-[#9BA394]">
                           P:{item.proteinG}g • C:{item.carbsG}g • G:{item.fatG}g
                         </div>
@@ -311,7 +311,7 @@ export const NutritionBuilder: React.FC<NutritionBuilderProps> = ({
                 </div>
 
                 {meal.notes && (
-                  <div className="text-[11px] text-[#D8E0D2] bg-[#323232]/60 border border-[#CFFA06]/15 px-3.5 py-2.5 rounded-2xl">
+                  <div className="text-[11px] text-[#D8E0D2] bg-[#323232]/60 border border-[#cffa06]/15 px-3.5 py-2.5 rounded-2xl">
                     ⚡ {meal.notes}
                   </div>
                 )}
@@ -325,7 +325,7 @@ export const NutritionBuilder: React.FC<NutritionBuilderProps> = ({
       <div className="antigravity-card p-6 space-y-5">
         <div className="flex flex-wrap items-center justify-between gap-4">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-full bg-[#CFFA06]/15 text-[#CFFA06] flex items-center justify-center border border-[#CFFA06]/30">
+            <div className="w-10 h-10 rounded-full bg-[#cffa06]/15 text-[#cffa06] flex items-center justify-center border border-[#cffa06]/30">
               <Sparkles className="w-5 h-5" />
             </div>
             <div>
@@ -344,7 +344,7 @@ export const NutritionBuilder: React.FC<NutritionBuilderProps> = ({
                 return copy;
               });
             }}
-            className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-[#323232] border border-[#CFFA06]/30 text-[11px] font-mono font-bold text-[#CFFA06] hover:bg-[#CFFA06] hover:text-[#1E1E1E] transition-colors"
+            className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-[#323232] border border-[#cffa06]/30 text-[11px] font-mono font-bold text-[#cffa06] hover:bg-[#cffa06] hover:text-[#1e1e1e] transition-colors"
           >
             <Layers className="w-3.5 h-3.5" />
             <span>Alternar Stack</span>
@@ -360,12 +360,12 @@ export const NutritionBuilder: React.FC<NutritionBuilderProps> = ({
               }}
               className={`p-4 rounded-[1.5rem] border space-y-1.5 ${
                 index === 0
-                  ? 'bg-[#323232] border-[#CFFA06]/50 shadow-[0_10px_25px_rgba(207,250,6,0.12)] scale-[1.01]'
+                  ? 'bg-[#323232] border-[#cffa06]/50 shadow-[0_10px_25px_rgba(207,250,6,0.12)] scale-[1.01]'
                   : 'bg-[#242424] border-white/[0.06]'
               }`}
             >
               <div className="flex items-center justify-between">
-                <span className="text-xs font-extrabold text-[#CFFA06]">{supp.name}</span>
+                <span className="text-xs font-extrabold text-[#cffa06]">{supp.name}</span>
                 <span className="text-[9px] font-mono px-2 py-0.5 rounded-full bg-black/40 text-[#9BA394]">
                   SLOT 0{index + 1}
                 </span>
@@ -380,10 +380,10 @@ export const NutritionBuilder: React.FC<NutritionBuilderProps> = ({
       {/* Modal: Adicionar Refeição */}
       {showAddMealModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/85 backdrop-blur-md p-4">
-          <div className="antigravity-card p-6 w-full max-w-md border border-[#CFFA06]/30 shadow-2xl space-y-4">
+          <div className="antigravity-card p-6 w-full max-w-md border border-[#cffa06]/30 shadow-2xl space-y-4">
             <div className="flex items-center justify-between pb-3 border-b border-white/10">
               <h3 className="text-base font-extrabold text-white flex items-center gap-2">
-                <Plus className="w-5 h-5 text-[#CFFA06]" />
+                <Plus className="w-5 h-5 text-[#cffa06]" />
                 <span>Nova Refeição no Plano</span>
               </h3>
               <button
@@ -405,7 +405,7 @@ export const NutritionBuilder: React.FC<NutritionBuilderProps> = ({
                   placeholder="Ex: Lanche da Tarde Pré-Treino"
                   value={newMealName}
                   onChange={e => setNewMealName(e.target.value)}
-                  className="w-full olive-pill rounded-full px-4 py-2.5 text-xs text-white focus:outline-none focus:border-[#CFFA06]"
+                  className="w-full olive-pill rounded-full px-4 py-2.5 text-xs text-white focus:outline-none focus:border-[#cffa06]"
                 />
               </div>
 
@@ -418,7 +418,7 @@ export const NutritionBuilder: React.FC<NutritionBuilderProps> = ({
                   required
                   value={newMealTime}
                   onChange={e => setNewMealTime(e.target.value)}
-                  className="w-full olive-pill rounded-full px-4 py-2.5 text-xs text-white focus:outline-none focus:border-[#CFFA06]"
+                  className="w-full olive-pill rounded-full px-4 py-2.5 text-xs text-white focus:outline-none focus:border-[#cffa06]"
                 />
               </div>
 
@@ -432,7 +432,7 @@ export const NutritionBuilder: React.FC<NutritionBuilderProps> = ({
                 </button>
                 <button
                   type="submit"
-                  className="btn-magnetic px-6 py-2.5 rounded-full bg-[#CFFA06] text-[#1E1E1E] font-extrabold text-xs shadow-[0_6px_20px_rgba(207,250,6,0.3)]"
+                  className="btn-magnetic px-6 py-2.5 rounded-full bg-[#cffa06] text-[#1e1e1e] font-extrabold text-xs shadow-[0_6px_20px_rgba(207,250,6,0.3)]"
                 >
                   Adicionar Refeição
                 </button>

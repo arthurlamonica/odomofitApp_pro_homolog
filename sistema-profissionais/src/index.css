@@ -1,4 +1,4 @@
-@tailwind base;
+﻿@tailwind base;
 @tailwind components;
 @tailwind utilities;
 
@@ -7,14 +7,14 @@
     color-scheme: dark;
     --sat: env(safe-area-inset-top, 0px);
     --sab: env(safe-area-inset-bottom, 16px);
-    --domo-volt: #CFFA06;
-    --domo-black: #1E1E1E;
+    --domo-volt: #cffa06;
+    --domo-black: #1e1e1e;
     --domo-card: #282828;
     --domo-olive: #323232;
   }
   
   html, body {
-    background-color: #1E1E1E;
+    background-color: #1e1e1e;
     color: #F4F7F0;
     font-family: 'Plus Jakarta Sans', 'Outfit', system-ui, -apple-system, sans-serif;
     -webkit-tap-highlight-color: transparent;
@@ -27,7 +27,7 @@
     height: 5px;
   }
   ::-webkit-scrollbar-track {
-    background: #1E1E1E;
+    background: #1e1e1e;
   }
   ::-webkit-scrollbar-thumb {
     background: rgba(207, 250, 6, 0.28);
@@ -66,8 +66,8 @@
 
 /* Solid Electric Volt Card */
 .volt-feature-card {
-  background: linear-gradient(145deg, #CFFA06 0%, #B8E600 100%);
-  color: #1E1E1E;
+  background: linear-gradient(145deg, #cffa06 0%, #B8E600 100%);
+  color: #1e1e1e;
   border-radius: 2rem;
   box-shadow: 0 20px 45px -12px rgba(207, 250, 6, 0.32), inset 0 1px 1px rgba(255, 255, 255, 0.45);
   transition: transform 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94), box-shadow 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
@@ -103,7 +103,7 @@
 
 /* Ambient Top Gray-Volt Canopy Glow */
 .bg-spatial-grid {
-  background-color: #1E1E1E;
+  background-color: #1e1e1e;
   background-image: 
     radial-gradient(circle at 50% -5%, rgba(207, 250, 6, 0.18) 0%, rgba(50, 50, 50, 0.30) 35%, transparent 70%),
     radial-gradient(circle at 12% 22%, rgba(207, 250, 6, 0.08) 0%, transparent 40%),
