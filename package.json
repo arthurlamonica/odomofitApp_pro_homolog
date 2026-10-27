@@ -3,17 +3,18 @@
   "version": "1.0.0",
   "private": true,
   "description": "O Domo FIT — Ecossistema de Performance Fitness, Consultoria Multidisciplinar e Rede Social",
-  "workspaces": [
-    "sistema-profissionais",
-    "sistema-usuarios"
-  ],
   "scripts": {
-    "dev": "npm --prefix sistema-profissionais run dev",
-    "build": "npm --prefix sistema-profissionais run build",
-    "dev:profissionais": "npm --prefix sistema-profissionais run dev",
-    "dev:usuarios": "npm --prefix sistema-usuarios run dev",
-    "build:profissionais": "npm --prefix sistema-profissionais run build",
-    "build:usuarios": "npm --prefix sistema-usuarios run build"
+    "dev:user": "npm --prefix user run dev",
+    "dev:pro": "npm --prefix pro run dev",
+    "build:user": "npm --prefix user run build",
+    "build:pro": "npm --prefix pro run build",
+    "dev:usuarios": "npm --prefix user run dev",
+    "dev:profissionais": "npm --prefix pro run dev",
+    "build:usuarios": "npm --prefix user run build",
+    "build:profissionais": "npm --prefix pro run build",
+    "install:user": "npm --prefix user install",
+    "install:pro": "npm --prefix pro install",
+    "install:all": "npm --prefix user install && npm --prefix pro install"
   },
   "keywords": [
     "fitness",

@@ -10,7 +10,7 @@ O ecossistema é dividido em **dois subsistemas desacoplados**, permitindo ciclo
 
 ```
 ODomoFit/
-├── sistema-profissionais/       # 🏢 PORTAL DOS PROFISSIONAIS (Web Dashboard & Mobile Trainer)
+├── pro/                         # 🏢 PORTAL DOS PROFISSIONAIS (Web Dashboard & Mobile Trainer)
 │   ├── src/
 │   │   ├── components/
 │   │   │   ├── workout-builder/   # Montador de Treinos (A/B/C/D, RPE, periodização)
@@ -20,7 +20,7 @@ ODomoFit/
 │   │   └── ...
 │   └── package.json
 │
-├── sistema-usuarios/            # 📱 APLICATIVO DOS USUÁRIOS & ATLETAS (Social & Mobile-First)
+├── user/                        # 📱 APLICATIVO DOS USUÁRIOS & ATLETAS (Social & Mobile-First)
 │   ├── src/
 │   │   ├── components/
 │   │   │   ├── social-feed/       # Feed estilo Instagram, fotos/vídeos de treino, badges de PR
@@ -43,7 +43,7 @@ ODomoFit/
 
 ---
 
-## 🏢 2. Sistema dos Profissionais (`sistema-profissionais`)
+## 🏢 2. Sistema dos Profissionais (`pro`)
 
 Projetado especificamente para **Personal Trainers, Nutricionistas, Nutrólogos e Fisioterapeutas**:
 
@@ -67,7 +67,7 @@ Projetado especificamente para **Personal Trainers, Nutricionistas, Nutrólogos 
 
 ---
 
-## 👥 3. Sistema dos Usuários (`sistema-usuarios`)
+## 👥 3. Sistema dos Usuários (`user`)
 
 Projetado com experiência móvel fluida (*mobile-first* / Progressive Web App / React Native) para atletas e alunos:
 

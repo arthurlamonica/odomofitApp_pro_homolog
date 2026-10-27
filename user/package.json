@@ -1,12 +1,12 @@
 {
-  "name": "sistema-profissionais",
+  "name": "o-domo-fit-user",
   "private": true,
   "version": "1.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite --port 5174",
+    "dev": "vite --port 5173",
     "build": "tsc -b && vite build",
-    "preview": "vite preview --port 5174"
+    "preview": "vite preview --port 5173"
   },
   "dependencies": {
     "canvas-confetti": "^1.9.4",

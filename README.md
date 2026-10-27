@@ -6,47 +6,44 @@ O Domo FIT é um ecossistema completo para o mercado fitness brasileiro, unindo 
 
 ---
 
-## 📂 Arquitetura dos 2 Sistemas Separados
+## 📂 Arquitetura dos 2 Projetos Totalmente Separados
 
-Seguindo as especificações do projeto, a plataforma está estritamente segregada em **dois subsistemas independentes**:
+A plataforma está organizada em **dois projetos autônomos e desacoplados** dentro do repositório:
 
 ```
 ODomoFit/
-├── sistema-profissionais/       # 🏢 PORTAL DOS PROFISSIONAIS (Porta 5174)
+├── pro/                         # 🏢 PORTAL DOS PROFISSIONAIS (Porta 5174)
 │   ├── src/
-│   │   ├── components/
-│   │   │   ├── WorkoutBuilder.tsx    # Montador de treinos (Divisões A/B/C/D, RPE, descanso)
-│   │   │   ├── NutritionBuilder.tsx  # Montador de dietas e macros (CRN / CRM)
-│   │   │   ├── StudentAnamnesis.tsx  # Prontuário médico e fotos com blur LGPD
-│   │   │   ├── StripeSplitPanel.tsx  # Stripe Connect (Split 85% profissional / 15% taxa)
-│   │   │   ├── MetricCards.tsx       # MRR líquido, taxa de evasão e alunos ativos
-│   │   │   └── DomoFitLogo.tsx       # Identidade visual oficial O Domo FIT
-│   │   ├── data/mockData.ts          # Dados mock de alta fidelidade
-│   │   └── App.tsx                   # Dashboard com tabs dinâmicas
-│   └── package.json
+│   │   ├── components/          # WorkoutBuilder, NutritionBuilder, StudentAnamnesis, etc.
+│   │   ├── data/mockData.ts     # Dados mock de profissionais e alunos
+│   │   ├── types/               # Tipos do app e sharedContracts.ts
+│   │   └── App.tsx              # Dashboard com tabs dinâmicas
+│   ├── supabase/
+│   │   └── schema.sql           # Schema relacional autônomo do banco
+│   ├── .env.example             # Variáveis de ambiente do portal pro
+│   ├── .gitignore               # Ignora arquivos de build e node_modules
+│   ├── vercel.json              # Configuração de deploy isolado Vercel
+│   ├── README.md                # Documentação técnica do projeto pro
+│   └── package.json             # Dependências e scripts do projeto pro
 │
-├── sistema-usuarios/            # 📱 APP DOS USUÁRIOS & ATLETAS (Porta 5173)
+├── user/                        # 📱 APP DOS USUÁRIOS & ATLETAS (Porta 5173)
 │   ├── src/
-│   │   ├── components/
-│   │   │   ├── SocialFeed.tsx        # Feed estilo Instagram (Stories, fotos, badges de PR, likes, comentários)
-│   │   │   ├── WorkoutTracker.tsx    # Player de treino (Prescrito ou Autônomo) + Timer + Bater PR
-│   │   │   ├── NutritionView.tsx     # Cardápio diário, metas de macros e contador de hidratação
-│   │   │   ├── ChatModule.tsx        # Mensagens DMs com amigos e profissionais
-│   │   │   ├── CommunitiesChallenges.tsx # Desafios com amigos, leaderboard e check-in diário
-│   │   │   ├── UserProfile.tsx       # Perfil Instagram-like com grid 3x3 de fotos e PRs
-│   │   │   └── AppNavigation.tsx     # Bottom Bar mobile e header
-│   │   ├── data/mockData.ts          # Dados mock sociais, treinos e refeições
-│   │   └── App.tsx                   # Aplicação mobile-first
-│   └── package.json
+│   │   ├── components/          # SocialFeed, WorkoutTracker, NutritionView, ChatModule, etc.
+│   │   ├── data/mockData.ts     # Dados mock sociais, treinos e refeições
+│   │   ├── types/               # Tipos do app e sharedContracts.ts
+│   │   └── App.tsx              # Aplicação mobile-first
+│   ├── supabase/
+│   │   └── schema.sql           # Schema relacional autônomo do banco
+│   ├── .env.example             # Variáveis de ambiente do app user
+│   ├── .gitignore               # Ignora arquivos de build e node_modules
+│   ├── vercel.json              # Configuração de deploy isolado Vercel
+│   ├── README.md                # Documentação técnica do projeto user
+│   └── package.json             # Dependências e scripts do projeto user
 │
-├── shared/                      # 🧩 CONTRATOS & TIPAGENS COMPARTILHADAS
-│   └── types/index.ts           # Interfaces canônicas TypeScript
+├── docs/                        # 📚 DOCUMENTAÇÃO TÉCNICA GLOBAL
+│   └── ARQUITETURA_ECOSSISTEMA.md
 │
-├── supabase/                    # 🗄️ MODELAGEM RELACIONAL & SEGURANÇA
-│   └── schema.sql               # PostgreSQL 15+ com RLS, LGPD e Stripe Marketplace Split
-│
-└── docs/                        # 📚 DOCUMENTAÇÃO TÉCNICA
-    └── ARQUITETURA_ECOSSISTEMA.md
+└── package.json                 # Scripts facilitadores na raiz
 ```
 
 ---
@@ -60,24 +57,48 @@ ODomoFit/
 
 ---
 
-## 🚀 Como Executar os Sistemas
+## 🚀 Como Executar os Projetos
 
-Você pode rodar os sistemas individualmente ou ambos simultaneamente:
+Cada projeto é totalmente autônomo e pode ser executado a partir de sua própria pasta ou usando os atalhos da raiz:
 
-### 1. Iniciar o Sistema dos Profissionais (Porta 5174):
+### Opção 1: Execução Direta em Cada Projeto (Recomendado para Desenvolvimento Isolado)
+
+#### Portal dos Profissionais (`pro`):
 ```bash
-npm run dev:profissionais
+cd pro
+npm install
+npm run dev
 ```
 Acesse: [http://localhost:5174](http://localhost:5174)
 
-### 2. Iniciar o Aplicativo dos Usuários (Porta 5173):
+#### App dos Usuários (`user`):
 ```bash
-npm run dev:usuarios
+cd user
+npm install
+npm run dev
 ```
 Acesse: [http://localhost:5173](http://localhost:5173)
 
-### 3. Build de Produção:
-```bash
-npm run build:profissionais
-npm run build:usuarios
-```
+---
+
+### Opção 2: Scripts Facilitadores na Raiz
+
+Você também pode gerenciar ambos diretamente da raiz do repositório:
+
+- **Instalar dependências de ambos:**
+  ```bash
+  npm run install:all
+  ```
+- **Rodar Portal dos Profissionais (Porta 5174):**
+  ```bash
+  npm run dev:pro
+  ```
+- **Rodar App dos Usuários (Porta 5173):**
+  ```bash
+  npm run dev:user
+  ```
+- **Build de produção:**
+  ```bash
+  npm run build:pro
+  npm run build:user
+  ```
