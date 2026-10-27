@@ -1,4 +1,4 @@
-﻿import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   Home,
   Dumbbell, 
@@ -7,7 +7,8 @@ import {
   TrendingUp, 
   ShieldCheck, 
   X,
-  Radio
+  Radio,
+  BarChart3
 } from 'lucide-react';
 import { DomoFitLogo } from './DomoFitLogo';
 
@@ -127,7 +128,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
         {/* Section Label */}
         <div className="px-3 mb-3 flex items-center justify-between text-[10px] uppercase font-mono font-bold tracking-widest text-[#7E8777]">
           <span>Instrumento Profissional</span>
-          <span className="text-[#cffa06]">v4.2</span>
+          <span className="text-[#bdf900]">v4.2</span>
         </div>
 
         {/* Navigation List (Pill-First Design from Mockup) */}
@@ -142,7 +143,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
                 onClick={() => handleSelectTab(item.id)}
                 className={`btn-magnetic w-full flex items-center justify-between px-3.5 py-2.5 rounded-full text-xs font-bold min-h-[48px] transition-all group ${
                   isActive
-                    ? 'bg-[#cffa06] text-[#1e1e1e] shadow-[0_10px_28px_-4px_rgba(207,250,6,0.4)]'
+                    ? 'bg-[#bdf900] text-[#1e1e1e] shadow-[0_10px_28px_-4px_rgba(189,249,0,0.4)]'
                     : 'text-[#A6B09F] hover:text-white bg-[#282828]/70 hover:bg-[#22261D] border border-white/[0.06]'
                 }`}
               >
@@ -150,8 +151,8 @@ export const Sidebar: React.FC<SidebarProps> = ({
                   <div
                     className={`w-8 h-8 rounded-full flex items-center justify-center transition-colors ${
                       isActive 
-                        ? 'bg-[#1e1e1e] text-[#cffa06]' 
-                        : 'bg-[#323232] text-[#9BA394] group-hover:text-[#cffa06] border border-white/10'
+                        ? 'bg-[#1e1e1e] text-[#bdf900]' 
+                        : 'bg-[#323232] text-[#9BA394] group-hover:text-[#bdf900] border border-white/10'
                     }`}
                   >
                     <Icon className="w-4 h-4" />
@@ -164,7 +165,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
                     className={`text-[10px] font-mono font-extrabold px-2.5 py-0.5 rounded-full ${
                       isActive
                         ? 'bg-[#1e1e1e]/15 text-[#1e1e1e]'
-                        : 'bg-[#323232] text-[#cffa06] border border-[#cffa06]/20'
+                        : 'bg-[#323232] text-[#bdf900] border border-[#bdf900]/20'
                     }`}
                   >
                     {item.badge}
@@ -181,27 +182,27 @@ export const Sidebar: React.FC<SidebarProps> = ({
         {/* Telemetry Typewriter Card (SKILL: GEMINI-Construtor-de-Sites) */}
         <div className="p-3.5 rounded-[1.5rem] bg-[#1e1e1e] border border-white/[0.07] space-y-2">
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-1.5 text-[10px] font-mono font-bold uppercase tracking-wider text-[#cffa06]">
+            <div className="flex items-center gap-1.5 text-[10px] font-mono font-bold uppercase tracking-wider text-[#bdf900]">
               <Radio className="w-3 h-3 animate-pulse" />
               <span>Live Telemetry Feed</span>
             </div>
-            <span className="w-2 h-2 rounded-full bg-[#cffa06] animate-ping" />
+            <span className="w-2 h-2 rounded-full bg-[#bdf900] animate-ping" />
           </div>
           <div className="min-h-[32px] font-mono text-[11px] text-[#D8E0D2] leading-snug">
             {displayedText}
-            <span className="inline-block w-1.5 h-3.5 ml-0.5 align-middle bg-[#cffa06] animate-pulse" />
+            <span className="inline-block w-1.5 h-3.5 ml-0.5 align-middle bg-[#bdf900] animate-pulse" />
           </div>
         </div>
 
         {/* LGPD & System Operational Pill */}
-        <div className="p-3.5 rounded-[1.5rem] bg-[#282828] border border-[#cffa06]/20">
+        <div className="p-3.5 rounded-[1.5rem] bg-[#282828] border border-[#bdf900]/20">
           <div className="flex items-center justify-between mb-1">
             <div className="flex items-center gap-2 text-white font-bold text-xs">
-              <ShieldCheck className="w-4 h-4 text-[#cffa06]" />
+              <ShieldCheck className="w-4 h-4 text-[#bdf900]" />
               <span>LGPD Saúde &amp; ECA</span>
             </div>
-            <span className="flex items-center gap-1 text-[9px] font-mono font-semibold text-[#cffa06]">
-              <span className="w-1.5 h-1.5 rounded-full bg-[#cffa06] animate-pulse" />
+            <span className="flex items-center gap-1 text-[9px] font-mono font-semibold text-[#bdf900]">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#bdf900] animate-pulse" />
               ONLINE
             </span>
           </div>
@@ -235,32 +236,65 @@ export const Sidebar: React.FC<SidebarProps> = ({
         </div>
       )}
 
-      {/* 3. Mobile Floating Pill Dock (Visible on Mobile screens or when forceMobileLayout is active) */}
+      {/* 3. Mobile Floating Pill Dock (Visible on Mobile screens or when forceMobileLayout is active - Matches Reference Mockup Dock) */}
       <nav
         aria-label="Navegação rápida inferior"
-        className={`${forceMobileLayout ? 'flex' : 'lg:hidden flex'} fixed bottom-3 sm:bottom-4 inset-x-0 z-40 justify-center px-2 sm:px-4 pointer-events-none`}
+        className={`${forceMobileLayout ? 'flex' : 'lg:hidden flex'} fixed bottom-3 sm:bottom-4 inset-x-0 z-40 justify-center px-3 sm:px-4 pointer-events-none`}
       >
-        <div className="pointer-events-auto flex items-center justify-between sm:justify-center gap-1 sm:gap-2 p-1.5 rounded-full bg-[#252525]/95 backdrop-blur-2xl border border-white/15 shadow-[0_20px_50px_rgba(0,0,0,0.9)] max-w-[94vw] sm:max-w-none">
-          {navItems.map((item) => {
-            const Icon = item.icon;
-            const isActive = activeTab === item.id;
+        <div className="pointer-events-auto flex items-center justify-around sm:justify-center gap-2 sm:gap-4 px-4 py-2 rounded-full bg-[#1e1e1e]/95 backdrop-blur-2xl border border-white/10 shadow-[0_20px_50px_rgba(0,0,0,0.95)] w-full max-w-[400px]">
+          {/* 1. Home */}
+          <button
+            onClick={() => onTabChange('overview')}
+            className="flex flex-col items-center justify-center gap-0.5 group transition-colors py-1 px-2"
+          >
+            <Home className={`w-5 h-5 transition-colors ${activeTab === 'overview' ? 'text-[#bdf900]' : 'text-[#8B9484] group-hover:text-white'}`} />
+            <span className={`text-[10px] font-bold ${activeTab === 'overview' ? 'text-[#bdf900]' : 'text-[#8B9484]'}`}>Home</span>
+            {activeTab === 'overview' && <span className="w-1 h-1 rounded-full bg-[#bdf900]" />}
+          </button>
 
-            return (
-              <button
-                key={item.id}
-                onClick={() => onTabChange(item.id)}
-                className={`transition-all duration-300 flex items-center justify-center rounded-full ${
-                  isActive
-                    ? 'bg-[#cffa06] text-[#1e1e1e] w-10 h-10 sm:w-11 sm:h-11 shadow-[0_0_24px_rgba(207,250,6,0.5)] scale-105'
-                    : 'w-9 h-9 sm:w-11 sm:h-11 bg-[#282828]/90 text-white/80 hover:text-white border border-white/10 hover:border-[#cffa06]/40'
-                }`}
-                aria-label={item.label}
-                title={item.label}
-              >
-                <Icon className="w-4 h-4 sm:w-4.5 sm:h-4.5 shrink-0" />
-              </button>
-            );
-          })}
+          {/* 2. Workout */}
+          <button
+            onClick={() => onTabChange('workouts')}
+            className="flex flex-col items-center justify-center gap-0.5 group transition-colors py-1 px-2"
+          >
+            <Dumbbell className={`w-5 h-5 transition-colors ${activeTab === 'workouts' ? 'text-[#bdf900]' : 'text-[#8B9484] group-hover:text-white'}`} />
+            <span className={`text-[10px] font-bold ${activeTab === 'workouts' ? 'text-[#bdf900]' : 'text-[#8B9484]'}`}>Workout</span>
+            {activeTab === 'workouts' && <span className="w-1 h-1 rounded-full bg-[#bdf900]" />}
+          </button>
+
+          {/* 3. Central FAB: Stats / Progress (Exact Match to Reference Mockup Center Neon Button) */}
+          <button
+            onClick={() => onTabChange('finance')}
+            className={`w-12 h-12 -mt-5 rounded-full flex items-center justify-center shadow-[0_8px_25px_rgba(189,249,0,0.45)] transition-all transform hover:scale-110 active:scale-95 ${
+              activeTab === 'finance'
+                ? 'bg-[#bdf900] text-[#1e1e1e] ring-4 ring-[#1e1e1e]'
+                : 'bg-[#bdf900] text-[#1e1e1e] ring-4 ring-[#1e1e1e]'
+            }`}
+            title="Progresso & Estatísticas"
+            aria-label="Progresso e estatísticas"
+          >
+            <BarChart3 className="w-6 h-6 stroke-[2.6]" />
+          </button>
+
+          {/* 4. Meals */}
+          <button
+            onClick={() => onTabChange('nutrition')}
+            className="flex flex-col items-center justify-center gap-0.5 group transition-colors py-1 px-2"
+          >
+            <UtensilsCrossed className={`w-5 h-5 transition-colors ${activeTab === 'nutrition' ? 'text-[#bdf900]' : 'text-[#8B9484] group-hover:text-white'}`} />
+            <span className={`text-[10px] font-bold ${activeTab === 'nutrition' ? 'text-[#bdf900]' : 'text-[#8B9484]'}`}>Meals</span>
+            {activeTab === 'nutrition' && <span className="w-1 h-1 rounded-full bg-[#bdf900]" />}
+          </button>
+
+          {/* 5. Profile */}
+          <button
+            onClick={() => onTabChange('students')}
+            className="flex flex-col items-center justify-center gap-0.5 group transition-colors py-1 px-2"
+          >
+            <Users className={`w-5 h-5 transition-colors ${activeTab === 'students' ? 'text-[#bdf900]' : 'text-[#8B9484] group-hover:text-white'}`} />
+            <span className={`text-[10px] font-bold ${activeTab === 'students' ? 'text-[#bdf900]' : 'text-[#8B9484]'}`}>Profile</span>
+            {activeTab === 'students' && <span className="w-1 h-1 rounded-full bg-[#bdf900]" />}
+          </button>
         </div>
       </nav>
     </>

@@ -1,4 +1,4 @@
-﻿import React from 'react';
+import React from 'react';
 import { 
   Search, 
   Bell, 
@@ -9,7 +9,8 @@ import {
   Menu,
   Smartphone,
   Tablet,
-  Monitor
+  Monitor,
+  Flame
 } from 'lucide-react';
 import type { ProfessionalUser } from '../types';
 
@@ -41,7 +42,7 @@ export const Header: React.FC<HeaderProps> = ({
         <div className="flex items-center gap-3 min-w-0">
           <button
             onClick={onToggleMobileSidebar}
-            className="w-10 h-10 sm:w-11 sm:h-11 shrink-0 flex items-center justify-center rounded-full bg-[#323232] border border-white/10 text-[#D8E0D2] hover:text-[#cffa06] transition-colors"
+            className="w-10 h-10 sm:w-11 sm:h-11 shrink-0 flex items-center justify-center rounded-full bg-[#323232] border border-white/10 text-[#D8E0D2] hover:text-[#bdf900] transition-colors"
             aria-label="Abrir menu lateral"
           >
             <Menu className="w-5 h-5" />
@@ -52,23 +53,24 @@ export const Header: React.FC<HeaderProps> = ({
             <img 
               src={professional.avatarUrl} 
               alt={professional.name}
-              className="w-10 h-10 sm:w-11 sm:h-11 rounded-full object-cover ring-2 ring-[#cffa06]/50 shadow-[0_0_15px_rgba(207,250,6,0.2)]" 
+              className="w-10 h-10 sm:w-11 sm:h-11 rounded-full object-cover ring-2 ring-[#bdf900]/50 shadow-[0_0_15px_rgba(189,249,0,0.2)]" 
             />
-            <span className="absolute bottom-0 right-0 w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-[#cffa06] ring-2 ring-[#1e1e1e]" />
+            <span className="absolute bottom-0 right-0 w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-[#bdf900] ring-2 ring-[#1e1e1e]" />
           </div>
 
           <div className="min-w-0">
             <div className="flex items-center gap-1.5 sm:gap-2">
               <span className="text-[10px] sm:text-[11px] font-medium text-[#9BA394] truncate">
-                {activeTabTitle}
+                {activeTabTitle} • Get ready
               </span>
-              <span className="hidden sm:inline-flex items-center gap-1 text-[9px] sm:text-[10px] font-mono font-bold text-[#cffa06] bg-[#cffa06]/10 border border-[#cffa06]/25 px-2 py-0.5 rounded-full shrink-0">
+              <span className="hidden sm:inline-flex items-center gap-1 text-[9px] sm:text-[10px] font-mono font-bold text-[#bdf900] bg-[#bdf900]/10 border border-[#bdf900]/25 px-2 py-0.5 rounded-full shrink-0">
                 <CheckCircle2 className="w-3 h-3" />
                 {professional.councilType}
               </span>
             </div>
-            <h1 className="text-sm sm:text-base md:text-xl font-extrabold tracking-tight text-white leading-tight truncate">
-              {professional.name}
+            <h1 className="text-sm sm:text-base md:text-xl font-extrabold tracking-tight text-white leading-tight truncate flex items-center gap-1.5">
+              <span>{professional.name}</span>
+              <span className="text-sm">👋</span>
             </h1>
           </div>
         </div>
@@ -80,7 +82,7 @@ export const Header: React.FC<HeaderProps> = ({
               onClick={() => onViewportChange('mobile')}
               className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[11px] font-bold transition-all ${
                 viewportMode === 'mobile'
-                  ? 'bg-[#cffa06] text-[#1e1e1e] shadow-[0_0_15px_rgba(207,250,6,0.35)]'
+                  ? 'bg-[#bdf900] text-[#1e1e1e] shadow-[0_0_15px_rgba(189,249,0,0.35)]'
                   : 'text-[#9BA394] hover:text-white'
               }`}
               title="Formato Celular (390px)"
@@ -92,7 +94,7 @@ export const Header: React.FC<HeaderProps> = ({
               onClick={() => onViewportChange('tablet')}
               className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[11px] font-bold transition-all ${
                 viewportMode === 'tablet'
-                  ? 'bg-[#cffa06] text-[#1e1e1e] shadow-[0_0_15px_rgba(207,250,6,0.35)]'
+                  ? 'bg-[#bdf900] text-[#1e1e1e] shadow-[0_0_15px_rgba(189,249,0,0.35)]'
                   : 'text-[#9BA394] hover:text-white'
               }`}
               title="Formato Tablet (768px)"
@@ -104,7 +106,7 @@ export const Header: React.FC<HeaderProps> = ({
               onClick={() => onViewportChange('desktop')}
               className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[11px] font-bold transition-all ${
                 viewportMode === 'desktop'
-                  ? 'bg-[#cffa06] text-[#1e1e1e] shadow-[0_0_15px_rgba(207,250,6,0.35)]'
+                  ? 'bg-[#bdf900] text-[#1e1e1e] shadow-[0_0_15px_rgba(189,249,0,0.35)]'
                   : 'text-[#9BA394] hover:text-white'
               }`}
               title="Formato Desktop"
@@ -117,10 +119,16 @@ export const Header: React.FC<HeaderProps> = ({
 
         {/* Right: Actions & Circular Notification Bell */}
         <div className="flex items-center gap-2 order-2 sm:order-3 ml-auto sm:ml-0">
+          {/* Streak Flame Pill (Matches Reference Screen 1) */}
+          <div className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#282828] border border-white/10 text-xs font-bold text-white shadow-inner">
+            <Flame className="w-4 h-4 text-[#FF7A00] fill-[#FF7A00]/20 animate-pulse" />
+            <span className="font-mono text-[11px] text-[#bdf900]">14d</span>
+          </div>
+
           {/* Action Button: Prescrever Treino */}
           <button
             onClick={onNewWorkoutClick}
-            className="btn-magnetic min-h-[38px] sm:min-h-[42px] flex items-center gap-1.5 px-3 sm:px-4 py-2 rounded-full bg-[#cffa06] hover:bg-[#D8FF29] text-[#1e1e1e] font-extrabold text-xs shadow-[0_8px_24px_rgba(207,250,6,0.3)] shrink-0"
+            className="btn-magnetic min-h-[38px] sm:min-h-[42px] flex items-center gap-1.5 px-3 sm:px-4 py-2 rounded-full bg-[#bdf900] hover:bg-[#c9ff1a] text-[#1e1e1e] font-extrabold text-xs shadow-[0_8px_24px_rgba(189,249,0,0.3)] shrink-0"
             title="Montar novo treino"
           >
             <PlusCircle className="w-4 h-4 stroke-[2.5]" />
@@ -130,20 +138,21 @@ export const Header: React.FC<HeaderProps> = ({
           {/* Action Button: Prescrever Dieta */}
           <button
             onClick={onNewNutritionClick}
-            className="btn-magnetic hidden xl:flex min-h-[42px] items-center gap-1.5 px-4 py-2 rounded-full bg-[#323232] hover:bg-[#2C3326] text-white border border-[#cffa06]/30 font-bold text-xs transition-all shrink-0"
+            className="btn-magnetic hidden xl:flex min-h-[42px] items-center gap-1.5 px-4 py-2 rounded-full bg-[#323232] hover:bg-[#2C3326] text-white border border-[#bdf900]/30 font-bold text-xs transition-all shrink-0"
             title="Montar novo plano alimentar"
           >
-            <Utensils className="w-3.5 h-3.5 text-[#cffa06]" />
+            <Utensils className="w-3.5 h-3.5 text-[#bdf900]" />
             <span>Montar Dieta</span>
           </button>
 
-          {/* Circular Notification Bell */}
+          {/* Circular Notification Bell (With Red Alert Dot from Reference Mockup) */}
           <button
-            className="relative w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-[#323232] hover:bg-[#2C3326] border border-white/10 flex items-center justify-center text-white/90 transition-all shrink-0"
+            className="relative w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-[#282828] hover:bg-[#323232] border border-white/10 flex items-center justify-center text-white/90 transition-all shrink-0 shadow-inner"
             aria-label="Notificações"
           >
             <Bell className="w-4 h-4" />
-            <span className="absolute top-2 right-2 sm:top-2.5 sm:right-2.5 w-2 h-2 rounded-full bg-[#cffa06] ring-2 ring-[#323232]" />
+            <span className="absolute top-2 right-2 sm:top-2.5 sm:right-2.5 w-2 h-2 rounded-full bg-[#FF4D4D] ring-2 ring-[#282828] animate-ping" />
+            <span className="absolute top-2 right-2 sm:top-2.5 sm:right-2.5 w-2 h-2 rounded-full bg-[#FF4D4D] ring-2 ring-[#282828]" />
           </button>
         </div>
       </div>

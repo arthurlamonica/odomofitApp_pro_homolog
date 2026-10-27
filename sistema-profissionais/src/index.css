@@ -1,4 +1,4 @@
-﻿@tailwind base;
+@tailwind base;
 @tailwind components;
 @tailwind utilities;
 
@@ -7,7 +7,7 @@
     color-scheme: dark;
     --sat: env(safe-area-inset-top, 0px);
     --sab: env(safe-area-inset-bottom, 16px);
-    --domo-volt: #cffa06;
+    --domo-volt: #bdf900;
     --domo-black: #1e1e1e;
     --domo-card: #282828;
     --domo-olive: #323232;
@@ -30,11 +30,11 @@
     background: #1e1e1e;
   }
   ::-webkit-scrollbar-thumb {
-    background: rgba(207, 250, 6, 0.28);
+    background: rgba(189, 249, 0, 0.28);
     border-radius: 9999px;
   }
   ::-webkit-scrollbar-thumb:hover {
-    background: rgba(207, 250, 6, 0.65);
+    background: rgba(189, 249, 0, 0.65);
   }
 }
 
@@ -60,22 +60,22 @@
 }
 
 .antigravity-card:hover {
-  border-color: rgba(207, 250, 6, 0.45);
-  box-shadow: 0 28px 55px -15px rgba(0, 0, 0, 0.92), 0 0 28px -4px rgba(207, 250, 6, 0.18), inset 0 1px 0 0 rgba(207, 250, 6, 0.15);
+  border-color: rgba(189, 249, 0, 0.45);
+  box-shadow: 0 28px 55px -15px rgba(0, 0, 0, 0.92), 0 0 28px -4px rgba(189, 249, 0, 0.18), inset 0 1px 0 0 rgba(189, 249, 0, 0.15);
 }
 
 /* Solid Electric Volt Card */
 .volt-feature-card {
-  background: linear-gradient(145deg, #cffa06 0%, #B8E600 100%);
+  background: linear-gradient(145deg, #bdf900 0%, #a6dc00 100%);
   color: #1e1e1e;
   border-radius: 2rem;
-  box-shadow: 0 20px 45px -12px rgba(207, 250, 6, 0.32), inset 0 1px 1px rgba(255, 255, 255, 0.45);
+  box-shadow: 0 20px 45px -12px rgba(189, 249, 0, 0.32), inset 0 1px 1px rgba(255, 255, 255, 0.45);
   transition: transform 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94), box-shadow 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
 .volt-feature-card:hover {
   transform: translateY(-2px) scale(1.01);
-  box-shadow: 0 28px 55px -10px rgba(207, 250, 6, 0.45);
+  box-shadow: 0 28px 55px -10px rgba(189, 249, 0, 0.45);
 }
 
 /* Magnetic Button Micro-Interaction */
@@ -105,11 +105,11 @@
 .bg-spatial-grid {
   background-color: #1e1e1e;
   background-image: 
-    radial-gradient(circle at 50% -5%, rgba(207, 250, 6, 0.18) 0%, rgba(50, 50, 50, 0.30) 35%, transparent 70%),
-    radial-gradient(circle at 12% 22%, rgba(207, 250, 6, 0.08) 0%, transparent 40%),
-    radial-gradient(circle at 88% 78%, rgba(207, 250, 6, 0.06) 0%, transparent 45%),
-    linear-gradient(to right, rgba(207, 250, 6, 0.02) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(207, 250, 6, 0.02) 1px, transparent 1px);
+    radial-gradient(circle at 50% -5%, rgba(189, 249, 0, 0.18) 0%, rgba(50, 50, 50, 0.30) 35%, transparent 70%),
+    radial-gradient(circle at 12% 22%, rgba(189, 249, 0, 0.08) 0%, transparent 40%),
+    radial-gradient(circle at 88% 78%, rgba(189, 249, 0, 0.06) 0%, transparent 45%),
+    linear-gradient(to right, rgba(189, 249, 0, 0.02) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(189, 249, 0, 0.02) 1px, transparent 1px);
   background-size: 100% 100%, 100% 100%, 100% 100%, 56px 56px, 56px 56px;
 }
 
