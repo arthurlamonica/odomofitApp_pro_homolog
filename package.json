@@ -8,6 +8,11 @@
     "dev:pro": "npm --prefix pro run dev",
     "build:user": "npm --prefix user run build",
     "build:pro": "npm --prefix pro run build",
+    "build:mobile": "npm --prefix user run build:mobile",
+    "build:android": "npm --prefix user run build:android",
+    "build:ios": "npm --prefix user run build:ios",
+    "open:android": "npm --prefix user run cap:open:android",
+    "open:ios": "npm --prefix user run cap:open:ios",
     "dev:usuarios": "npm --prefix user run dev",
     "dev:profissionais": "npm --prefix pro run dev",
     "build:usuarios": "npm --prefix user run build",
@@ -22,7 +27,11 @@
     "nutrition",
     "social-network",
     "stripe-connect",
-    "supabase"
+    "supabase",
+    "android",
+    "ios",
+    "playstore",
+    "appstore"
   ],
   "author": "O Domo FIT Team",
   "license": "UNLICENSED"

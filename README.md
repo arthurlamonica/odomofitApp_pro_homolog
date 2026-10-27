@@ -26,14 +26,20 @@ ODomoFit/
 │   ├── README.md                # Documentação técnica do projeto pro
 │   └── package.json             # Dependências e scripts do projeto pro
 │
-├── user/                        # 📱 APP DOS USUÁRIOS & ATLETAS (Porta 5173)
+├── user/                        # 📱 APP DOS USUÁRIOS & ATLETAS (Porta 5173 / Mobile)
+│   ├── android/                 # 🤖 PROJETO NATIVO GOOGLE PLAY STORE (Gradle / Android Studio)
+│   │   └── PLAYSTORE_PUBLISH_GUIDE.md # Guia completo de publicação Play Store
+│   ├── ios/                     # 🍏 PROJETO NATIVO APPLE APP STORE (Xcode / CocoaPods / SPM)
+│   │   └── APPSTORE_PUBLISH_GUIDE.md # Guia completo de publicação App Store
 │   ├── src/
 │   │   ├── components/          # SocialFeed, WorkoutTracker, NutritionView, ChatModule, etc.
+│   │   ├── services/            # nativeMobile.ts (Status Bar, Splash Screen, Back Button)
 │   │   ├── data/mockData.ts     # Dados mock sociais, treinos e refeições
 │   │   ├── types/               # Tipos do app e sharedContracts.ts
 │   │   └── App.tsx              # Aplicação mobile-first
 │   ├── supabase/
 │   │   └── schema.sql           # Schema relacional autônomo do banco
+│   ├── capacitor.config.ts      # Configuração nativa de alta performance Capacitor
 │   ├── .env.example             # Variáveis de ambiente do app user
 │   ├── .gitignore               # Ignora arquivos de build e node_modules
 │   ├── vercel.json              # Configuração de deploy isolado Vercel
@@ -101,4 +107,15 @@ Você também pode gerenciar ambos diretamente da raiz do repositório:
   ```bash
   npm run build:pro
   npm run build:user
+  ```
+- **Build & Sincronização Mobile (Google Play & App Store):**
+  ```bash
+  npm run build:mobile
+  npm run build:android
+  npm run build:ios
+  ```
+- **Abrir no Android Studio ou Xcode:**
+  ```bash
+  npm run open:android
+  npm run open:ios
   ```

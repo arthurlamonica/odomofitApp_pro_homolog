@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">O Domo FIT</string>
+    <string name="title_activity_main">O Domo FIT</string>
+    <string name="package_name">com.odomofit.app</string>
+    <string name="custom_url_scheme">com.odomofit.app</string>
+</resources>
