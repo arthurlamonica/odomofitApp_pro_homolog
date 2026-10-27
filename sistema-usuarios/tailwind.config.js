@@ -30,7 +30,8 @@ export default {
         }
       },
       fontFamily: {
-        sans: ['Plus Jakarta Sans', 'Inter', 'sans-serif'],
+        sans: ['Montserrat', 'sans-serif'],
+        mono: ['Montserrat', 'sans-serif'],
       },
       boxShadow: {
         'antigravity': '0 24px 48px -12px rgba(0, 0, 0, 0.65), 0 0 24px -4px rgba(189, 249, 0, 0.15)',
