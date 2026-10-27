@@ -8,14 +8,10 @@ import {
   Clock, 
   CheckCircle,
   Play,
-  Pause,
   Check,
   ChevronLeft,
   MoreHorizontal,
-  Calendar,
-  Volume2,
-  Maximize2,
-  Pencil
+  Calendar
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import type { WorkoutRoutine, ExerciseItem, StudentRecord } from '../types';
@@ -64,7 +60,6 @@ export const WorkoutBuilder: React.FC<WorkoutBuilderProps> = ({
   const [scheduledDays, setScheduledDays] = useState<string[]>(['S', 'T', 'QI', 'SX', 'SB']);
 
   const [showAddModal, setShowAddModal] = useState(false);
-  const [isPlaying, setIsPlaying] = useState(true);
   const [newExercise, setNewExercise] = useState<Partial<ExerciseItem>>({
     name: '',
     muscleGroup: 'Peitoral',
@@ -260,35 +255,35 @@ export const WorkoutBuilder: React.FC<WorkoutBuilderProps> = ({
         })}
       </div>
 
-      {/* MAIN WORKOUT CARD — Exact 1:1 Match with Screen 2 (Center Phone) of Reference Mockup */}
+      {/* MAIN WORKOUT CARD — Prescrição da Rotina do Profissional */}
       <div className="antigravity-card overflow-hidden border border-white/[0.08]">
-        {/* Hero Athlete Video Player with Dark Olive Gradient, Center Pause & Media Bar */}
-        <div className="relative h-64 sm:h-80 w-full overflow-hidden bg-[#1e1e1e]">
+        {/* Hero Athlete Banner with Dark Olive Gradient & Controls */}
+        <div className="relative h-56 sm:h-64 w-full overflow-hidden bg-[#1e1e1e]">
           <img
             src="https://images.unsplash.com/photo-1583454110551-21f2fa2afe61?auto=format&fit=crop&q=85&w=1200"
-            alt="Atleta executando treino Concentration Curl"
-            className="w-full h-full object-cover object-center opacity-85 transition-transform duration-700 hover:scale-102"
+            alt="Atleta executando treino"
+            className="w-full h-full object-cover object-center opacity-75 scale-105 transition-transform duration-700 hover:scale-100"
           />
-          {/* Radial Dark Canopy Gradient Fade */}
+          {/* Radial Olive Glow + Bottom Dark Gradient Fade */}
           <div
             className="absolute inset-0"
             style={{
               background:
-                'radial-gradient(circle at 60% 35%, rgba(189, 249, 0, 0.20), transparent 50%), linear-gradient(to top, #1e1e1e 10%, rgba(18, 22, 16, 0.5) 60%, rgba(20, 20, 20, 0.75) 100%)',
+                'radial-gradient(circle at 75% 25%, rgba(189, 249, 0, 0.22), transparent 45%), linear-gradient(to top, #1e1e1e 8%, rgba(14, 17, 12, 0.45) 55%, rgba(30, 30, 30, 0.7) 100%)',
             }}
           />
 
-          {/* Top Floating Circular Controls (< and ••• from Reference Mockup) */}
-          <div className="absolute top-4 inset-x-5 flex items-center justify-between z-10">
+          {/* Top Floating Controls */}
+          <div className="absolute top-5 inset-x-6 flex items-center justify-between">
             <div className="flex items-center gap-3">
               <button
                 type="button"
-                className="w-10 h-10 rounded-full bg-black/50 backdrop-blur-md border border-white/15 flex items-center justify-center text-white hover:bg-[#bdf900] hover:text-[#1e1e1e] transition-colors"
+                className="w-11 h-11 rounded-full bg-white/10 backdrop-blur-md border border-white/15 flex items-center justify-center text-white hover:bg-[#bdf900] hover:text-[#1e1e1e] transition-colors"
                 aria-label="Voltar divisão"
               >
                 <ChevronLeft className="w-5 h-5" />
               </button>
-              <span className="px-3 py-1 rounded-full bg-black/60 backdrop-blur-md border border-[#bdf900]/30 text-[10px] font-mono font-bold text-[#bdf900]">
+              <span className="px-3.5 py-1.5 rounded-full bg-black/50 backdrop-blur-md border border-[#bdf900]/30 text-[11px] font-mono font-bold text-[#bdf900]">
                 Aluno: {selectedStudent?.name}
               </span>
             </div>
@@ -296,164 +291,31 @@ export const WorkoutBuilder: React.FC<WorkoutBuilderProps> = ({
             <button
               type="button"
               onClick={() => setShowAddModal(true)}
-              className="w-10 h-10 rounded-full bg-black/50 backdrop-blur-md border border-white/15 flex items-center justify-center text-white hover:bg-[#bdf900] hover:text-[#1e1e1e] transition-colors"
-              title="Opções do exercício"
+              className="w-11 h-11 rounded-full bg-white/10 backdrop-blur-md border border-white/15 flex items-center justify-center text-white hover:bg-[#bdf900] hover:text-[#1e1e1e] transition-colors"
+              title="Opções da rotina"
             >
               <MoreHorizontal className="w-5 h-5" />
             </button>
           </div>
 
-          {/* Center Play/Pause Floating Disc (Exact Match to Center Circle in Screen 2) */}
-          <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-10">
-            <button
-              type="button"
-              onClick={() => setIsPlaying(!isPlaying)}
-              className="pointer-events-auto w-14 h-14 rounded-full bg-black/65 backdrop-blur-md border-2 border-white/25 flex items-center justify-center text-white hover:bg-[#bdf900] hover:text-[#1e1e1e] hover:border-[#bdf900] shadow-[0_10px_30px_rgba(0,0,0,0.8)] transition-all transform hover:scale-110 active:scale-95"
-            >
-              {isPlaying ? (
-                <Pause className="w-6 h-6 fill-current" />
-              ) : (
-                <Play className="w-6 h-6 fill-current ml-0.5" />
-              )}
-            </button>
-          </div>
-
-          {/* Bottom Video Progress Bar (0:00 - 5:40 + Audio & Fullscreen Icons from Screen 2) */}
-          <div className="absolute bottom-3 inset-x-5 z-10 space-y-2">
-            <div className="flex items-center justify-between text-xs font-mono text-white/90">
-              <div className="flex items-center gap-2">
-                <Play className="w-3.5 h-3.5 fill-white text-white" />
-                <span>0:00 - 5:40</span>
-              </div>
-              <div className="flex items-center gap-3 text-white/80">
-                <button type="button" className="hover:text-[#bdf900] transition-colors"><Volume2 className="w-4 h-4" /></button>
-                <button type="button" className="hover:text-[#bdf900] transition-colors"><Maximize2 className="w-4 h-4" /></button>
-              </div>
-            </div>
-            {/* Timeline scrubber */}
-            <div className="w-full h-1 bg-white/20 rounded-full overflow-hidden">
-              <div className="h-full w-1/3 bg-[#bdf900] shadow-[0_0_10px_rgba(189,249,0,0.8)]" />
-            </div>
-          </div>
-        </div>
-
-        {/* Exercise Info & Biomechanical Details (Exact Match to Screen 2 Content) */}
-        <div className="p-5 sm:p-6 bg-[#1e1e1e] space-y-5 border-b border-white/[0.06]">
-          <div className="flex flex-wrap items-center justify-between gap-2">
+          {/* Bottom Title Overlay */}
+          <div className="absolute bottom-4 inset-x-6 flex flex-wrap items-end justify-between gap-2">
             <div>
-              <h3 className="text-xl sm:text-2xl font-black text-white tracking-tight">
-                Concentration Curl
+              <span className="text-[11px] font-mono uppercase tracking-wider text-[#bdf900] font-bold">
+                Divisão {activeDivision} • {currentRoutine?.targetFocus || 'Hipertrofia & Força'}
+              </span>
+              <h3 className="text-xl sm:text-2xl font-black text-white tracking-tight mt-0.5">
+                {currentRoutine?.name || `Full Body Workout ${activeDivision}`}
               </h3>
-              <div className="flex items-center gap-3 mt-1.5">
-                <span className="flex items-center gap-1.5 text-xs font-extrabold text-[#bdf900]">
-                  <Dumbbell className="w-4 h-4" />
-                  <span>Seated Dumbbell</span>
-                </span>
-                <span className="text-[#8B9484]">•</span>
-                <span className="flex items-center gap-1.5 text-xs text-[#8B9484] font-medium">
-                  <Clock className="w-3.5 h-3.5 text-[#bdf900]" />
-                  <span>15 min</span>
-                </span>
-              </div>
             </div>
 
-            <span className="text-xs font-bold text-[#bdf900] bg-[#bdf900]/10 border border-[#bdf900]/25 px-3 py-1 rounded-full">
-              Divisão {activeDivision} • Exercício Ativo
+            <span className="text-xs sm:text-sm font-bold text-[#bdf900] tracking-tight">
+              {currentRoutine?.items.length || 0} exercícios prescritos (24 séries totais)
             </span>
           </div>
-
-          <p className="text-xs sm:text-sm text-[#9BA394] leading-relaxed">
-            Sit on a bench, lean forward, and rest your elbow against your inner thigh. Curl the dumbbell in a controlled motion, focusing on squeezing the bicep at the top. Avoid swinging the weight.
-          </p>
-
-          {/* ======================================================== */}
-          {/* MY PROGRESS CARD (Exact Match to Screen 2 Bottom Wave)   */}
-          {/* ======================================================== */}
-          <div className="rounded-[24px] bg-[#181818] border border-white/[0.08] p-5 space-y-3">
-            <div className="flex items-center justify-between">
-              <h4 className="text-sm font-extrabold text-white tracking-tight">
-                My Progress
-              </h4>
-              <div className="flex items-center gap-2">
-                <button className="w-7 h-7 rounded-full bg-[#282828] text-[#8B9484] hover:text-white flex items-center justify-center transition-colors">
-                  <Pencil className="w-3.5 h-3.5" />
-                </button>
-                <button className="w-7 h-7 rounded-full bg-[#282828] text-[#8B9484] hover:text-white flex items-center justify-center transition-colors">
-                  <Plus className="w-3.5 h-3.5" />
-                </button>
-              </div>
-            </div>
-
-            {/* Big Neon Weight Callout */}
-            <div className="text-2xl sm:text-3xl font-black text-[#bdf900] tracking-tight">
-              47.5kg
-            </div>
-
-            {/* Spline Wave Chart with Dumbbell Badges at Peaks */}
-            <div className="relative pt-2">
-              <div className="flex">
-                {/* Y-axis kg labels */}
-                <div className="flex flex-col justify-between text-[9px] font-mono text-[#7E8777] pr-2 h-24">
-                  <span>50kg</span>
-                  <span>40kg</span>
-                  <span>30kg</span>
-                  <span>20kg</span>
-                </div>
-
-                {/* SVG Curve with Dumbbell Icon Badges */}
-                <div className="flex-1 relative h-24">
-                  <svg viewBox="0 0 300 90" className="w-full h-full overflow-visible" preserveAspectRatio="none">
-                    <defs>
-                      <linearGradient id="progressWaveFill" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="0%" stopColor="#bdf900" stopOpacity="0.25" />
-                        <stop offset="100%" stopColor="#bdf900" stopOpacity="0.0" />
-                      </linearGradient>
-                    </defs>
-
-                    {/* Area under wave */}
-                    <path
-                      d="M 10 70 C 40 70, 50 30, 80 30 C 110 30, 120 75, 150 75 C 180 75, 190 20, 220 20 C 250 20, 260 40, 290 40 L 290 85 L 10 85 Z"
-                      fill="url(#progressWaveFill)"
-                    />
-
-                    {/* Green Spline Line */}
-                    <path
-                      d="M 10 70 C 40 70, 50 30, 80 30 C 110 30, 120 75, 150 75 C 180 75, 190 20, 220 20 C 250 20, 260 40, 290 40"
-                      fill="none"
-                      stroke="#bdf900"
-                      strokeWidth="2.5"
-                      strokeLinecap="round"
-                    />
-                  </svg>
-
-                  {/* Dumbbell Icon Badges at Curve Peaks */}
-                  <div className="absolute top-[16px] left-[25%] -translate-x-1/2 w-6 h-6 rounded-full bg-[#1e1e1e] border border-[#bdf900] shadow-[0_0_8px_rgba(189,249,0,0.5)] flex items-center justify-center">
-                    <Dumbbell className="w-3 h-3 text-[#bdf900]" />
-                  </div>
-                  <div className="absolute top-[60px] left-[50%] -translate-x-1/2 w-6 h-6 rounded-full bg-[#1e1e1e] border border-[#bdf900] shadow-[0_0_8px_rgba(189,249,0,0.5)] flex items-center justify-center">
-                    <Dumbbell className="w-3 h-3 text-[#bdf900]" />
-                  </div>
-                  <div className="absolute top-[8px] left-[73%] -translate-x-1/2 w-6 h-6 rounded-full bg-[#1e1e1e] border border-[#bdf900] shadow-[0_0_8px_rgba(189,249,0,0.5)] flex items-center justify-center">
-                    <Dumbbell className="w-3 h-3 text-[#bdf900]" />
-                  </div>
-                  <div className="absolute top-[26px] left-[95%] -translate-x-1/2 w-6 h-6 rounded-full bg-[#1e1e1e] border border-[#bdf900] shadow-[0_0_8px_rgba(189,249,0,0.5)] flex items-center justify-center">
-                    <Dumbbell className="w-3 h-3 text-[#bdf900]" />
-                  </div>
-                </div>
-              </div>
-
-              {/* X-axis days (Mon, Wed, Thr, Sun) */}
-              <div className="flex justify-between pl-8 text-[10px] font-mono text-[#8B9484] pt-2">
-                <span>Mon</span>
-                <span>Wed</span>
-                <span>Thr</span>
-                <span>Sun</span>
-              </div>
-            </div>
-          </div>
         </div>
 
-        {/* Exercise Cards List (Exact Match to Bench Press / Back Squat / Overhead Press Cards) */}
+        {/* Exercise Cards List (Montagem e Edição de Exercícios pelo Profissional) */}
         <div className="p-5 sm:p-6 bg-[#1e1e1e] space-y-3.5">
           {currentRoutine?.items.map((ex) => {
             const isChecked = !!checkedExercises[ex.id];

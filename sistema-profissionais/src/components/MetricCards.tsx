@@ -10,12 +10,7 @@ import {
   Footprints,
   BedDouble,
   ChevronDown,
-  Zap,
-  Trophy,
-  Heart,
-  Clock,
-  SlidersHorizontal,
-  Play
+  Zap
 } from 'lucide-react';
 import gsap from 'gsap';
 import type { ProfessionalUser, StudentRecord } from '../types';
@@ -25,46 +20,6 @@ interface MetricCardsProps {
   students: StudentRecord[];
   onNotifyInactive: (student: StudentRecord) => void;
 }
-
-const WEEK_CALENDAR = [
-  { day: 'Sun', num: 13 },
-  { day: 'Mon', num: 14 },
-  { day: 'Tue', num: 15 },
-  { day: 'Wed', num: 16, active: true },
-  { day: 'Thu', num: 17 },
-  { day: 'Fri', num: 18 },
-  { day: 'Sat', num: 19 },
-];
-
-const CATEGORY_TAGS = [
-  { id: 'warmup', label: 'Warm Up', icon: Zap },
-  { id: 'cardio', label: 'Cardio', icon: Heart },
-  { id: 'strength', label: 'Strength', icon: Dumbbell },
-];
-
-const WORKOUT_CAROUSEL = [
-  {
-    id: 'w1',
-    title: 'Stretch & Flow',
-    duration: '15 min',
-    image: 'https://images.unsplash.com/photo-1518611012118-696072aa579a?auto=format&fit=crop&q=80&w=400',
-    tag: 'Flexibilidade',
-  },
-  {
-    id: 'w2',
-    title: 'Partner Power',
-    duration: '10 min',
-    image: 'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&q=80&w=400',
-    tag: 'Hipertrofia',
-  },
-  {
-    id: 'w3',
-    title: 'Core Blast',
-    duration: '15 min',
-    image: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?auto=format&fit=crop&q=80&w=400',
-    tag: 'Resistência',
-  },
-];
 
 const MUSCLE_RINGS_DATA = [
   { id: 'cardio', label: 'Cardio & VO2', xp: '240 / 300 XP', color: '#bdf900', track: 'rgba(189,249,0,0.14)', pct: 82 },
@@ -90,9 +45,6 @@ export const MetricCards: React.FC<MetricCardsProps> = ({
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [selectedDay, setSelectedDay] = useState<string>('Thu');
-  const [activeCalDay, setActiveCalDay] = useState<number>(16);
-  const [activeCategory, setActiveCategory] = useState<string>('warmup');
-  const [challengeStarted, setChallengeStarted] = useState<boolean>(false);
   const inactiveStudents = students.filter(s => s.daysInactive >= 3);
 
   // GSAP Lifecycle Animation (SKILL: GEMINI-Construtor-de-Sites)
@@ -117,215 +69,6 @@ export const MetricCards: React.FC<MetricCardsProps> = ({
 
   return (
     <div ref={containerRef} className="space-y-6">
-      {/* ======================================================== */}
-      {/* REFERENCE DESIGN HERO SECTION (Exact Match to Screen 1)   */}
-      {/* ======================================================== */}
-
-      {/* 1. New Challenge Banner (Matches Green Hero Card with Trophy & START button in Screen 1) */}
-      <div className="bento-anim-item rounded-[28px] p-5 sm:p-6 bg-gradient-to-r from-[#bdf900] via-[#8ece18] to-[#1d5c2e] text-[#1e1e1e] shadow-[0_20px_45px_rgba(189,249,0,0.3)] flex flex-wrap items-center justify-between gap-4 relative overflow-hidden">
-        {/* Subtle decorative circles */}
-        <div className="absolute -right-12 -top-12 w-48 h-48 rounded-full bg-white/10 blur-xl pointer-events-none" />
-        
-        <div className="flex items-center gap-4 z-10">
-          <div className="w-14 h-14 rounded-full bg-[#1e1e1e] flex items-center justify-center text-[#bdf900] shadow-xl shrink-0 ring-4 ring-black/10">
-            <Trophy className="w-7 h-7 stroke-[2.2]" />
-          </div>
-          <div>
-            <h2 className="text-xl sm:text-2xl font-black tracking-tight text-[#1e1e1e] leading-tight">
-              New Challenge
-            </h2>
-            <p className="text-xs sm:text-sm font-bold text-[#1e1e1e]/85">
-              2 Weeks of Energy • Desafio de Consistência &amp; Hipertrofia
-            </p>
-          </div>
-        </div>
-
-        <button
-          onClick={() => setChallengeStarted(!challengeStarted)}
-          className={`btn-magnetic z-10 px-8 py-3 rounded-full font-black text-xs sm:text-sm uppercase tracking-wider transition-all shadow-[0_10px_25px_rgba(0,0,0,0.35)] shrink-0 ${
-            challengeStarted
-              ? 'bg-[#1e1e1e] text-[#bdf900]'
-              : 'bg-white hover:bg-white/90 text-[#1e1e1e]'
-          }`}
-        >
-          {challengeStarted ? 'ACTIVE ✓' : 'START'}
-        </button>
-      </div>
-
-      {/* 2. Compact Weekly Days Calendar Strip (Sun, Mon, Tue, Wed 16 with Volt Ring, Thu, Fri, Sat) */}
-      <div className="bento-anim-item rounded-[24px] bg-[#1e1e1e] border border-white/[0.08] p-3 sm:p-4">
-        <div className="flex items-center justify-between gap-1 sm:gap-2">
-          {WEEK_CALENDAR.map((item) => {
-            const isSelected = activeCalDay === item.num;
-            return (
-              <button
-                key={item.day}
-                onClick={() => setActiveCalDay(item.num)}
-                className={`flex-1 flex flex-col items-center py-2 px-1 rounded-2xl transition-all ${
-                  isSelected
-                    ? 'bg-[#282828] shadow-lg'
-                    : 'hover:bg-[#252525]'
-                }`}
-              >
-                <span className={`text-[11px] font-semibold mb-1 ${
-                  isSelected ? 'text-[#bdf900]' : 'text-[#8B9484]'
-                }`}>
-                  {item.day}
-                </span>
-                <div className={`w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center text-xs sm:text-sm font-black transition-all ${
-                  isSelected
-                    ? 'ring-2 ring-[#bdf900] bg-[#1e1e1e] text-[#bdf900] shadow-[0_0_15px_rgba(189,249,0,0.4)]'
-                    : 'bg-[#282828] text-white/90'
-                }`}>
-                  {item.num}
-                </div>
-              </button>
-            );
-          })}
-        </div>
-      </div>
-
-      {/* 3. Category Pills (Warm Up, Cardio, Strength) */}
-      <div className="bento-anim-item flex items-center gap-2.5 overflow-x-auto no-scrollbar py-1">
-        {CATEGORY_TAGS.map((cat) => {
-          const Icon = cat.icon;
-          const isActive = activeCategory === cat.id;
-          return (
-            <button
-              key={cat.id}
-              onClick={() => setActiveCategory(cat.id)}
-              className={`btn-magnetic flex items-center gap-2 px-5 py-2.5 rounded-full text-xs font-extrabold whitespace-nowrap transition-all ${
-                isActive
-                  ? 'bg-[#bdf900]/15 text-[#bdf900] border border-[#bdf900] shadow-[0_0_20px_rgba(189,249,0,0.25)]'
-                  : 'bg-[#282828] text-white/80 border border-white/[0.08] hover:border-white/20'
-              }`}
-            >
-              <Icon className={`w-4 h-4 ${isActive ? 'text-[#bdf900]' : 'text-[#8B9484]'}`} />
-              <span>{cat.label}</span>
-            </button>
-          );
-        })}
-      </div>
-
-      {/* 4. Workout Highlights Carousel Cards (Stretch & Flow, Partner Power, Core Blast) */}
-      <div className="bento-anim-item grid grid-cols-1 sm:grid-cols-3 gap-4">
-        {WORKOUT_CAROUSEL.map((w) => (
-          <div
-            key={w.id}
-            className="group relative h-44 sm:h-48 rounded-[28px] overflow-hidden border border-white/[0.08] bg-[#1e1e1e] cursor-pointer shadow-lg hover:border-[#bdf900]/40 transition-all"
-          >
-            <img
-              src={w.image}
-              alt={w.title}
-              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 opacity-75"
-            />
-            {/* Dark gradient fade on bottom */}
-            <div className="absolute inset-0 bg-gradient-to-t from-[#1e1e1e] via-[#1e1e1e]/40 to-transparent" />
-
-            <div className="absolute top-3.5 left-3.5">
-              <span className="px-2.5 py-0.5 rounded-full bg-black/60 backdrop-blur-md text-[10px] font-mono font-bold text-[#bdf900] border border-[#bdf900]/30">
-                {w.tag}
-              </span>
-            </div>
-
-            <div className="absolute bottom-3.5 inset-x-3.5 flex items-end justify-between">
-              <div>
-                <h4 className="text-sm font-black text-white group-hover:text-[#bdf900] transition-colors">
-                  {w.title}
-                </h4>
-                <div className="flex items-center gap-1.5 text-[11px] text-[#9BA394] font-medium mt-0.5">
-                  <Clock className="w-3 h-3 text-[#bdf900]" />
-                  <span>{w.duration}</span>
-                </div>
-              </div>
-              <div className="w-8 h-8 rounded-full bg-[#bdf900] text-[#1e1e1e] flex items-center justify-center shadow-[0_0_12px_rgba(189,249,0,0.5)] group-hover:scale-110 transition-transform">
-                <Play className="w-3.5 h-3.5 fill-current ml-0.5" />
-              </div>
-            </div>
-          </div>
-        ))}
-      </div>
-
-      {/* 5. Recent Activity Section (Walking 7890 steps, Workout 72/min with circular rings) */}
-      <div className="bento-anim-item rounded-[28px] bg-[#1e1e1e] border border-white/[0.08] p-5 space-y-4">
-        <div className="flex items-center justify-between">
-          <h3 className="text-sm font-black text-white tracking-tight">Recent Activity</h3>
-          <button className="w-8 h-8 rounded-full bg-[#282828] text-[#8B9484] hover:text-white flex items-center justify-center transition-colors">
-            <SlidersHorizontal className="w-4 h-4" />
-          </button>
-        </div>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
-          {/* Walking */}
-          <div className="p-3.5 rounded-2xl bg-[#282828] border border-white/[0.05] flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <div className="relative w-11 h-11 rounded-full flex items-center justify-center shrink-0">
-                <svg viewBox="0 0 44 44" className="w-full h-full -rotate-90">
-                  <circle cx="22" cy="22" r="18" fill="none" stroke="#333333" strokeWidth="3.5" />
-                  <circle
-                    cx="22"
-                    cy="22"
-                    r="18"
-                    fill="none"
-                    stroke="#bdf900"
-                    strokeWidth="3.5"
-                    strokeDasharray="113"
-                    strokeDashoffset="28"
-                    strokeLinecap="round"
-                    className="drop-shadow-[0_0_8px_rgba(189,249,0,0.6)]"
-                  />
-                </svg>
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <Footprints className="w-4 h-4 text-[#bdf900]" />
-                </div>
-              </div>
-              <div>
-                <div className="text-xs font-black text-white">Walking</div>
-                <div className="text-[10px] text-[#8B9484]">Today at 12:43pm</div>
-              </div>
-            </div>
-            <div className="text-right">
-              <div className="text-sm font-black text-white">7890</div>
-              <div className="text-[10px] text-[#8B9484]">/steps</div>
-            </div>
-          </div>
-
-          {/* Workout */}
-          <div className="p-3.5 rounded-2xl bg-[#282828] border border-white/[0.05] flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <div className="relative w-11 h-11 rounded-full flex items-center justify-center shrink-0">
-                <svg viewBox="0 0 44 44" className="w-full h-full -rotate-90">
-                  <circle cx="22" cy="22" r="18" fill="none" stroke="#333333" strokeWidth="3.5" />
-                  <circle
-                    cx="22"
-                    cy="22"
-                    r="18"
-                    fill="none"
-                    stroke="#FF7A00"
-                    strokeWidth="3.5"
-                    strokeDasharray="113"
-                    strokeDashoffset="42"
-                    strokeLinecap="round"
-                    className="drop-shadow-[0_0_8px_rgba(255,122,0,0.6)]"
-                  />
-                </svg>
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <Dumbbell className="w-4 h-4 text-[#FF7A00]" />
-                </div>
-              </div>
-              <div>
-                <div className="text-xs font-black text-white">Workout</div>
-                <div className="text-[10px] text-[#8B9484]">Yesterday at 8:00pm</div>
-              </div>
-            </div>
-            <div className="text-right">
-              <div className="text-sm font-black text-white">72</div>
-              <div className="text-[10px] text-[#8B9484]">/min</div>
-            </div>
-          </div>
-        </div>
-      </div>
-
       {/* ROW 1: 4 Primary KPI Cards (Responsive: 1 col on mobile, 2 on tablet, 4 on desktop) */}
       <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 sm:gap-5">
         {/* 1. SOLID VOLT FEATURE CARD: MRR Líquido + Equalizer Bars (Matches "Sleep Hours 7.5 Hrs" Card in Reference Mockup) */}

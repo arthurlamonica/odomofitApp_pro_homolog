@@ -10,10 +10,6 @@ import {
   CheckCircle,
   Smartphone,
   Layers,
-  Heart,
-  MessageCircle,
-  Bookmark,
-  Search,
   Activity,
   Wheat
 } from 'lucide-react';
@@ -35,10 +31,6 @@ export const NutritionBuilder: React.FC<NutritionBuilderProps> = ({
   const [showAddMealModal, setShowAddMealModal] = useState(false);
   const [newMealName, setNewMealName] = useState('');
   const [newMealTime, setNewMealTime] = useState('15:00');
-  const [isFollowing, setIsFollowing] = useState(false);
-  const [likesCount, setLikesCount] = useState(90);
-  const [isLiked, setIsLiked] = useState(false);
-  const [isBookmarked, setIsBookmarked] = useState(false);
 
   // Diagnostic Shuffler (SKILL: GEMINI-Construtor-de-Sites Card 1)
   const [shufflerItems, setShufflerItems] = useState(initialPlan.supplements);
@@ -175,12 +167,17 @@ export const NutritionBuilder: React.FC<NutritionBuilderProps> = ({
       )}
 
       {/* ======================================================== */}
-      {/* YOUR DAILY NUTRITION (Exact Match to Screen 3 Mockup)     */}
+      {/* MACRONUTRIENTES PRESCRITOS PELO PROFISSIONAL (CRN)        */}
       {/* ======================================================== */}
       <div className="space-y-3">
-        <h3 className="text-sm sm:text-base font-black text-white tracking-tight">
-          Your Daily Nutrition
-        </h3>
+        <div className="flex items-center justify-between">
+          <h3 className="text-sm sm:text-base font-black text-white tracking-tight">
+            Metas de Macronutrientes (VET &amp; Taxa Metabólica)
+          </h3>
+          <span className="text-[11px] font-mono text-[#bdf900] font-bold">
+            Aluno: {selectedStudent?.name}
+          </span>
+        </div>
 
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3.5">
           {/* 1. Calories */}
@@ -189,11 +186,11 @@ export const NutritionBuilder: React.FC<NutritionBuilderProps> = ({
               <Flame className="w-4 h-4 fill-current" />
             </div>
             <div>
-              <span className="text-[11px] text-[#8B9484] font-medium block">Calories</span>
+              <span className="text-[11px] text-[#8B9484] font-medium block">Meta Calórica</span>
               <div className="text-xl sm:text-2xl font-black text-white tracking-tight mt-0.5">
-                1120<span className="text-xs text-[#8B9484] font-semibold ml-1">Kcal</span>
+                {plan.targetCalories}<span className="text-xs text-[#8B9484] font-semibold ml-1">kcal</span>
               </div>
-              <span className="text-[10px] font-mono text-[#8B9484] block mt-1">/ 2300 burned</span>
+              <span className="text-[10px] font-mono text-[#bdf900] block mt-1">Ativo: {totals.calories} kcal</span>
             </div>
           </div>
 
@@ -203,11 +200,11 @@ export const NutritionBuilder: React.FC<NutritionBuilderProps> = ({
               <Activity className="w-4 h-4" />
             </div>
             <div>
-              <span className="text-[11px] text-[#8B9484] font-medium block">Proteins</span>
+              <span className="text-[11px] text-[#8B9484] font-medium block">Proteínas</span>
               <div className="text-xl sm:text-2xl font-black text-white tracking-tight mt-0.5">
-                98<span className="text-xs text-[#8B9484] font-semibold ml-0.5">g</span>
+                {plan.targetProteinG}<span className="text-xs text-[#8B9484] font-semibold ml-0.5">g</span>
               </div>
-              <span className="text-[10px] font-mono text-[#8B9484] block mt-1">/ 392 kcal</span>
+              <span className="text-[10px] font-mono text-[#8B9484] block mt-1">{(plan.targetProteinG * 4 / plan.targetCalories * 100).toFixed(0)}% do VET</span>
             </div>
           </div>
 
@@ -217,11 +214,11 @@ export const NutritionBuilder: React.FC<NutritionBuilderProps> = ({
               <Wheat className="w-4 h-4" />
             </div>
             <div>
-              <span className="text-[11px] text-[#8B9484] font-medium block">Carbs</span>
+              <span className="text-[11px] text-[#8B9484] font-medium block">Carboidratos</span>
               <div className="text-xl sm:text-2xl font-black text-white tracking-tight mt-0.5">
-                120<span className="text-xs text-[#8B9484] font-semibold ml-0.5">g</span>
+                {plan.targetCarbsG}<span className="text-xs text-[#8B9484] font-semibold ml-0.5">g</span>
               </div>
-              <span className="text-[10px] font-mono text-[#8B9484] block mt-1">/ 480 kcal</span>
+              <span className="text-[10px] font-mono text-[#8B9484] block mt-1">{(plan.targetCarbsG * 4 / plan.targetCalories * 100).toFixed(0)}% do VET</span>
             </div>
           </div>
 
@@ -235,109 +232,9 @@ export const NutritionBuilder: React.FC<NutritionBuilderProps> = ({
               <div className="text-xl sm:text-2xl font-black text-white tracking-tight mt-0.5">
                 {plan.targetFatG}<span className="text-xs text-[#8B9484] font-semibold ml-0.5">g</span>
               </div>
-              <span className="text-[10px] font-mono text-[#8B9484] block mt-1">{(plan.targetWaterMl / 1000).toFixed(1)}L água</span>
+              <span className="text-[10px] font-mono text-[#8B9484] block mt-1">{(plan.targetWaterMl / 1000).toFixed(1)}L diários</span>
             </div>
           </div>
-        </div>
-      </div>
-
-      {/* ======================================================== */}
-      {/* COOKING COMMUNITY CARD (Exact Match to Screen 3 Mockup)   */}
-      {/* ======================================================== */}
-      <div className="rounded-[28px] bg-[#181818] border border-white/[0.08] p-5 sm:p-6 space-y-4">
-        <div className="flex items-center justify-between">
-          <h3 className="text-sm sm:text-base font-black text-white tracking-tight">
-            Cooking community
-          </h3>
-          <button className="w-8 h-8 rounded-full bg-[#252525] text-[#8B9484] hover:text-white flex items-center justify-center transition-colors">
-            <Search className="w-4 h-4" />
-          </button>
-        </div>
-
-        {/* Author Header: Regina Fly */}
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <img
-              src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&q=80&w=120"
-              alt="Regina Fly"
-              className="w-10 h-10 rounded-full object-cover ring-2 ring-[#bdf900]/40"
-            />
-            <div>
-              <h4 className="text-xs sm:text-sm font-extrabold text-white">
-                Regina Fly
-              </h4>
-              <span className="text-[10px] text-[#8B9484]">12k Followers</span>
-            </div>
-          </div>
-
-          <button
-            onClick={() => setIsFollowing(!isFollowing)}
-            className={`btn-magnetic px-4 py-1.5 rounded-full text-xs font-black transition-all ${
-              isFollowing
-                ? 'bg-[#252525] text-white border border-white/20'
-                : 'bg-[#bdf900] text-[#1e1e1e] shadow-[0_0_15px_rgba(189,249,0,0.35)]'
-            }`}
-          >
-            {isFollowing ? 'Following' : 'Follow'}
-          </button>
-        </div>
-
-        {/* Meal Photo with Floating Ingredient Pill */}
-        <div className="relative h-48 sm:h-60 rounded-[24px] overflow-hidden bg-black/40">
-          <img
-            src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&q=85&w=800"
-            alt="Healthy Quinoa & Avocado Bowl"
-            className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
-
-          {/* Floating Ingredients Pill (Matches Screen 3 icon bar) */}
-          <div className="absolute bottom-3.5 inset-x-4 flex justify-center">
-            <div className="px-4 py-2 rounded-full bg-black/65 backdrop-blur-md border border-white/15 flex items-center gap-3 text-sm shadow-xl">
-              <span title="Pimentão">🌶️</span>
-              <span title="Abacate">🥑</span>
-              <span title="Tomate">🍅</span>
-              <span title="Salmão/Proteína">🥩</span>
-              <span title="Espinafre">🥬</span>
-              <span title="Cogumelos">🍄</span>
-            </div>
-          </div>
-        </div>
-
-        {/* Social Actions & Description */}
-        <div className="space-y-2">
-          <div className="flex items-center justify-between text-xs text-[#8B9484]">
-            <div className="flex items-center gap-4">
-              {/* Likes */}
-              <button
-                onClick={() => {
-                  setIsLiked(!isLiked);
-                  setLikesCount(prev => isLiked ? prev - 1 : prev + 1);
-                }}
-                className="flex items-center gap-1.5 hover:text-white transition-colors"
-              >
-                <Heart className={`w-4 h-4 ${isLiked ? 'text-[#FF4D4D] fill-[#FF4D4D]' : 'text-[#FF4D4D]'}`} />
-                <span className="font-bold text-white">{likesCount} Likes</span>
-              </button>
-
-              {/* Comments */}
-              <div className="flex items-center gap-1.5">
-                <MessageCircle className="w-4 h-4 text-[#8B9484]" />
-                <span className="font-bold text-white">12</span>
-              </div>
-            </div>
-
-            <button
-              onClick={() => setIsBookmarked(!isBookmarked)}
-              className="text-[#8B9484] hover:text-white transition-colors"
-            >
-              <Bookmark className={`w-4 h-4 ${isBookmarked ? 'text-[#bdf900] fill-[#bdf900]' : ''}`} />
-            </button>
-          </div>
-
-          <p className="text-xs text-[#9BA394] leading-relaxed">
-            Power-packed bowl: quinoa, avocado, grilled protein, and greens for sustained all-day energy and clean micronutrients.
-          </p>
         </div>
       </div>
 

@@ -236,63 +236,59 @@ export const Sidebar: React.FC<SidebarProps> = ({
         </div>
       )}
 
-      {/* 3. Mobile Floating Pill Dock (Visible on Mobile screens or when forceMobileLayout is active - Matches Reference Mockup Dock) */}
+      {/* 3. Mobile Floating Pill Dock (Visible on Mobile screens or when forceMobileLayout is active) */}
       <nav
         aria-label="Navegação rápida inferior"
         className={`${forceMobileLayout ? 'flex' : 'lg:hidden flex'} fixed bottom-3 sm:bottom-4 inset-x-0 z-40 justify-center px-3 sm:px-4 pointer-events-none`}
       >
         <div className="pointer-events-auto flex items-center justify-around sm:justify-center gap-2 sm:gap-4 px-4 py-2 rounded-full bg-[#1e1e1e]/95 backdrop-blur-2xl border border-white/10 shadow-[0_20px_50px_rgba(0,0,0,0.95)] w-full max-w-[400px]">
-          {/* 1. Home */}
+          {/* 1. Painel */}
           <button
             onClick={() => onTabChange('overview')}
             className="flex flex-col items-center justify-center gap-0.5 group transition-colors py-1 px-2"
           >
             <Home className={`w-5 h-5 transition-colors ${activeTab === 'overview' ? 'text-[#bdf900]' : 'text-[#8B9484] group-hover:text-white'}`} />
-            <span className={`text-[10px] font-bold ${activeTab === 'overview' ? 'text-[#bdf900]' : 'text-[#8B9484]'}`}>Home</span>
+            <span className={`text-[10px] font-bold ${activeTab === 'overview' ? 'text-[#bdf900]' : 'text-[#8B9484]'}`}>Painel</span>
             {activeTab === 'overview' && <span className="w-1 h-1 rounded-full bg-[#bdf900]" />}
           </button>
 
-          {/* 2. Workout */}
+          {/* 2. Treinos */}
           <button
             onClick={() => onTabChange('workouts')}
             className="flex flex-col items-center justify-center gap-0.5 group transition-colors py-1 px-2"
           >
             <Dumbbell className={`w-5 h-5 transition-colors ${activeTab === 'workouts' ? 'text-[#bdf900]' : 'text-[#8B9484] group-hover:text-white'}`} />
-            <span className={`text-[10px] font-bold ${activeTab === 'workouts' ? 'text-[#bdf900]' : 'text-[#8B9484]'}`}>Workout</span>
+            <span className={`text-[10px] font-bold ${activeTab === 'workouts' ? 'text-[#bdf900]' : 'text-[#8B9484]'}`}>Treinos</span>
             {activeTab === 'workouts' && <span className="w-1 h-1 rounded-full bg-[#bdf900]" />}
           </button>
 
-          {/* 3. Central FAB: Stats / Progress (Exact Match to Reference Mockup Center Neon Button) */}
+          {/* 3. Central FAB: Split / Métricas */}
           <button
             onClick={() => onTabChange('finance')}
-            className={`w-12 h-12 -mt-5 rounded-full flex items-center justify-center shadow-[0_8px_25px_rgba(189,249,0,0.45)] transition-all transform hover:scale-110 active:scale-95 ${
-              activeTab === 'finance'
-                ? 'bg-[#bdf900] text-[#1e1e1e] ring-4 ring-[#1e1e1e]'
-                : 'bg-[#bdf900] text-[#1e1e1e] ring-4 ring-[#1e1e1e]'
-            }`}
-            title="Progresso & Estatísticas"
-            aria-label="Progresso e estatísticas"
+            className="w-12 h-12 -mt-5 rounded-full flex items-center justify-center bg-[#bdf900] text-[#1e1e1e] ring-4 ring-[#1e1e1e] shadow-[0_8px_25px_rgba(189,249,0,0.45)] transition-all transform hover:scale-110 active:scale-95"
+            title="Split Stripe & Métricas"
+            aria-label="Split Stripe e métricas"
           >
             <BarChart3 className="w-6 h-6 stroke-[2.6]" />
           </button>
 
-          {/* 4. Meals */}
+          {/* 4. Dietas */}
           <button
             onClick={() => onTabChange('nutrition')}
             className="flex flex-col items-center justify-center gap-0.5 group transition-colors py-1 px-2"
           >
             <UtensilsCrossed className={`w-5 h-5 transition-colors ${activeTab === 'nutrition' ? 'text-[#bdf900]' : 'text-[#8B9484] group-hover:text-white'}`} />
-            <span className={`text-[10px] font-bold ${activeTab === 'nutrition' ? 'text-[#bdf900]' : 'text-[#8B9484]'}`}>Meals</span>
+            <span className={`text-[10px] font-bold ${activeTab === 'nutrition' ? 'text-[#bdf900]' : 'text-[#8B9484]'}`}>Dietas</span>
             {activeTab === 'nutrition' && <span className="w-1 h-1 rounded-full bg-[#bdf900]" />}
           </button>
 
-          {/* 5. Profile */}
+          {/* 5. Alunos */}
           <button
             onClick={() => onTabChange('students')}
             className="flex flex-col items-center justify-center gap-0.5 group transition-colors py-1 px-2"
           >
             <Users className={`w-5 h-5 transition-colors ${activeTab === 'students' ? 'text-[#bdf900]' : 'text-[#8B9484] group-hover:text-white'}`} />
-            <span className={`text-[10px] font-bold ${activeTab === 'students' ? 'text-[#bdf900]' : 'text-[#8B9484]'}`}>Profile</span>
+            <span className={`text-[10px] font-bold ${activeTab === 'students' ? 'text-[#bdf900]' : 'text-[#8B9484]'}`}>Alunos</span>
             {activeTab === 'students' && <span className="w-1 h-1 rounded-full bg-[#bdf900]" />}
           </button>
         </div>
