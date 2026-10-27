@@ -8,6 +8,8 @@
     "sistema-usuarios"
   ],
   "scripts": {
+    "dev": "npm --prefix sistema-usuarios run dev",
+    "build": "npm --prefix sistema-usuarios run build",
     "dev:profissionais": "npm --prefix sistema-profissionais run dev",
     "dev:usuarios": "npm --prefix sistema-usuarios run dev",
     "build:profissionais": "npm --prefix sistema-profissionais run build",
