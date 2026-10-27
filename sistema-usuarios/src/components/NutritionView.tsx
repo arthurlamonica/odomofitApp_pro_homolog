@@ -1,54 +1,59 @@
 import React, { useState } from 'react';
 import { 
-  Utensils, 
-  Droplets, 
   Flame, 
-  CheckCircle2, 
+  Droplets, 
   Clock, 
+  CheckCircle2, 
   Plus, 
   Lock, 
   ShieldCheck 
 } from 'lucide-react';
-import type { UserNutritionData, CurrentUserProfile } from '../types';
+import confetti from 'canvas-confetti';
+import type { CurrentUserProfile, UserNutritionData } from '../types';
 
 interface NutritionViewProps {
   currentUser: CurrentUserProfile;
-  nutritionData: UserNutritionData;
+  nutritionData: UserNutritionData | null;
 }
 
 export const NutritionView: React.FC<NutritionViewProps> = ({
   currentUser,
   nutritionData: initialData
 }) => {
-  const [data, setData] = useState<UserNutritionData>(initialData);
+  const [data, setData] = useState<UserNutritionData | null>(initialData);
 
   const toggleMealItem = (mealId: string, itemId: string) => {
-    setData(prev => ({
-      ...prev,
-      meals: prev.meals.map(m => {
-        if (m.id !== mealId) return m;
-        return {
-          ...m,
-          items: m.items.map(item => {
-            if (item.id !== itemId) return item;
-            return { ...item, checked: !item.checked };
-          })
-        };
-      })
-    }));
+    if (!data) return;
+
+    setData(prev => {
+      if (!prev) return null;
+
+      return {
+        ...prev,
+        meals: prev.meals.map(m => {
+          if (m.id !== mealId) return m;
+
+          return {
+            ...m,
+            items: m.items.map(i => {
+              if (i.id !== itemId) return i;
+              return { ...i, checked: !i.checked };
+            })
+          };
+        })
+      };
+    });
   };
 
   const handleAddWater = () => {
-    setData(prev => ({
-      ...prev,
-      consumedWaterMl: Math.min(prev.consumedWaterMl + 250, prev.targetWaterMl + 1000)
-    }));
+    if (!data) return;
+    setData(prev => prev ? ({ ...prev, consumedWaterMl: prev.consumedWaterMl + 250 }) : null);
   };
 
-  if (!currentUser.hasNutritionPlan) {
+  if (!data) {
     return (
       <div className="max-w-xl mx-auto space-y-6 text-center py-12 px-4">
-        <div className="w-16 h-16 rounded-3xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 flex items-center justify-center mx-auto shadow-xl shadow-emerald-500/10">
+        <div className="w-16 h-16 rounded-3xl bg-[#bdf900]/10 border border-[#bdf900]/20 text-[#bdf900] flex items-center justify-center mx-auto shadow-xl shadow-[#bdf900]/10">
           <Lock className="w-8 h-8" />
         </div>
         <div>
@@ -59,7 +64,7 @@ export const NutritionView: React.FC<NutritionViewProps> = ({
             Contrate um nutricionista ou nutrólogo credenciado no O Domo FIT para ter acesso a cálculo de macros, dietas personalizadas e suplementação.
           </p>
         </div>
-        <button className="px-6 py-2.5 rounded-2xl bg-gradient-to-r from-emerald-600 to-teal-600 text-white font-bold text-xs shadow-lg shadow-emerald-600/30 hover:scale-[1.02] transition-all">
+        <button className="px-6 py-2.5 rounded-2xl bg-[#bdf900] hover:bg-[#bdf900]/90 text-black font-extrabold text-xs shadow-lg shadow-[#bdf900]/20 hover:scale-[1.02] transition-all">
           Encontrar Nutricionista no Domo
         </button>
       </div>
@@ -81,7 +86,7 @@ export const NutritionView: React.FC<NutritionViewProps> = ({
             <h2 className="text-xl font-extrabold text-white tracking-tight">
               {data.planTitle}
             </h2>
-            <span className="flex items-center gap-1 text-[10px] font-bold text-emerald-400 bg-emerald-500/15 border border-emerald-500/30 px-2 py-0.5 rounded-full">
+            <span className="flex items-center gap-1 text-[10px] font-bold text-[#bdf900] bg-[#bdf900]/15 border border-[#bdf900]/30 px-2 py-0.5 rounded-full">
               <ShieldCheck className="w-3 h-3" />
               CRN Ativo
             </span>
@@ -93,7 +98,7 @@ export const NutritionView: React.FC<NutritionViewProps> = ({
 
         <div className="text-right">
           <div className="text-xs font-bold text-slate-300">Meta Diária</div>
-          <div className="text-lg font-mono font-extrabold text-emerald-400">
+          <div className="text-lg font-mono font-extrabold text-[#bdf900]">
             {data.targetCalories} kcal
           </div>
         </div>
@@ -119,13 +124,13 @@ export const NutritionView: React.FC<NutritionViewProps> = ({
         <div className="antigravity-card rounded-2xl p-4 border border-white/5 space-y-2">
           <div className="flex items-center justify-between text-xs text-slate-400">
             <span>Proteínas</span>
-            <span className="w-2.5 h-2.5 rounded-full bg-indigo-500" />
+            <span className="w-2.5 h-2.5 rounded-full bg-[#bdf900]" />
           </div>
-          <div className="text-lg font-mono font-bold text-indigo-400">
+          <div className="text-lg font-mono font-bold text-[#bdf900]">
             {data.consumedProteinG}g <span className="text-xs text-slate-400 font-normal">/ {data.targetProteinG}g</span>
           </div>
           <div className="w-full bg-white/5 h-1.5 rounded-full overflow-hidden">
-            <div className="bg-indigo-500 h-full rounded-full transition-all" style={{ width: `${protPercent}%` }} />
+            <div className="bg-[#bdf900] h-full rounded-full transition-all" style={{ width: `${protPercent}%` }} />
           </div>
         </div>
 
@@ -147,13 +152,13 @@ export const NutritionView: React.FC<NutritionViewProps> = ({
         <div className="antigravity-card rounded-2xl p-4 border border-white/5 space-y-2">
           <div className="flex items-center justify-between text-xs text-slate-400">
             <span>Gorduras</span>
-            <span className="w-2.5 h-2.5 rounded-full bg-emerald-500" />
+            <span className="w-2.5 h-2.5 rounded-full bg-emerald-400" />
           </div>
           <div className="text-lg font-mono font-bold text-emerald-400">
             {data.consumedFatG}g <span className="text-xs text-slate-400 font-normal">/ {data.targetFatG}g</span>
           </div>
           <div className="w-full bg-white/5 h-1.5 rounded-full overflow-hidden">
-            <div className="bg-emerald-500 h-full rounded-full transition-all" style={{ width: `${fatPercent}%` }} />
+            <div className="bg-emerald-400 h-full rounded-full transition-all" style={{ width: `${fatPercent}%` }} />
           </div>
         </div>
       </div>
@@ -202,7 +207,7 @@ export const NutritionView: React.FC<NutritionViewProps> = ({
                 key={meal.id}
                 className={`antigravity-card rounded-3xl p-5 border transition-all ${
                   allChecked 
-                    ? 'border-emerald-500/30 bg-emerald-950/10' 
+                    ? 'border-[#bdf900]/40 bg-[#282828]' 
                     : 'border-white/5'
                 }`}
               >
@@ -216,7 +221,7 @@ export const NutritionView: React.FC<NutritionViewProps> = ({
                   </div>
 
                   {allChecked && (
-                    <span className="text-[10px] font-bold text-emerald-400 bg-emerald-500/15 border border-emerald-500/30 px-2 py-0.5 rounded-full">
+                    <span className="text-[10px] font-bold text-[#bdf900] bg-[#bdf900]/15 border border-[#bdf900]/30 px-2 py-0.5 rounded-full">
                       Refeição Concluída ✅
                     </span>
                   )}
@@ -236,10 +241,10 @@ export const NutritionView: React.FC<NutritionViewProps> = ({
                       <div className="flex items-center gap-3">
                         <div className={`w-5 h-5 rounded-lg flex items-center justify-center transition-colors ${
                           item.checked 
-                            ? 'bg-emerald-500 text-white' 
+                            ? 'bg-[#bdf900] text-black font-extrabold' 
                             : 'border border-white/20'
                         }`}>
-                          {item.checked && <CheckCircle2 className="w-3.5 h-3.5" />}
+                          {item.checked && <CheckCircle2 className="w-3.5 h-3.5 stroke-[2.5]" />}
                         </div>
                         <div>
                           <div className="text-xs font-semibold">{item.foodName}</div>
@@ -264,3 +269,5 @@ export const NutritionView: React.FC<NutritionViewProps> = ({
     </div>
   );
 };
+
+export default NutritionView;

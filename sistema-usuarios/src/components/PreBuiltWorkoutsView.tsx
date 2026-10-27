@@ -23,22 +23,32 @@ import type {
 } from '../types';
 
 interface PreBuiltWorkoutsViewProps {
-  preBuiltWorkouts: PreBuiltWorkout[];
-  onSelectAndActivateRoutine: (routine: UserWorkoutRoutine) => void;
-  onOpenCustomCreator: () => void;
-  onBack: () => void;
+  preBuiltWorkouts?: PreBuiltWorkout[];
+  onSelectAndActivateRoutine?: (routine: UserWorkoutRoutine) => void;
+  onOpenCustomCreator?: () => void;
+  onBack?: () => void;
+  onBackToSelector?: () => void;
+  onSelectRoutine?: (routine: any) => void;
 }
 
 export const PreBuiltWorkoutsView: React.FC<PreBuiltWorkoutsViewProps> = ({
-  preBuiltWorkouts,
+  preBuiltWorkouts = [],
   onSelectAndActivateRoutine,
   onOpenCustomCreator,
-  onBack
+  onBack,
+  onBackToSelector,
+  onSelectRoutine
 }) => {
   const [selectedObjective, setSelectedObjective] = useState<WorkoutObjective | 'todos'>('todos');
   const [selectedLevel, setSelectedLevel] = useState<WorkoutLevel | 'todos'>('todos');
   const [searchQuery, setSearchQuery] = useState('');
   const [expandedWorkoutId, setExpandedWorkoutId] = useState<string | null>(null);
+
+  const handleBack = onBack || onBackToSelector || (() => {});
+  const handleSelect = (item: any) => {
+    if (onSelectAndActivateRoutine) onSelectAndActivateRoutine(item.routineTemplate || item);
+    if (onSelectRoutine) onSelectRoutine(item);
+  };
 
   const toggleExpand = (id: string) => {
     setExpandedWorkoutId(prev => prev === id ? null : id);
@@ -73,9 +83,9 @@ export const PreBuiltWorkoutsView: React.FC<PreBuiltWorkoutsViewProps> = ({
   const getLevelBadgeClass = (lvl: WorkoutLevel) => {
     switch (lvl) {
       case 'iniciante':
-        return 'bg-emerald-500/20 text-emerald-300 border-emerald-500/30';
+        return 'bg-[#bdf900]/20 text-[#bdf900] border-[#bdf900]/30';
       case 'intermediario':
-        return 'bg-indigo-500/20 text-indigo-300 border-indigo-500/30';
+        return 'bg-[#bdf900]/30 text-[#bdf900] border-[#bdf900]/40 font-bold';
       case 'avancado':
         return 'bg-rose-500/20 text-rose-300 border-rose-500/30';
     }
@@ -86,7 +96,7 @@ export const PreBuiltWorkoutsView: React.FC<PreBuiltWorkoutsViewProps> = ({
       {/* Top Header with Back Action */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
         <button
-          onClick={onBack}
+          onClick={handleBack}
           className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white/5 hover:bg-white/10 text-slate-300 hover:text-white text-xs font-semibold transition-all border border-white/5 active:scale-95"
         >
           <ArrowLeft className="w-4 h-4" />
@@ -94,20 +104,22 @@ export const PreBuiltWorkoutsView: React.FC<PreBuiltWorkoutsViewProps> = ({
         </button>
 
         {/* Action: Create from Scratch */}
-        <button
-          onClick={onOpenCustomCreator}
-          className="px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-indigo-600 to-indigo-700 hover:from-indigo-500 hover:to-indigo-600 text-white text-xs font-bold flex items-center gap-1.5 shadow-md shadow-indigo-950/40 transition-all active:scale-95"
-        >
-          <Plus className="w-4 h-4" />
-          <span>Montar Treino do Zero</span>
-        </button>
+        {onOpenCustomCreator && (
+          <button
+            onClick={onOpenCustomCreator}
+            className="px-3.5 py-1.5 rounded-xl bg-[#bdf900] hover:bg-[#bdf900]/90 text-black text-xs font-extrabold flex items-center gap-1.5 shadow-md shadow-[#bdf900]/25 transition-all active:scale-95"
+          >
+            <Plus className="w-4 h-4 stroke-[2.5]" />
+            <span>Montar Treino do Zero</span>
+          </button>
+        )}
       </div>
 
       {/* Banner Intro */}
-      <div className="antigravity-card rounded-2xl sm:rounded-3xl p-5 border border-indigo-500/20 bg-gradient-to-r from-indigo-950/40 via-purple-950/20 to-transparent flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+      <div className="antigravity-card rounded-2xl sm:rounded-3xl p-5 border border-[#bdf900]/20 bg-[#262626] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div>
           <div className="flex items-center gap-2">
-            <span className="w-2 h-2 rounded-full bg-indigo-400 animate-pulse" />
+            <span className="w-2 h-2 rounded-full bg-[#bdf900] animate-pulse" />
             <h2 className="text-lg sm:text-xl font-black text-white tracking-tight">
               Catálogo de Treinos Autônomos
             </h2>
@@ -135,7 +147,7 @@ export const PreBuiltWorkoutsView: React.FC<PreBuiltWorkoutsViewProps> = ({
               placeholder="Buscar por objetivo, músculo (ex: Peito, Glúteos, Força)..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-9 pr-4 py-2.5 rounded-2xl bg-[#0B0D12] border border-white/10 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500 transition-all"
+              className="w-full pl-9 pr-4 py-2.5 rounded-2xl bg-[#282828] border border-white/10 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-[#bdf900] transition-all"
             />
           </div>
 
@@ -148,7 +160,7 @@ export const PreBuiltWorkoutsView: React.FC<PreBuiltWorkoutsViewProps> = ({
                 onClick={() => setSelectedLevel(lvl)}
                 className={`px-3 py-1.5 rounded-xl text-xs font-semibold capitalize shrink-0 transition-colors ${
                   selectedLevel === lvl
-                    ? 'bg-indigo-600 text-white'
+                    ? 'bg-[#bdf900] text-black font-extrabold'
                     : 'bg-white/5 text-slate-400 hover:bg-white/10'
                 }`}
               >
@@ -166,7 +178,7 @@ export const PreBuiltWorkoutsView: React.FC<PreBuiltWorkoutsViewProps> = ({
               onClick={() => setSelectedObjective(obj)}
               className={`px-3.5 py-1.5 rounded-full font-semibold shrink-0 transition-all ${
                 selectedObjective === obj
-                  ? 'bg-gradient-to-r from-indigo-500 to-indigo-600 text-white shadow-md shadow-indigo-950/40'
+                  ? 'bg-[#bdf900] text-black font-extrabold shadow-md shadow-[#bdf900]/20'
                   : 'bg-white/5 text-slate-400 hover:bg-white/10'
               }`}
             >
@@ -183,7 +195,7 @@ export const PreBuiltWorkoutsView: React.FC<PreBuiltWorkoutsViewProps> = ({
           return (
             <div
               key={workout.id}
-              className="antigravity-card rounded-2xl sm:rounded-3xl border border-white/5 hover:border-indigo-500/30 p-4 sm:p-5 transition-all duration-300 hover:shadow-xl hover:shadow-indigo-950/20 bg-[#0B0D12]"
+              className="antigravity-card rounded-2xl sm:rounded-3xl border border-white/5 hover:border-[#bdf900]/40 p-4 sm:p-5 transition-all duration-300 hover:shadow-xl hover:shadow-[#bdf900]/10 bg-[#242424]"
             >
               <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
                 <div className="flex-1">
@@ -211,7 +223,7 @@ export const PreBuiltWorkoutsView: React.FC<PreBuiltWorkoutsViewProps> = ({
                 {/* Duration & Frequency Badges */}
                 <div className="flex sm:flex-col items-center sm:items-end justify-between w-full sm:w-auto gap-2 text-xs text-slate-400 shrink-0">
                   <div className="flex items-center gap-1 text-slate-300">
-                    <Clock className="w-3.5 h-3.5 text-indigo-400" />
+                    <Clock className="w-3.5 h-3.5 text-[#bdf900]" />
                     <span className="font-semibold text-white">{workout.durationMin} min</span>
                   </div>
                   <div className="flex items-center gap-1 text-[11px]">
@@ -229,7 +241,7 @@ export const PreBuiltWorkoutsView: React.FC<PreBuiltWorkoutsViewProps> = ({
                 {workout.muscleGroups.map(muscle => (
                   <span
                     key={muscle}
-                    className="px-2 py-0.5 rounded-lg text-[10px] font-semibold bg-indigo-950/40 text-indigo-300 border border-indigo-800/40"
+                    className="px-2 py-0.5 rounded-lg text-[10px] font-semibold bg-[#bdf900]/15 text-[#bdf900] border border-[#bdf900]/30"
                   >
                     {muscle}
                   </span>
@@ -241,7 +253,7 @@ export const PreBuiltWorkoutsView: React.FC<PreBuiltWorkoutsViewProps> = ({
                 <div className="mt-4 pt-4 border-t border-white/5 space-y-2.5 animate-fade-in">
                   <div className="flex items-center justify-between">
                     <h5 className="text-xs font-bold uppercase tracking-wider text-slate-400 flex items-center gap-1.5">
-                      <Layers className="w-3.5 h-3.5 text-indigo-400" />
+                      <Layers className="w-3.5 h-3.5 text-[#bdf900]" />
                       Exercícios Inclusos ({workout.previewExercises.length})
                     </h5>
                     <span className="text-[10px] text-slate-500">Com séries e repetições calculadas</span>
@@ -254,7 +266,7 @@ export const PreBuiltWorkoutsView: React.FC<PreBuiltWorkoutsViewProps> = ({
                         className="p-2.5 rounded-xl bg-white/[0.02] border border-white/5 flex items-center justify-between text-xs"
                       >
                         <div className="flex items-center gap-2">
-                          <span className="w-5 h-5 rounded-lg bg-indigo-500/20 text-indigo-300 font-bold text-[10px] flex items-center justify-center shrink-0">
+                          <span className="w-5 h-5 rounded-lg bg-[#bdf900]/20 text-[#bdf900] font-bold text-[10px] flex items-center justify-center shrink-0">
                             {idx + 1}
                           </span>
                           <span className="font-semibold text-white">{ex.name}</span>
@@ -263,7 +275,7 @@ export const PreBuiltWorkoutsView: React.FC<PreBuiltWorkoutsViewProps> = ({
                         <div className="flex items-center gap-2 text-slate-300 font-mono text-[11px]">
                           <span>{ex.sets}</span>
                           <span>•</span>
-                          <span className="text-indigo-300">{ex.reps}</span>
+                          <span className="text-[#bdf900]">{ex.reps}</span>
                         </div>
                       </div>
                     ))}
@@ -282,11 +294,11 @@ export const PreBuiltWorkoutsView: React.FC<PreBuiltWorkoutsViewProps> = ({
                 </button>
 
                 <button
-                  onClick={() => onSelectAndActivateRoutine(workout.routineTemplate)}
-                  className="px-4 py-2 rounded-xl bg-gradient-to-r from-indigo-600 via-indigo-500 to-emerald-500 hover:from-indigo-500 hover:to-emerald-400 text-white text-xs font-bold shadow-md shadow-indigo-950/40 flex items-center gap-2 transition-all active:scale-95"
+                  onClick={() => handleSelect(workout)}
+                  className="px-4 py-2 rounded-xl bg-[#bdf900] hover:bg-[#bdf900]/90 text-black text-xs font-black shadow-md shadow-[#bdf900]/25 flex items-center gap-2 transition-all active:scale-95"
                 >
-                  <Play className="w-3.5 h-3.5 fill-white" />
-                  <span>Ativar & Iniciar Treino</span>
+                  <Play className="w-3.5 h-3.5 fill-black stroke-[2.5]" />
+                  <span>Ativar &amp; Iniciar Treino</span>
                 </button>
               </div>
             </div>
@@ -296,3 +308,5 @@ export const PreBuiltWorkoutsView: React.FC<PreBuiltWorkoutsViewProps> = ({
     </div>
   );
 };
+
+export default PreBuiltWorkoutsView;

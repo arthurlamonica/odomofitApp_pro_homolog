@@ -12,22 +12,31 @@ import {
   LocateFixed,
   X
 } from 'lucide-react';
-import type { PersonalTrainer, PersonalTrainerPlan } from '../types';
+import type { PersonalTrainer, PersonalTrainerPlan, CurrentUserProfile } from '../types';
+import { mockPersonalTrainers } from '../data/mockData';
 import { PersonalTrainerCard } from './PersonalTrainerCard';
 import { PersonalDetailModal } from './PersonalDetailModal';
 
 interface PersonalTrainerDirectoryProps {
-  trainers: PersonalTrainer[];
-  onBack: () => void;
+  trainers?: PersonalTrainer[];
+  onBack?: () => void;
   onStartChatWithTrainer?: (trainer: PersonalTrainer) => void;
   onTrainerHired?: (trainer: PersonalTrainer, plan: PersonalTrainerPlan) => void;
+  currentUser?: CurrentUserProfile;
+  onBackToSelector?: () => void;
+  onHireComplete?: (trainer: PersonalTrainer) => void;
+  onStartChat?: () => void;
 }
 
 export const PersonalTrainerDirectory: React.FC<PersonalTrainerDirectoryProps> = ({
-  trainers,
+  trainers = mockPersonalTrainers,
   onBack,
   onStartChatWithTrainer,
-  onTrainerHired
+  onTrainerHired,
+  currentUser,
+  onBackToSelector,
+  onHireComplete,
+  onStartChat
 }) => {
   const [modality, setModality] = useState<'presencial' | 'online'>('presencial');
   const [selectedTrainer, setSelectedTrainer] = useState<PersonalTrainer | null>(null);
@@ -45,6 +54,8 @@ export const PersonalTrainerDirectory: React.FC<PersonalTrainerDirectoryProps> =
   const [selectedSpecialty, setSelectedSpecialty] = useState<string>('todos');
   const [selectedPriceTier, setSelectedPriceTier] = useState<number | 'todos'>('todos');
 
+  const handleBack = onBack || onBackToSelector || (() => {});
+
   // Handle Geolocation API
   const handleRequestLocation = () => {
     setIsLocating(true);
@@ -60,7 +71,6 @@ export const PersonalTrainerDirectory: React.FC<PersonalTrainerDirectoryProps> =
       (position) => {
         setIsLocating(false);
         setUserLocationGranted(true);
-        // Simulando reverse-geocoding amigável para SP
         setLocationName('São Paulo - SP (GPS Ativo ± 15m)');
       },
       (error) => {
@@ -145,7 +155,7 @@ export const PersonalTrainerDirectory: React.FC<PersonalTrainerDirectoryProps> =
       {/* Top Bar with Back Action & Title */}
       <div className="flex items-center justify-between gap-3">
         <button
-          onClick={onBack}
+          onClick={handleBack}
           className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white/5 hover:bg-white/10 text-slate-300 hover:text-white text-xs font-semibold transition-all border border-white/5 active:scale-95"
         >
           <ArrowLeft className="w-4 h-4" />
@@ -158,16 +168,16 @@ export const PersonalTrainerDirectory: React.FC<PersonalTrainerDirectoryProps> =
       </div>
 
       {/* Main Mode Selector: Presencial vs Online */}
-      <div className="antigravity-card rounded-2xl sm:rounded-3xl p-2 bg-[#0B0D12] border border-white/10 flex items-center gap-2">
+      <div className="antigravity-card rounded-2xl sm:rounded-3xl p-2 bg-[#262626] border border-white/10 flex items-center gap-2">
         <button
           onClick={() => setModality('presencial')}
-          className={`flex-1 py-3 px-4 rounded-xl sm:rounded-2xl font-bold text-xs sm:text-sm flex items-center justify-center gap-2 transition-all ${
+          className={`flex-1 py-3 px-4 rounded-xl sm:rounded-2xl font-black text-xs sm:text-sm flex items-center justify-center gap-2 transition-all ${
             modality === 'presencial'
-              ? 'bg-gradient-to-r from-emerald-600 to-teal-600 text-white shadow-lg shadow-emerald-950/50'
+              ? 'bg-[#bdf900] text-black shadow-lg shadow-[#bdf900]/20'
               : 'text-slate-400 hover:text-slate-200 hover:bg-white/5'
           }`}
         >
-          <MapPin className="w-4 h-4" />
+          <MapPin className="w-4 h-4 stroke-[2.5]" />
           <span>Atendimento Presencial</span>
           <span className="hidden sm:inline-block text-[10px] opacity-80 font-normal">
             (Geolocalizado)
@@ -176,13 +186,13 @@ export const PersonalTrainerDirectory: React.FC<PersonalTrainerDirectoryProps> =
 
         <button
           onClick={() => setModality('online')}
-          className={`flex-1 py-3 px-4 rounded-xl sm:rounded-2xl font-bold text-xs sm:text-sm flex items-center justify-center gap-2 transition-all ${
+          className={`flex-1 py-3 px-4 rounded-xl sm:rounded-2xl font-black text-xs sm:text-sm flex items-center justify-center gap-2 transition-all ${
             modality === 'online'
-              ? 'bg-gradient-to-r from-indigo-600 to-violet-600 text-white shadow-lg shadow-indigo-950/50'
+              ? 'bg-[#bdf900] text-black shadow-lg shadow-[#bdf900]/20'
               : 'text-slate-400 hover:text-slate-200 hover:bg-white/5'
           }`}
         >
-          <Globe className="w-4 h-4" />
+          <Globe className="w-4 h-4 stroke-[2.5]" />
           <span>Consultoria Online</span>
           <span className="hidden sm:inline-block text-[10px] opacity-80 font-normal">
             (Nacional)
@@ -192,14 +202,14 @@ export const PersonalTrainerDirectory: React.FC<PersonalTrainerDirectoryProps> =
 
       {/* PRESENCIAL: Geolocation & Radius Handler */}
       {modality === 'presencial' && (
-        <div className="antigravity-card rounded-2xl sm:rounded-3xl p-4 sm:p-5 border border-emerald-500/20 bg-gradient-to-b from-emerald-950/20 to-transparent space-y-3.5">
+        <div className="antigravity-card rounded-2xl sm:rounded-3xl p-4 sm:p-5 border border-[#bdf900]/20 bg-[#262626] space-y-3.5">
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
             <div className="flex items-center gap-2.5">
-              <div className="w-9 h-9 rounded-xl bg-emerald-500/20 border border-emerald-500/30 flex items-center justify-center text-emerald-400 shrink-0">
+              <div className="w-9 h-9 rounded-xl bg-[#bdf900]/20 border border-[#bdf900]/30 flex items-center justify-center text-[#bdf900] shrink-0">
                 <Navigation className="w-5 h-5 animate-pulse" />
               </div>
               <div>
-                <p className="text-[11px] font-bold uppercase tracking-wider text-emerald-400">
+                <p className="text-[11px] font-bold uppercase tracking-wider text-[#bdf900]">
                   Localização de Referência
                 </p>
                 <p className="text-xs sm:text-sm font-semibold text-white">
@@ -212,7 +222,7 @@ export const PersonalTrainerDirectory: React.FC<PersonalTrainerDirectoryProps> =
               <button
                 onClick={handleRequestLocation}
                 disabled={isLocating}
-                className="flex-1 sm:flex-none px-3.5 py-2 rounded-xl bg-emerald-500/20 hover:bg-emerald-500/30 border border-emerald-500/30 text-emerald-300 text-xs font-semibold flex items-center justify-center gap-1.5 transition-all"
+                className="flex-1 sm:flex-none px-3.5 py-2 rounded-xl bg-[#bdf900]/20 hover:bg-[#bdf900]/30 border border-[#bdf900]/30 text-[#bdf900] text-xs font-bold flex items-center justify-center gap-1.5 transition-all"
               >
                 <LocateFixed className={`w-3.5 h-3.5 ${isLocating ? 'animate-spin' : ''}`} />
                 <span>{isLocating ? 'Detectando GPS...' : 'Atualizar GPS'}</span>
@@ -238,18 +248,18 @@ export const PersonalTrainerDirectory: React.FC<PersonalTrainerDirectoryProps> =
                 placeholder="Alterar localização manual (Ex: Moema, SP ou CEP)..."
                 value={manualLocationInput}
                 onChange={(e) => setManualLocationInput(e.target.value)}
-                className="w-full px-3.5 py-2 rounded-xl bg-black/40 border border-white/10 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-emerald-500"
+                className="w-full px-3.5 py-2 rounded-xl bg-[#1E1E1E] border border-white/10 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-[#bdf900]"
               />
               <button
                 type="submit"
-                className="absolute right-1 px-3 py-1 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white text-[11px] font-bold"
+                className="absolute right-1 px-3 py-1 rounded-lg bg-[#bdf900] hover:bg-[#bdf900]/90 text-black text-[11px] font-black"
               >
                 Buscar
               </button>
             </form>
 
             {/* Radius Selector */}
-            <div className="flex items-center justify-between sm:justify-end gap-2 px-3 py-1.5 rounded-xl bg-black/40 border border-white/10">
+            <div className="flex items-center justify-between sm:justify-end gap-2 px-3 py-1.5 rounded-xl bg-[#1E1E1E] border border-white/10">
               <span className="text-[11px] text-slate-400 font-medium">Raio:</span>
               <div className="flex items-center gap-1">
                 {[5, 10, 20].map((radius) => (
@@ -258,7 +268,7 @@ export const PersonalTrainerDirectory: React.FC<PersonalTrainerDirectoryProps> =
                     onClick={() => setSelectedRadiusKm(radius)}
                     className={`px-2 py-0.5 rounded-md text-[11px] font-bold transition-colors ${
                       selectedRadiusKm === radius
-                        ? 'bg-emerald-500 text-white'
+                        ? 'bg-[#bdf900] text-black'
                         : 'text-slate-400 hover:text-white'
                     }`}
                   >
@@ -273,8 +283,8 @@ export const PersonalTrainerDirectory: React.FC<PersonalTrainerDirectoryProps> =
 
       {/* ONLINE: Information Banner */}
       {modality === 'online' && (
-        <div className="antigravity-card rounded-2xl sm:rounded-3xl p-4 sm:p-5 border border-indigo-500/20 bg-gradient-to-b from-indigo-950/20 to-transparent flex items-center gap-3">
-          <div className="w-10 h-10 rounded-2xl bg-indigo-500/20 border border-indigo-500/30 flex items-center justify-center text-indigo-400 shrink-0">
+        <div className="antigravity-card rounded-2xl sm:rounded-3xl p-4 sm:p-5 border border-[#bdf900]/20 bg-[#262626] flex items-center gap-3">
+          <div className="w-10 h-10 rounded-2xl bg-[#bdf900]/20 border border-[#bdf900]/30 flex items-center justify-center text-[#bdf900] shrink-0">
             <Sparkles className="w-5 h-5" />
           </div>
           <div>
@@ -299,7 +309,7 @@ export const PersonalTrainerDirectory: React.FC<PersonalTrainerDirectoryProps> =
               placeholder="Buscar por nome, bairro ou especialidade..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-9 pr-8 py-2.5 rounded-2xl bg-[#0B0D12] border border-white/10 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500 transition-all"
+              className="w-full pl-9 pr-8 py-2.5 rounded-2xl bg-[#282828] border border-white/10 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-[#bdf900] transition-all"
             />
             {searchQuery && (
               <button
@@ -318,7 +328,7 @@ export const PersonalTrainerDirectory: React.FC<PersonalTrainerDirectoryProps> =
               onClick={() => setSelectedPriceTier('todos')}
               className={`px-2.5 py-1.5 rounded-xl text-xs font-semibold shrink-0 transition-colors ${
                 selectedPriceTier === 'todos'
-                  ? 'bg-indigo-600 text-white'
+                  ? 'bg-[#bdf900] text-black font-extrabold'
                   : 'bg-white/5 text-slate-400 hover:bg-white/10'
               }`}
             >
@@ -330,7 +340,7 @@ export const PersonalTrainerDirectory: React.FC<PersonalTrainerDirectoryProps> =
                 onClick={() => setSelectedPriceTier(tier as any)}
                 className={`px-2.5 py-1.5 rounded-xl text-xs font-mono font-bold shrink-0 transition-colors ${
                   selectedPriceTier === tier
-                    ? 'bg-emerald-500 text-white'
+                    ? 'bg-[#bdf900] text-black'
                     : 'bg-white/5 text-slate-400 hover:bg-white/10'
                 }`}
               >
@@ -346,7 +356,7 @@ export const PersonalTrainerDirectory: React.FC<PersonalTrainerDirectoryProps> =
             onClick={() => setSelectedSpecialty('todos')}
             className={`px-3 py-1 rounded-full font-semibold shrink-0 transition-all ${
               selectedSpecialty === 'todos'
-                ? 'bg-white text-black shadow-md'
+                ? 'bg-white text-black shadow-md font-bold'
                 : 'bg-white/5 text-slate-400 hover:bg-white/10'
             }`}
           >
@@ -358,7 +368,7 @@ export const PersonalTrainerDirectory: React.FC<PersonalTrainerDirectoryProps> =
               onClick={() => setSelectedSpecialty(spec)}
               className={`px-3 py-1 rounded-full font-semibold shrink-0 transition-all ${
                 selectedSpecialty === spec
-                  ? 'bg-indigo-600 text-white shadow-md shadow-indigo-950/40'
+                  ? 'bg-[#bdf900] text-black font-extrabold shadow-md shadow-[#bdf900]/20'
                   : 'bg-white/5 text-slate-400 hover:bg-white/10'
               }`}
             >
@@ -380,7 +390,7 @@ export const PersonalTrainerDirectory: React.FC<PersonalTrainerDirectoryProps> =
           ))}
         </div>
       ) : (
-        <div className="antigravity-card rounded-3xl p-8 border border-white/5 text-center space-y-3">
+        <div className="antigravity-card rounded-3xl p-8 border border-white/5 text-center space-y-3 bg-[#242424]">
           <div className="w-12 h-12 rounded-2xl bg-white/5 mx-auto flex items-center justify-center text-slate-400">
             <Search className="w-6 h-6" />
           </div>
@@ -395,7 +405,7 @@ export const PersonalTrainerDirectory: React.FC<PersonalTrainerDirectoryProps> =
               setSelectedPriceTier('todos');
               setSelectedRadiusKm(20);
             }}
-            className="px-4 py-2 rounded-xl bg-white/10 hover:bg-white/15 text-white text-xs font-bold transition-all"
+            className="px-4 py-2 rounded-xl bg-[#bdf900] hover:bg-[#bdf900]/90 text-black text-xs font-bold transition-all shadow-md shadow-[#bdf900]/20"
           >
             Limpar Filtros
           </button>
@@ -405,11 +415,18 @@ export const PersonalTrainerDirectory: React.FC<PersonalTrainerDirectoryProps> =
       {/* Detail Modal Component */}
       <PersonalDetailModal
         trainer={selectedTrainer}
-        isOpen={!!selectedTrainer}
         onClose={() => setSelectedTrainer(null)}
-        onStartChat={onStartChatWithTrainer}
-        onHireTrainer={onTrainerHired}
+        onStartChat={(trainer) => {
+          if (onStartChatWithTrainer) onStartChatWithTrainer(trainer);
+          if (onStartChat) onStartChat();
+        }}
+        onHireTrainer={(trainer, plan) => {
+          if (onTrainerHired) onTrainerHired(trainer, plan);
+          if (onHireComplete) onHireComplete(trainer);
+        }}
       />
     </div>
   );
 };
+
+export default PersonalTrainerDirectory;

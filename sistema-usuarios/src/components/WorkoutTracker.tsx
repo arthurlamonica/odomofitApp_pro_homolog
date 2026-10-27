@@ -1,41 +1,32 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { 
-  Dumbbell, 
-  Flame, 
-  Clock, 
-  CheckCircle2, 
-  Trophy, 
-  Plus, 
   Play, 
   Pause, 
-  RotateCcw,
-  Sparkles,
+  RotateCcw, 
+  CheckCircle2, 
+  Plus, 
+  X, 
+  Trophy, 
+  Sparkles, 
+  Clock, 
+  Dumbbell, 
   Share2,
-  X,
-  Compass,
-  ArrowLeft
+  Compass
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
-import type { 
-  UserWorkoutRoutine, 
-  CurrentUserProfile, 
-  UserExerciseItem,
-  PersonalTrainer,
-  PersonalTrainerPlan
-} from '../types';
-import { mockPreBuiltWorkouts, mockPersonalTrainers } from '../data/mockData';
 import { TrainingModeSelector } from './TrainingModeSelector';
 import { PreBuiltWorkoutsView } from './PreBuiltWorkoutsView';
 import { PersonalTrainerDirectory } from './PersonalTrainerDirectory';
+import type { CurrentUserProfile, UserWorkoutRoutine, UserExerciseItem } from '../types';
 
 interface WorkoutTrackerProps {
   currentUser: CurrentUserProfile;
   routines: UserWorkoutRoutine[];
   onShareToFeed: (exercise: string, weight: string) => void;
-  onNavigateToChat?: (trainerName?: string) => void;
+  onNavigateToChat?: () => void;
 }
 
-export type TrainingHubViewMode = 'selector' | 'catalog' | 'personal-directory' | 'active-tracker';
+export type WorkoutSubView = 'active-workout' | 'selector' | 'prebuilt' | 'personals';
 
 export const WorkoutTracker: React.FC<WorkoutTrackerProps> = ({
   currentUser,
@@ -43,55 +34,73 @@ export const WorkoutTracker: React.FC<WorkoutTrackerProps> = ({
   onShareToFeed,
   onNavigateToChat
 }) => {
-  // Navigation State inside Training Hub
-  const [viewMode, setViewMode] = useState<TrainingHubViewMode>('selector');
+  // Navigation State between Sub-Views
+  const [viewMode, setViewMode] = useState<WorkoutSubView>('active-workout');
 
   const [routines, setRoutines] = useState<UserWorkoutRoutine[]>(initialRoutines);
-  const [selectedRoutineId, setSelectedRoutineId] = useState<string>(routines[0]?.id || '');
+  const [selectedRoutineId, setSelectedRoutineId] = useState<string>(initialRoutines[0]?.id || '');
+  
+  // Rest Stopwatch State
   const [timerSeconds, setTimerSeconds] = useState(90);
   const [timerRunning, setTimerRunning] = useState(false);
+  const [timerIntervalId, setTimerIntervalId] = useState<number | null>(null);
+
+  // PR Celebration State
   const [prCelebration, setPrCelebration] = useState<{ exercise: string; weight: string } | null>(null);
+
+  // Add Custom Exercise Modal State
   const [showAddCustomModal, setShowAddCustomModal] = useState(false);
   const [customExerciseName, setCustomExerciseName] = useState('');
   const [customMuscleGroup, setCustomMuscleGroup] = useState('Peitoral');
   const [customSetsCount, setCustomSetsCount] = useState(3);
   const [customReps, setCustomReps] = useState('10-12');
-  const [customWeight, setCustomWeight] = useState(30);
+  const [customWeight, setCustomWeight] = useState(20);
 
   const activeRoutine = routines.find(r => r.id === selectedRoutineId) || routines[0];
 
-  // Rest Timer countdown
-  useEffect(() => {
-    let interval: any = null;
-    if (timerRunning && timerSeconds > 0) {
-      interval = setInterval(() => {
-        setTimerSeconds(s => s - 1);
+  // Timer logic
+  React.useEffect(() => {
+    if (timerRunning) {
+      const interval = window.setInterval(() => {
+        setTimerSeconds(prev => {
+          if (prev <= 1) {
+            window.clearInterval(interval);
+            setTimerRunning(false);
+            return 90;
+          }
+          return prev - 1;
+        });
       }, 1000);
-    } else if (timerSeconds === 0) {
-      setTimerRunning(false);
+      setTimerIntervalId(interval);
+    } else if (timerIntervalId) {
+      clearInterval(timerIntervalId);
     }
-    return () => clearInterval(interval);
-  }, [timerRunning, timerSeconds]);
+
+    return () => {
+      if (timerIntervalId) clearInterval(timerIntervalId);
+    };
+  }, [timerRunning]);
 
   const toggleSetComplete = (exerciseId: string, setNumber: number) => {
-    setRoutines(prev => prev.map(r => {
+    setRoutines(prevRoutines => prevRoutines.map(r => {
       if (r.id !== selectedRoutineId) return r;
+
       return {
         ...r,
         exercises: r.exercises.map(ex => {
           if (ex.id !== exerciseId) return ex;
+
           return {
             ...ex,
             sets: ex.sets.map(s => {
-              if (s.setNumber === setNumber) {
-                const nextCompleted = !s.completed;
-                if (nextCompleted) {
-                  setTimerSeconds(ex.restSeconds || 90);
-                  setTimerRunning(true);
-                }
-                return { ...s, completed: nextCompleted };
+              if (s.setNumber !== setNumber) return s;
+              const nextCompleted = !s.completed;
+              if (nextCompleted) {
+                // Auto start 90s rest timer on completing a set
+                setTimerSeconds(ex.restSeconds || 90);
+                setTimerRunning(true);
               }
-              return s;
+              return { ...s, completed: nextCompleted };
             })
           };
         })
@@ -105,7 +114,7 @@ export const WorkoutTracker: React.FC<WorkoutTrackerProps> = ({
         particleCount: 100,
         spread: 90,
         origin: { y: 0.6 },
-        colors: ['#10B981', '#6366F1', '#F59E0B', '#06B6D4']
+        colors: ['#bdf900', '#ffffff', '#22c55e']
       });
     } catch (e) {}
 
@@ -145,103 +154,72 @@ export const WorkoutTracker: React.FC<WorkoutTrackerProps> = ({
     setShowAddCustomModal(false);
   };
 
-  // Handler for activating a pre-built routine from Catalog
-  const handleActivatePreBuiltRoutine = (routineTemplate: UserWorkoutRoutine) => {
-    const existingIndex = routines.findIndex(r => r.id === routineTemplate.id);
-    if (existingIndex >= 0) {
-      setSelectedRoutineId(routineTemplate.id);
-    } else {
-      setRoutines(prev => [routineTemplate, ...prev]);
-      setSelectedRoutineId(routineTemplate.id);
-    }
-    setViewMode('active-tracker');
-  };
-
-  // Handler for hiring a personal trainer
-  const handleTrainerHired = (trainer: PersonalTrainer, plan: PersonalTrainerPlan) => {
-    // Vincular novo treino prescrito pelo personal contratado
-    const newPrescribedRoutine: UserWorkoutRoutine = {
-      id: `rt-prescribed-${Date.now()}`,
-      divisionLetter: 'P',
-      title: `Protocolo Personal (${trainer.name.split(' ')[0]})`,
-      isAutonomous: false,
-      prescribedBy: `${trainer.name} (${trainer.cref})`,
-      exercises: [
-        {
-          id: `ex-prescribed-1`,
-          name: 'Supino Reto com Halteres (Pausa Isométrica)',
-          muscleGroup: 'Peitoral',
-          restSeconds: 90,
-          techniqueNotes: `Prescrito por ${trainer.name}: Escápulas em retração total, foco em cadência 3-1-1.`,
-          sets: [
-            { setNumber: 1, targetReps: '10-12', suggestedWeightKg: 28, completed: false },
-            { setNumber: 2, targetReps: '10', suggestedWeightKg: 32, completed: false },
-            { setNumber: 3, targetReps: '8-10', suggestedWeightKg: 34, completed: false }
-          ]
-        },
-        {
-          id: `ex-prescribed-2`,
-          name: 'Crucifixo Inclinado com Halteres',
-          muscleGroup: 'Peitoral',
-          restSeconds: 60,
-          techniqueNotes: 'Alongamento sem projetar ombros para frente.',
-          sets: [
-            { setNumber: 1, targetReps: '12', suggestedWeightKg: 18, completed: false },
-            { setNumber: 2, targetReps: '12', suggestedWeightKg: 20, completed: false }
-          ]
-        }
-      ]
+  // Handler to import a pre-built routine into user workout tracker
+  const handleAdoptPrebuiltRoutine = (prebuilt: any) => {
+    const newRoutine: UserWorkoutRoutine = {
+      id: `adopted-${Date.now()}`,
+      divisionLetter: 'B',
+      title: prebuilt.title,
+      isAutonomous: true,
+      exercises: prebuilt.exercises.map((ex: any, idx: number) => ({
+        id: `adopted-ex-${idx}`,
+        name: ex.name,
+        muscleGroup: prebuilt.category || 'Geral',
+        restSeconds: 60,
+        techniqueNotes: 'Ficha da Biblioteca O Domo Fit',
+        sets: Array.from({ length: ex.sets || 3 }, (_, sIdx) => ({
+          setNumber: sIdx + 1,
+          targetReps: ex.reps || '12',
+          suggestedWeightKg: 15,
+          completed: false
+        }))
+      }))
     };
 
-    setRoutines(prev => [newPrescribedRoutine, ...prev]);
-    setSelectedRoutineId(newPrescribedRoutine.id);
+    setRoutines(prev => [newRoutine, ...prev]);
+    setSelectedRoutineId(newRoutine.id);
+    setViewMode('active-workout');
   };
 
   // ==========================================
-  // VIEW: ETAPA 1 - Decision Gate (TrainingModeSelector)
+  // VIEW: TRAINING MODE SELECTOR (Hub Central)
   // ==========================================
   if (viewMode === 'selector') {
     return (
       <TrainingModeSelector
-        onSelectAutonomous={() => setViewMode('catalog')}
-        onSelectPersonal={() => setViewMode('personal-directory')}
-        activeRoutine={activeRoutine}
-        onContinueActiveWorkout={() => setViewMode('active-tracker')}
+        onSelectAutonomous={() => setViewMode('prebuilt')}
+        onSelectPersonal={() => setViewMode('personals')}
+        onBackToActive={() => setViewMode('active-workout')}
+        hasActiveWorkout={routines.length > 0}
+        activeWorkoutTitle={activeRoutine?.title}
       />
     );
   }
 
   // ==========================================
-  // VIEW: ETAPA 2 - Caminho A (PreBuiltWorkoutsView)
+  // VIEW: PRE-BUILT WORKOUTS LIBRARY
   // ==========================================
-  if (viewMode === 'catalog') {
+  if (viewMode === 'prebuilt') {
     return (
       <PreBuiltWorkoutsView
-        preBuiltWorkouts={mockPreBuiltWorkouts}
-        onSelectAndActivateRoutine={handleActivatePreBuiltRoutine}
-        onOpenCustomCreator={() => {
-          setViewMode('active-tracker');
-          setShowAddCustomModal(true);
-        }}
-        onBack={() => setViewMode('selector')}
+        onBackToSelector={() => setViewMode('selector')}
+        onSelectRoutine={handleAdoptPrebuiltRoutine}
       />
     );
   }
 
   // ==========================================
-  // VIEW: ETAPA 3 - Caminho B (PersonalTrainerDirectory)
+  // VIEW: PERSONAL TRAINER DIRECTORY
   // ==========================================
-  if (viewMode === 'personal-directory') {
+  if (viewMode === 'personals') {
     return (
       <PersonalTrainerDirectory
-        trainers={mockPersonalTrainers}
-        onBack={() => setViewMode('selector')}
-        onStartChatWithTrainer={(trainer) => {
-          if (onNavigateToChat) {
-            onNavigateToChat(trainer.name);
-          }
+        currentUser={currentUser}
+        onBackToSelector={() => setViewMode('selector')}
+        onHireComplete={trainer => {
+          setViewMode('active-workout');
         }}
-        onTrainerHired={handleTrainerHired}
+        onStartChat={onNavigateToChat}
       />
     );
   }
@@ -257,7 +235,7 @@ export const WorkoutTracker: React.FC<WorkoutTrackerProps> = ({
           onClick={() => setViewMode('selector')}
           className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white/5 hover:bg-white/10 text-slate-300 hover:text-white text-xs font-semibold transition-all border border-white/5 active:scale-95"
         >
-          <Compass className="w-4 h-4 text-indigo-400" />
+          <Compass className="w-4 h-4 text-[#bdf900]" />
           <span>Hub de Treinos & Personais</span>
         </button>
 
@@ -273,7 +251,7 @@ export const WorkoutTracker: React.FC<WorkoutTrackerProps> = ({
             <h2 className="text-lg sm:text-xl font-extrabold text-white tracking-tight">
               Sessão de Treino em Execução
             </h2>
-            <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-indigo-500/20 text-indigo-300 border border-indigo-500/30">
+            <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-[#bdf900]/20 text-[#bdf900] border border-[#bdf900]/30">
               Live
             </span>
           </div>
@@ -285,9 +263,9 @@ export const WorkoutTracker: React.FC<WorkoutTrackerProps> = ({
         </div>
 
         {/* Live Rest Timer Widget */}
-        <div className="flex items-center gap-2.5 sm:gap-3 px-3.5 py-2 sm:py-2.5 rounded-2xl bg-indigo-950/40 border border-indigo-500/30 shadow-lg shadow-indigo-950/40 w-full sm:w-auto justify-between sm:justify-start">
+        <div className="flex items-center gap-2.5 sm:gap-3 px-3.5 py-2 sm:py-2.5 rounded-2xl bg-[#282828] border border-[#bdf900]/30 shadow-lg shadow-black/40 w-full sm:w-auto justify-between sm:justify-start">
           <div className="flex items-center gap-2.5">
-            <Clock className={`w-5 h-5 ${timerRunning ? 'text-indigo-400 animate-spin' : 'text-slate-400'}`} />
+            <Clock className={`w-5 h-5 ${timerRunning ? 'text-[#bdf900] animate-spin' : 'text-slate-400'}`} />
             <div>
               <div className="text-[9px] text-slate-400 uppercase font-semibold">Descanso</div>
               <div className="text-base sm:text-lg font-mono font-extrabold text-white leading-none">
@@ -299,10 +277,10 @@ export const WorkoutTracker: React.FC<WorkoutTrackerProps> = ({
           <div className="flex items-center gap-1 pl-2 border-l border-white/10">
             <button
               onClick={() => setTimerRunning(!timerRunning)}
-              className="min-w-[40px] min-h-[40px] flex items-center justify-center rounded-xl bg-indigo-600 text-white hover:bg-indigo-500 active:scale-95 transition-all"
+              className="min-w-[40px] min-h-[40px] flex items-center justify-center rounded-xl bg-[#bdf900] text-black font-extrabold hover:bg-[#bdf900]/90 active:scale-95 transition-all shadow-md shadow-[#bdf900]/20"
               title={timerRunning ? 'Pausar descanso' : 'Iniciar descanso'}
             >
-              {timerRunning ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4 fill-white" />}
+              {timerRunning ? <Pause className="w-4 h-4 stroke-[2.5]" /> : <Play className="w-4 h-4 fill-black stroke-[2.5]" />}
             </button>
             <button
               onClick={() => {
@@ -320,20 +298,20 @@ export const WorkoutTracker: React.FC<WorkoutTrackerProps> = ({
 
       {/* PR Celebration Banner */}
       {prCelebration && (
-        <div className="antigravity-card p-4 rounded-2xl sm:rounded-3xl border border-emerald-500/40 bg-gradient-to-r from-emerald-950/40 via-indigo-950/30 to-emerald-950/20 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 animate-fade-in shadow-xl shadow-emerald-950/40">
+        <div className="antigravity-card p-4 rounded-2xl sm:rounded-3xl border border-[#bdf900]/40 bg-[#282828] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 animate-fade-in shadow-xl shadow-[#bdf900]/10">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-2xl bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center text-emerald-400">
+            <div className="w-10 h-10 rounded-2xl bg-[#bdf900]/20 border border-[#bdf900]/40 flex items-center justify-center text-[#bdf900]">
               <Trophy className="w-5 h-5" />
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <span className="text-xs font-bold text-emerald-400 uppercase tracking-wider">
+                <span className="text-xs font-bold text-[#bdf900] uppercase tracking-wider">
                   Novo Recorde Pessoal Batido!
                 </span>
                 <Sparkles className="w-3.5 h-3.5 text-amber-400 animate-spin" />
               </div>
               <p className="text-sm font-black text-white mt-0.5">
-                {prCelebration.exercise} • <span className="text-emerald-300 font-mono">{prCelebration.weight}</span>
+                {prCelebration.exercise} • <span className="text-[#bdf900] font-mono">{prCelebration.weight}</span>
               </p>
             </div>
           </div>
@@ -341,7 +319,7 @@ export const WorkoutTracker: React.FC<WorkoutTrackerProps> = ({
           <div className="flex items-center gap-2 w-full sm:w-auto">
             <button
               onClick={() => onShareToFeed(prCelebration.exercise, prCelebration.weight)}
-              className="flex-1 sm:flex-none min-h-[44px] px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold flex items-center justify-center gap-1.5 shadow-md shadow-emerald-950/60 active:scale-95 transition-all"
+              className="flex-1 sm:flex-none min-h-[44px] px-4 py-2 rounded-xl bg-[#bdf900] hover:bg-[#bdf900]/90 text-black text-xs font-black flex items-center justify-center gap-1.5 shadow-md shadow-[#bdf900]/25 active:scale-95 transition-all"
             >
               <Share2 className="w-3.5 h-3.5" />
               <span>Publicar no Feed</span>
@@ -365,7 +343,7 @@ export const WorkoutTracker: React.FC<WorkoutTrackerProps> = ({
               onClick={() => setSelectedRoutineId(r.id)}
               className={`min-h-[44px] px-3.5 sm:px-4 py-2 rounded-2xl text-xs font-bold transition-all duration-200 flex items-center gap-2 shrink-0 ${
                 selectedRoutineId === r.id
-                  ? 'bg-gradient-to-r from-indigo-600 to-indigo-700 text-white shadow-lg shadow-indigo-950/50'
+                  ? 'bg-[#bdf900] text-black font-extrabold shadow-lg shadow-[#bdf900]/20'
                   : 'bg-white/5 text-slate-400 hover:bg-white/10 hover:text-slate-200'
               }`}
             >
@@ -379,7 +357,7 @@ export const WorkoutTracker: React.FC<WorkoutTrackerProps> = ({
 
         <button
           onClick={() => setShowAddCustomModal(true)}
-          className="min-h-[44px] px-3 py-2 rounded-2xl bg-white/5 hover:bg-white/10 border border-white/5 text-indigo-400 text-xs font-semibold flex items-center gap-1.5 shrink-0 active:scale-95 transition-all"
+          className="min-h-[44px] px-3 py-2 rounded-2xl bg-white/5 hover:bg-white/10 border border-white/5 text-[#bdf900] text-xs font-semibold flex items-center gap-1.5 shrink-0 active:scale-95 transition-all"
         >
           <Plus className="w-4 h-4" />
           <span className="hidden sm:inline">Adicionar Exercício</span>
@@ -397,7 +375,7 @@ export const WorkoutTracker: React.FC<WorkoutTrackerProps> = ({
             <div className="flex items-start justify-between gap-3">
               <div>
                 <div className="flex items-center gap-2">
-                  <span className="px-2 py-0.5 rounded-lg text-[10px] font-bold bg-indigo-500/20 text-indigo-300 border border-indigo-500/30">
+                  <span className="px-2 py-0.5 rounded-lg text-[10px] font-bold bg-[#bdf900]/20 text-[#bdf900] border border-[#bdf900]/30">
                     {exercise.muscleGroup}
                   </span>
                   <span className="text-[11px] text-slate-400 flex items-center gap-1">
@@ -440,7 +418,7 @@ export const WorkoutTracker: React.FC<WorkoutTrackerProps> = ({
                   key={set.setNumber}
                   className={`grid grid-cols-12 items-center px-3 py-2.5 rounded-xl text-xs font-mono transition-all duration-200 ${
                     set.completed 
-                      ? 'bg-emerald-950/20 border border-emerald-500/30 text-emerald-200' 
+                      ? 'bg-[#bdf900]/15 border border-[#bdf900]/30 text-white' 
                       : 'bg-white/[0.02] border border-white/5 text-slate-300'
                   }`}
                 >
@@ -461,11 +439,11 @@ export const WorkoutTracker: React.FC<WorkoutTrackerProps> = ({
                       onClick={() => toggleSetComplete(exercise.id, set.setNumber)}
                       className={`min-h-[40px] min-w-[40px] sm:min-w-[70px] px-3 py-1.5 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 active:scale-95 transition-all ${
                         set.completed
-                          ? 'bg-emerald-500 text-black shadow-md shadow-emerald-500/30'
+                          ? 'bg-[#bdf900] text-black shadow-md shadow-[#bdf900]/25'
                           : 'bg-white/10 hover:bg-white/15 text-slate-300'
                       }`}
                     >
-                      <CheckCircle2 className={`w-4 h-4 ${set.completed ? 'text-black' : 'text-slate-400'}`} />
+                      <CheckCircle2 className={`w-4 h-4 ${set.completed ? 'text-black stroke-[2.5]' : 'text-slate-400'}`} />
                       <span className="hidden sm:inline">
                         {set.completed ? 'Feito' : 'Fazer'}
                       </span>
@@ -481,10 +459,10 @@ export const WorkoutTracker: React.FC<WorkoutTrackerProps> = ({
       {/* Modal: Add Custom Exercise */}
       {showAddCustomModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-fade-in">
-          <div className="antigravity-card rounded-3xl p-5 sm:p-6 w-full max-w-md border border-white/10 bg-[#0B0D12] shadow-2xl space-y-4">
+          <div className="antigravity-card rounded-3xl p-5 sm:p-6 w-full max-w-md border border-white/10 bg-[#1E1E1E] shadow-2xl space-y-4">
             <div className="flex items-center justify-between pb-3 border-b border-white/5">
               <div className="flex items-center gap-2">
-                <Dumbbell className="w-5 h-5 text-indigo-400" />
+                <Dumbbell className="w-5 h-5 text-[#bdf900]" />
                 <h3 className="text-base font-bold text-white">
                   Novo Exercício Autônomo
                 </h3>
@@ -507,7 +485,7 @@ export const WorkoutTracker: React.FC<WorkoutTrackerProps> = ({
                   placeholder="Ex: Elevação Lateral com Halteres"
                   value={customExerciseName}
                   onChange={e => setCustomExerciseName(e.target.value)}
-                  className="w-full bg-white/5 border border-white/10 rounded-2xl px-4 py-2.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500"
+                  className="w-full bg-[#282828] border border-white/10 rounded-2xl px-4 py-2.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-[#bdf900]"
                   required
                 />
               </div>
@@ -520,7 +498,7 @@ export const WorkoutTracker: React.FC<WorkoutTrackerProps> = ({
                   <select
                     value={customMuscleGroup}
                     onChange={e => setCustomMuscleGroup(e.target.value)}
-                    className="w-full bg-[#12151D] border border-white/10 rounded-2xl px-3 py-2.5 text-xs text-white focus:outline-none focus:border-indigo-500"
+                    className="w-full bg-[#282828] border border-white/10 rounded-2xl px-3 py-2.5 text-xs text-white focus:outline-none focus:border-[#bdf900]"
                   >
                     <option value="Peitoral">Peitoral</option>
                     <option value="Dorsais">Dorsais</option>
@@ -542,7 +520,7 @@ export const WorkoutTracker: React.FC<WorkoutTrackerProps> = ({
                     max="8"
                     value={customSetsCount}
                     onChange={e => setCustomSetsCount(Number(e.target.value))}
-                    className="w-full bg-white/5 border border-white/10 rounded-2xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-indigo-500"
+                    className="w-full bg-[#282828] border border-white/10 rounded-2xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-[#bdf900]"
                   />
                 </div>
               </div>
@@ -557,7 +535,7 @@ export const WorkoutTracker: React.FC<WorkoutTrackerProps> = ({
                     placeholder="10-12"
                     value={customReps}
                     onChange={e => setCustomReps(e.target.value)}
-                    className="w-full bg-white/5 border border-white/10 rounded-2xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-indigo-500"
+                    className="w-full bg-[#282828] border border-white/10 rounded-2xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-[#bdf900]"
                   />
                 </div>
 
@@ -569,7 +547,7 @@ export const WorkoutTracker: React.FC<WorkoutTrackerProps> = ({
                     type="number"
                     value={customWeight}
                     onChange={e => setCustomWeight(Number(e.target.value))}
-                    className="w-full bg-white/5 border border-white/10 rounded-2xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-indigo-500"
+                    className="w-full bg-[#282828] border border-white/10 rounded-2xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-[#bdf900]"
                   />
                 </div>
               </div>
@@ -584,7 +562,7 @@ export const WorkoutTracker: React.FC<WorkoutTrackerProps> = ({
                 </button>
                 <button
                   type="submit"
-                  className="min-h-[44px] px-5 py-2 rounded-2xl bg-indigo-600 text-white font-bold text-xs hover:bg-indigo-500 shadow-md shadow-indigo-600/30 active:scale-95 transition-all"
+                  className="min-h-[44px] px-5 py-2 rounded-2xl bg-[#bdf900] text-black font-extrabold text-xs hover:bg-[#bdf900]/90 shadow-md shadow-[#bdf900]/25 active:scale-95 transition-all"
                 >
                   Adicionar ao Treino
                 </button>
@@ -596,3 +574,5 @@ export const WorkoutTracker: React.FC<WorkoutTrackerProps> = ({
     </div>
   );
 };
+
+export default WorkoutTracker;

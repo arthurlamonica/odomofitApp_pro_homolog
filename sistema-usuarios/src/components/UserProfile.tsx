@@ -32,14 +32,14 @@ export const UserProfile: React.FC<UserProfileProps> = ({ user, posts }) => {
       <div className="antigravity-card rounded-3xl p-6 border border-white/5 space-y-5">
         <div className="flex flex-col sm:flex-row items-center sm:items-start gap-6">
           <div className="relative">
-            <div className="w-24 h-24 rounded-full p-[3px] bg-gradient-to-tr from-indigo-500 via-emerald-400 to-cyan-400">
+            <div className="w-24 h-24 rounded-full p-[3px] bg-gradient-to-tr from-[#bdf900] via-emerald-400 to-[#bdf900]">
               <img 
                 src={user.avatarUrl} 
                 alt={user.name} 
-                className="w-full h-full rounded-full object-cover border-4 border-[#08090C]"
+                className="w-full h-full rounded-full object-cover border-4 border-[#1E1E1E]"
               />
             </div>
-            <span className="absolute bottom-1 right-1 w-5 h-5 rounded-full bg-emerald-500 text-white flex items-center justify-center text-[10px] font-bold ring-2 ring-[#08090C]">
+            <span className="absolute bottom-1 right-1 w-5 h-5 rounded-full bg-[#bdf900] text-black flex items-center justify-center text-[10px] font-black ring-2 ring-[#1E1E1E]">
               ✓
             </span>
           </div>
@@ -49,7 +49,7 @@ export const UserProfile: React.FC<UserProfileProps> = ({ user, posts }) => {
               <div>
                 <h2 className="text-xl font-bold text-white tracking-tight flex items-center justify-center sm:justify-start gap-2">
                   <span>{user.name}</span>
-                  <span className="text-[10px] px-2 py-0.5 rounded-full bg-indigo-500/20 text-indigo-300 font-mono">
+                  <span className="text-[10px] px-2 py-0.5 rounded-full bg-[#bdf900]/20 text-[#bdf900] font-mono font-bold">
                     PRO ATLETA
                   </span>
                 </h2>
@@ -83,7 +83,7 @@ export const UserProfile: React.FC<UserProfileProps> = ({ user, posts }) => {
                 <span className="text-slate-400 block text-[11px]">seguindo</span>
               </div>
               <div>
-                <strong className="text-emerald-400 font-extrabold flex items-center gap-0.5">
+                <strong className="text-[#bdf900] font-extrabold flex items-center gap-0.5">
                   <Trophy className="w-3.5 h-3.5 inline" />
                   {user.prsCount}
                 </strong>
@@ -100,16 +100,16 @@ export const UserProfile: React.FC<UserProfileProps> = ({ user, posts }) => {
 
         {/* Professional Coaches Assigned Badges */}
         <div className="pt-4 border-t border-white/5 grid grid-cols-1 md:grid-cols-2 gap-3">
-          <div className="p-3 rounded-2xl bg-white/[0.03] border border-white/5 flex items-center gap-3">
-            <ShieldCheck className="w-5 h-5 text-indigo-400" />
+          <div className="p-3 rounded-2xl bg-[#282828] border border-white/5 flex items-center gap-3">
+            <ShieldCheck className="w-5 h-5 text-[#bdf900]" />
             <div>
               <div className="text-[10px] text-slate-400 uppercase font-semibold">Personal Trainer</div>
               <div className="text-xs font-bold text-white">{user.assignedTrainerName}</div>
             </div>
           </div>
 
-          <div className="p-3 rounded-2xl bg-white/[0.03] border border-white/5 flex items-center gap-3">
-            <Award className="w-5 h-5 text-emerald-400" />
+          <div className="p-3 rounded-2xl bg-[#282828] border border-white/5 flex items-center gap-3">
+            <Award className="w-5 h-5 text-[#bdf900]" />
             <div>
               <div className="text-[10px] text-slate-400 uppercase font-semibold">Nutricionista</div>
               <div className="text-xs font-bold text-white">{user.assignedNutritionistName}</div>
@@ -121,7 +121,7 @@ export const UserProfile: React.FC<UserProfileProps> = ({ user, posts }) => {
       {/* Grid Tabs: Publicações / Salvos / Recordes */}
       <div className="space-y-4">
         <div className="flex items-center justify-center gap-8 border-b border-white/10 pb-3 text-xs font-bold">
-          <button className="flex items-center gap-2 text-indigo-400 border-b-2 border-indigo-500 pb-2 -mb-3.5">
+          <button className="flex items-center gap-2 text-[#bdf900] border-b-2 border-[#bdf900] pb-2 -mb-3.5">
             <Grid className="w-4 h-4" />
             <span>PUBLICAÇÕES</span>
           </button>
@@ -155,3 +155,5 @@ export const UserProfile: React.FC<UserProfileProps> = ({ user, posts }) => {
     </div>
   );
 };
+
+export default UserProfile;

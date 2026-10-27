@@ -1,16 +1,15 @@
 import React, { useState } from 'react';
 import { 
   Trophy, 
-  Users, 
   Flame, 
+  Users, 
   CheckCircle2, 
-  Calendar, 
   Medal, 
-  Sparkles,
-  ArrowRight
+  Calendar,
+  Sparkles 
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
-import type { Challenge, CurrentUserProfile } from '../types';
+import type { CurrentUserProfile, Challenge } from '../types';
 
 interface CommunitiesChallengesProps {
   currentUser: CurrentUserProfile;
@@ -32,7 +31,7 @@ export const CommunitiesChallenges: React.FC<CommunitiesChallengesProps> = ({
         particleCount: 70,
         spread: 60,
         origin: { y: 0.6 },
-        colors: ['#F59E0B', '#10B981', '#6366F1']
+        colors: ['#bdf900', '#ffffff', '#F59E0B']
       });
     } catch (e) {}
 
@@ -59,7 +58,7 @@ export const CommunitiesChallenges: React.FC<CommunitiesChallengesProps> = ({
       {/* Top Banner */}
       <div className="antigravity-card rounded-3xl p-6 border border-white/5 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
         <div className="flex items-center gap-4">
-          <div className="w-12 h-12 rounded-2xl bg-amber-500/20 text-amber-400 flex items-center justify-center border border-amber-500/30">
+          <div className="w-12 h-12 rounded-2xl bg-[#bdf900]/20 text-[#bdf900] flex items-center justify-center border border-[#bdf900]/30">
             <Trophy className="w-6 h-6" />
           </div>
           <div>
@@ -73,8 +72,8 @@ export const CommunitiesChallenges: React.FC<CommunitiesChallengesProps> = ({
         </div>
 
         <div className="flex items-center gap-2">
-          <span className="text-xs font-bold text-amber-400 bg-amber-500/10 border border-amber-500/20 px-3 py-1.5 rounded-full flex items-center gap-1.5">
-            <Flame className="w-4 h-4 fill-amber-400" />
+          <span className="text-xs font-bold text-[#bdf900] bg-[#bdf900]/10 border border-[#bdf900]/20 px-3 py-1.5 rounded-full flex items-center gap-1.5">
+            <Flame className="w-4 h-4 fill-[#bdf900]" />
             <span>Streak: {currentUser.streakDays} dias seguidos</span>
           </span>
         </div>
@@ -90,13 +89,13 @@ export const CommunitiesChallenges: React.FC<CommunitiesChallengesProps> = ({
               onClick={() => setSelectedChallengeId(ch.id)}
               className={`flex items-center gap-2.5 px-4 py-2.5 rounded-2xl text-xs font-bold transition-all whitespace-nowrap ${
                 isSelected 
-                  ? 'bg-gradient-to-r from-amber-600 to-indigo-600 text-white shadow-lg shadow-amber-600/20 border border-amber-400/30' 
+                  ? 'bg-[#bdf900] text-black font-extrabold shadow-lg shadow-[#bdf900]/20' 
                   : 'bg-white/5 text-slate-400 hover:text-white hover:bg-white/10 border border-white/5'
               }`}
             >
               <Trophy className="w-3.5 h-3.5" />
               <span>{ch.title}</span>
-              <span className="text-[10px] px-1.5 py-0.2 rounded-full bg-black/30 text-amber-300">
+              <span className={`text-[10px] px-1.5 py-0.2 rounded-full ${isSelected ? 'bg-black/20 text-black font-black' : 'bg-black/30 text-amber-300'}`}>
                 {ch.participantsCount} atletas
               </span>
             </button>
@@ -108,7 +107,7 @@ export const CommunitiesChallenges: React.FC<CommunitiesChallengesProps> = ({
       <div className="antigravity-card rounded-3xl p-6 border border-white/5 space-y-5">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-4 border-b border-white/5">
           <div>
-            <span className="text-[10px] font-bold uppercase tracking-wider text-amber-400">
+            <span className="text-[10px] font-bold uppercase tracking-wider text-[#bdf900]">
               {activeChallenge.category}
             </span>
             <h3 className="text-lg font-bold text-white mt-0.5">
@@ -124,13 +123,13 @@ export const CommunitiesChallenges: React.FC<CommunitiesChallengesProps> = ({
             <button
               onClick={() => handleCheckin(activeChallenge.id)}
               disabled={activeChallenge.checkedInToday}
-              className={`flex items-center gap-2 px-5 py-2.5 rounded-2xl font-bold text-xs shadow-lg transition-all ${
+              className={`flex items-center gap-2 px-5 py-2.5 rounded-2xl font-black text-xs shadow-lg transition-all ${
                 activeChallenge.checkedInToday
-                  ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 cursor-default'
-                  : 'bg-gradient-to-r from-amber-500 to-indigo-600 text-white hover:scale-[1.02] shadow-amber-600/30'
+                  ? 'bg-[#bdf900]/20 text-[#bdf900] border border-[#bdf900]/30 cursor-default'
+                  : 'bg-[#bdf900] hover:bg-[#bdf900]/90 text-black hover:scale-[1.02] shadow-[#bdf900]/25'
               }`}
             >
-              <CheckCircle2 className="w-4 h-4" />
+              <CheckCircle2 className="w-4 h-4 stroke-[2.5]" />
               <span>{activeChallenge.checkedInToday ? 'Check-in Realizado Hoje! ✅' : 'Fazer Check-in no Treino'}</span>
             </button>
           </div>
@@ -138,21 +137,21 @@ export const CommunitiesChallenges: React.FC<CommunitiesChallengesProps> = ({
 
         {/* User stats in challenge */}
         <div className="grid grid-cols-3 gap-3">
-          <div className="p-3.5 rounded-2xl bg-white/[0.03] border border-white/5 text-center">
+          <div className="p-3.5 rounded-2xl bg-[#282828] border border-white/5 text-center">
             <div className="text-[10px] text-slate-400 uppercase font-semibold">Sua Posição</div>
-            <div className="text-xl font-bold text-amber-400 mt-1">
+            <div className="text-xl font-black text-[#bdf900] mt-1">
               #{activeChallenge.userRank}º Lugar
             </div>
           </div>
 
-          <div className="p-3.5 rounded-2xl bg-white/[0.03] border border-white/5 text-center">
+          <div className="p-3.5 rounded-2xl bg-[#282828] border border-white/5 text-center">
             <div className="text-[10px] text-slate-400 uppercase font-semibold">Seus Check-ins</div>
             <div className="text-xl font-bold text-white mt-1">
               {activeChallenge.userCheckins} treinos
             </div>
           </div>
 
-          <div className="p-3.5 rounded-2xl bg-white/[0.03] border border-white/5 text-center">
+          <div className="p-3.5 rounded-2xl bg-[#282828] border border-white/5 text-center">
             <div className="text-[10px] text-slate-400 uppercase font-semibold">Tempo Restante</div>
             <div className="text-xl font-bold text-slate-300 mt-1">
               {activeChallenge.daysRemaining} dias
@@ -163,7 +162,7 @@ export const CommunitiesChallenges: React.FC<CommunitiesChallengesProps> = ({
         {/* Leaderboard Table */}
         <div className="space-y-3 pt-2">
           <h4 className="text-xs font-bold uppercase tracking-wider text-slate-400 flex items-center gap-2">
-            <Medal className="w-4 h-4 text-amber-400" />
+            <Medal className="w-4 h-4 text-[#bdf900]" />
             <span>Leaderboard da Comunidade</span>
           </h4>
 
@@ -171,16 +170,16 @@ export const CommunitiesChallenges: React.FC<CommunitiesChallengesProps> = ({
             {activeChallenge.leaderboard.map(item => {
               const isTop3 = item.rank <= 3;
               const medalColor = 
-                item.rank === 1 ? 'text-amber-400 bg-amber-400/10' :
+                item.rank === 1 ? 'text-[#bdf900] bg-[#bdf900]/15' :
                 item.rank === 2 ? 'text-slate-300 bg-slate-300/10' :
-                item.rank === 3 ? 'text-amber-600 bg-amber-600/10' : 'text-slate-500 bg-white/5';
+                item.rank === 3 ? 'text-amber-500 bg-amber-500/10' : 'text-slate-500 bg-white/5';
 
               return (
                 <div
                   key={item.rank}
                   className={`flex items-center justify-between p-3.5 rounded-2xl border transition-all ${
                     item.name.includes('(Você)')
-                      ? 'bg-indigo-950/30 border-indigo-500/40 shadow-md shadow-indigo-500/10'
+                      ? 'bg-[#282828] border-[#bdf900]/50 shadow-md shadow-[#bdf900]/10'
                       : 'bg-white/[0.03] border-white/5'
                   }`}
                 >
@@ -199,7 +198,7 @@ export const CommunitiesChallenges: React.FC<CommunitiesChallengesProps> = ({
                   </div>
 
                   <div className="flex items-center gap-2">
-                    <span className="text-xs font-bold text-amber-300">
+                    <span className="text-xs font-bold text-[#bdf900]">
                       {item.checkins} check-ins
                     </span>
                   </div>
@@ -212,3 +211,5 @@ export const CommunitiesChallenges: React.FC<CommunitiesChallengesProps> = ({
     </div>
   );
 };
+
+export default CommunitiesChallenges;

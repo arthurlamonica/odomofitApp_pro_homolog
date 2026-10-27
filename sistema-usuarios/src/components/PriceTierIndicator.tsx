@@ -38,7 +38,7 @@ export const PriceTierIndicator: React.FC<PriceTierIndicatorProps> = ({
               key={level}
               className={`transition-colors ${
                 isActive
-                  ? 'text-emerald-400 font-black drop-shadow-[0_0_8px_rgba(52,211,153,0.4)]'
+                  ? 'text-[#bdf900] font-black drop-shadow-[0_0_8px_rgba(189,249,0,0.5)]'
                   : 'text-slate-700 select-none'
               }`}
             >
@@ -48,10 +48,12 @@ export const PriceTierIndicator: React.FC<PriceTierIndicatorProps> = ({
         })}
       </div>
       {showLabel && (
-        <span className="text-[11px] text-slate-400 font-medium ml-1">
+        <span className="text-[10px] text-slate-400 font-mono">
           {getTierDescription(tier).split('(')[0].trim()}
         </span>
       )}
     </div>
   );
 };
+
+export default PriceTierIndicator;

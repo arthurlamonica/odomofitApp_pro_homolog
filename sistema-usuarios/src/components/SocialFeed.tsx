@@ -61,7 +61,7 @@ export const SocialFeed: React.FC<SocialFeedProps> = ({
               particleCount: 30,
               spread: 50,
               origin: { y: 0.7 },
-              colors: ['#F43F5E', '#FB7185', '#6366F1']
+              colors: ['#F43F5E', '#bdf900', '#ffffff']
             });
           } catch (e) {}
         }
@@ -109,7 +109,7 @@ export const SocialFeed: React.FC<SocialFeedProps> = ({
         particleCount: 60,
         spread: 60,
         origin: { y: 0.5 },
-        colors: ['#6366F1', '#10B981', '#06B6D4']
+        colors: ['#bdf900', '#ffffff', '#22c55e']
       });
     } catch (e) {}
   };
@@ -138,17 +138,17 @@ export const SocialFeed: React.FC<SocialFeedProps> = ({
                   story.isMe 
                     ? 'border-2 border-dashed border-slate-500' 
                     : story.unread 
-                    ? 'bg-gradient-to-tr from-amber-500 via-rose-500 to-indigo-500' 
+                    ? 'bg-gradient-to-tr from-[#bdf900] via-emerald-400 to-[#bdf900]' 
                     : 'border-2 border-white/20'
                 }`}>
                   <img 
                     src={story.avatar} 
                     alt={story.name} 
-                    className="w-full h-full rounded-full object-cover border-2 border-[#08090C]"
+                    className="w-full h-full rounded-full object-cover border-2 border-[#1E1E1E]"
                   />
                 </div>
                 {story.isMe && (
-                  <div className="absolute bottom-0 right-0 w-4 h-4 sm:w-5 sm:h-5 rounded-full bg-indigo-600 text-white flex items-center justify-center text-[10px] sm:text-xs font-bold border-2 border-[#08090C]">
+                  <div className="absolute bottom-0 right-0 w-4 h-4 sm:w-5 sm:h-5 rounded-full bg-[#bdf900] text-black flex items-center justify-center text-[10px] sm:text-xs font-black border-2 border-[#1E1E1E] shadow-sm">
                     +
                   </div>
                 )}
@@ -176,11 +176,11 @@ export const SocialFeed: React.FC<SocialFeedProps> = ({
         </button>
         <button
           onClick={() => setShowNewPostModal(true)}
-          className="w-11 h-11 rounded-2xl bg-indigo-600/20 text-indigo-400 hover:bg-indigo-600/30 flex items-center justify-center shrink-0 active:scale-95 transition-all"
+          className="w-11 h-11 rounded-2xl bg-[#bdf900] text-black hover:bg-[#bdf900]/90 flex items-center justify-center shrink-0 active:scale-95 transition-all shadow-md shadow-[#bdf900]/20 font-bold"
           title="Nova postagem"
           aria-label="Nova postagem"
         >
-          <Plus className="w-5 h-5" />
+          <Plus className="w-5 h-5 stroke-[2.5]" />
         </button>
       </div>
 
@@ -197,7 +197,7 @@ export const SocialFeed: React.FC<SocialFeedProps> = ({
                 <img 
                   src={post.avatar} 
                   alt={post.author} 
-                  className="w-9 h-9 sm:w-10 sm:h-10 rounded-full object-cover ring-2 ring-indigo-500/30 shrink-0"
+                  className="w-9 h-9 sm:w-10 sm:h-10 rounded-full object-cover ring-2 ring-[#bdf900]/30 shrink-0"
                 />
                 <div className="min-w-0">
                   <div className="flex items-center gap-1.5 leading-tight truncate">
@@ -215,8 +215,8 @@ export const SocialFeed: React.FC<SocialFeedProps> = ({
               </div>
 
               {post.prBadge && (
-                <div className="flex items-center gap-1 sm:gap-1.5 px-2.5 sm:px-3 py-1 rounded-full bg-emerald-500/15 border border-emerald-500/30 text-emerald-300 text-[9px] sm:text-[10px] font-extrabold shadow-sm shadow-emerald-500/20 shrink-0">
-                  <Flame className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-emerald-400 fill-emerald-400" />
+                <div className="flex items-center gap-1 sm:gap-1.5 px-2.5 sm:px-3 py-1 rounded-full bg-[#bdf900]/15 border border-[#bdf900]/35 text-[#bdf900] text-[9px] sm:text-[10px] font-extrabold shadow-sm shadow-[#bdf900]/15 shrink-0">
+                  <Flame className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-[#bdf900] fill-[#bdf900]" />
                   <span>PR RECORD</span>
                 </div>
               )}
@@ -243,9 +243,9 @@ export const SocialFeed: React.FC<SocialFeedProps> = ({
 
               {/* In-photo PR Overlay Banner */}
               {post.prBadge && (
-                <div className="absolute bottom-2.5 sm:bottom-3 inset-x-2.5 sm:inset-x-3 p-2.5 sm:p-3 rounded-xl sm:rounded-2xl bg-black/75 backdrop-blur-md border border-emerald-500/40 flex items-center justify-between text-white">
+                <div className="absolute bottom-2.5 sm:bottom-3 inset-x-2.5 sm:inset-x-3 p-2.5 sm:p-3 rounded-xl sm:rounded-2xl bg-[#1E1E1E]/90 backdrop-blur-md border border-[#bdf900]/40 flex items-center justify-between text-white shadow-xl">
                   <div>
-                    <div className="text-[9px] sm:text-[10px] text-emerald-400 font-bold uppercase tracking-wider truncate">
+                    <div className="text-[9px] sm:text-[10px] text-[#bdf900] font-bold uppercase tracking-wider truncate">
                       {post.prBadge.exercise}
                     </div>
                     <div className="text-xs sm:text-sm font-extrabold text-white">
@@ -253,7 +253,7 @@ export const SocialFeed: React.FC<SocialFeedProps> = ({
                     </div>
                   </div>
                   <div className="text-right">
-                    <span className="text-[10px] sm:text-xs font-mono font-bold px-2 py-0.5 rounded-lg bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
+                    <span className="text-[10px] sm:text-xs font-mono font-bold px-2 py-0.5 rounded-lg bg-[#bdf900]/20 text-[#bdf900] border border-[#bdf900]/30">
                       {post.prBadge.rpe}
                     </span>
                   </div>
@@ -284,7 +284,7 @@ export const SocialFeed: React.FC<SocialFeedProps> = ({
 
                   <button
                     onClick={() => setActiveCommentPostId(activeCommentPostId === post.id ? null : post.id)}
-                    className="min-w-[44px] min-h-[44px] flex items-center justify-center gap-1.5 p-2 rounded-xl text-slate-300 hover:text-indigo-400 transition-colors"
+                    className="min-w-[44px] min-h-[44px] flex items-center justify-center gap-1.5 p-2 rounded-xl text-slate-300 hover:text-[#bdf900] transition-colors"
                     aria-label="Comentar"
                   >
                     <MessageCircle className="w-6 h-6" />
@@ -295,7 +295,7 @@ export const SocialFeed: React.FC<SocialFeedProps> = ({
 
                   <button
                     onClick={onOpenChat}
-                    className="min-w-[44px] min-h-[44px] flex items-center justify-center p-2 rounded-xl text-slate-300 hover:text-indigo-400 transition-colors"
+                    className="min-w-[44px] min-h-[44px] flex items-center justify-center p-2 rounded-xl text-slate-300 hover:text-[#bdf900] transition-colors"
                     title="Enviar via Direct"
                     aria-label="Enviar via Direct"
                   >
@@ -329,11 +329,11 @@ export const SocialFeed: React.FC<SocialFeedProps> = ({
                       value={commentText}
                       onChange={e => setCommentText(e.target.value)}
                       onKeyDown={e => e.key === 'Enter' && handleAddComment(post.id)}
-                      className="flex-1 bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-indigo-500"
+                      className="flex-1 bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-[#bdf900]"
                     />
                     <button
                       onClick={() => handleAddComment(post.id)}
-                      className="min-h-[38px] px-3.5 py-1.5 rounded-xl bg-indigo-600 text-white font-bold text-xs hover:bg-indigo-500 active:scale-95 transition-all"
+                      className="min-h-[38px] px-3.5 py-1.5 rounded-xl bg-[#bdf900] text-black font-extrabold text-xs hover:bg-[#bdf900]/90 active:scale-95 transition-all shadow-md shadow-[#bdf900]/20"
                     >
                       Publicar
                     </button>
@@ -348,10 +348,10 @@ export const SocialFeed: React.FC<SocialFeedProps> = ({
       {/* Modal / Bottom Sheet: Nova Postagem */}
       {showNewPostModal && (
         <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/80 backdrop-blur-sm p-0 sm:p-4">
-          <div className="antigravity-card rounded-t-3xl sm:rounded-3xl p-5 sm:p-6 w-full max-w-lg border border-white/10 shadow-2xl space-y-4 max-h-[90vh] overflow-y-auto">
+          <div className="antigravity-card rounded-t-3xl sm:rounded-3xl p-5 sm:p-6 w-full max-w-lg border border-white/10 bg-[#1E1E1E] shadow-2xl space-y-4 max-h-[90vh] overflow-y-auto">
             <div className="flex items-center justify-between pb-2 border-b border-white/10">
               <h3 className="text-base font-bold text-white flex items-center gap-2">
-                <ImageIcon className="w-5 h-5 text-indigo-400" />
+                <ImageIcon className="w-5 h-5 text-[#bdf900]" />
                 <span>Nova Postagem no Domo</span>
               </h3>
               <button
@@ -374,12 +374,12 @@ export const SocialFeed: React.FC<SocialFeedProps> = ({
                   placeholder="Conte como foi o treino de hoje, cargas batidas, feedback do personal..."
                   value={newPostCaption}
                   onChange={e => setNewPostCaption(e.target.value)}
-                  className="w-full bg-white/5 border border-white/10 rounded-2xl p-3 text-xs text-white focus:outline-none focus:border-indigo-500 resize-none"
+                  className="w-full bg-white/5 border border-white/10 rounded-2xl p-3 text-xs text-white focus:outline-none focus:border-[#bdf900] resize-none"
                 />
               </div>
 
-              <div className="p-3.5 rounded-2xl bg-emerald-950/20 border border-emerald-500/30 space-y-2.5">
-                <div className="flex items-center gap-2 text-emerald-400 text-xs font-bold">
+              <div className="p-3.5 rounded-2xl bg-[#282828] border border-[#bdf900]/30 space-y-2.5">
+                <div className="flex items-center gap-2 text-[#bdf900] text-xs font-bold">
                   <Sparkles className="w-4 h-4" />
                   <span>Destacar Conquista de PR (Opcional):</span>
                 </div>
@@ -389,14 +389,14 @@ export const SocialFeed: React.FC<SocialFeedProps> = ({
                     placeholder="Exercício (ex: Supino Inclinado)"
                     value={newPostPrExercise}
                     onChange={e => setNewPostPrExercise(e.target.value)}
-                    className="bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-emerald-500"
+                    className="bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-[#bdf900]"
                   />
                   <input 
                     type="text" 
                     placeholder="Peso (ex: 38kg / lado)"
                     value={newPostPrWeight}
                     onChange={e => setNewPostPrWeight(e.target.value)}
-                    className="bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-emerald-500"
+                    className="bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-[#bdf900]"
                   />
                 </div>
               </div>
@@ -411,7 +411,7 @@ export const SocialFeed: React.FC<SocialFeedProps> = ({
                 </button>
                 <button
                   type="submit"
-                  className="min-h-[44px] px-5 py-2 rounded-2xl bg-gradient-to-r from-indigo-600 to-indigo-500 text-white font-bold text-xs hover:opacity-90 shadow-md shadow-indigo-600/30 active:scale-95 transition-all"
+                  className="min-h-[44px] px-5 py-2 rounded-2xl bg-[#bdf900] text-black font-extrabold text-xs hover:bg-[#bdf900]/90 shadow-md shadow-[#bdf900]/25 active:scale-95 transition-all"
                 >
                   Publicar no Feed
                 </button>
@@ -423,3 +423,5 @@ export const SocialFeed: React.FC<SocialFeedProps> = ({
     </div>
   );
 };
+
+export default SocialFeed;

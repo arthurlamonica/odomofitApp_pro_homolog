@@ -4,40 +4,36 @@ import {
   Star, 
   MapPin, 
   ShieldCheck, 
-  Award, 
   CheckCircle, 
-  MessageSquare, 
   Calendar, 
   Clock, 
-  Flame, 
-  Zap, 
+  Award, 
+  MessageSquare, 
   ChevronRight,
+  Flame,
+  Zap,
   Sparkles
 } from 'lucide-react';
+import confetti from 'canvas-confetti';
 import type { PersonalTrainer, PersonalTrainerPlan } from '../types';
 import { PriceTierIndicator } from './PriceTierIndicator';
-import confetti from 'canvas-confetti';
 
 interface PersonalDetailModalProps {
   trainer: PersonalTrainer | null;
-  isOpen: boolean;
   onClose: () => void;
+  onHireTrainer?: (trainer: PersonalTrainer, plan: PersonalTrainerPlan) => void;
   onStartChat?: (trainer: PersonalTrainer) => void;
-  onHireTrainer?: (trainer: PersonalTrainer, selectedPlan: PersonalTrainerPlan) => void;
 }
 
 export const PersonalDetailModal: React.FC<PersonalDetailModalProps> = ({
   trainer,
-  isOpen,
   onClose,
-  onStartChat,
-  onHireTrainer
+  onHireTrainer,
+  onStartChat
 }) => {
-  if (!isOpen || !trainer) return null;
+  if (!trainer) return null;
 
-  const [selectedPlanId, setSelectedPlanId] = useState<string>(
-    trainer.plans[0]?.id || ''
-  );
+  const [selectedPlanId, setSelectedPlanId] = useState<string>(trainer.plans[0]?.id || '');
   const [hiredSuccess, setHiredSuccess] = useState(false);
 
   const selectedPlan = trainer.plans.find(p => p.id === selectedPlanId) || trainer.plans[0];
@@ -48,7 +44,7 @@ export const PersonalDetailModal: React.FC<PersonalDetailModalProps> = ({
         particleCount: 80,
         spread: 70,
         origin: { y: 0.6 },
-        colors: ['#6366F1', '#10B981', '#F59E0B']
+        colors: ['#bdf900', '#ffffff', '#22c55e']
       });
     } catch (e) {}
 
@@ -60,7 +56,7 @@ export const PersonalDetailModal: React.FC<PersonalDetailModalProps> = ({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-5 bg-black/80 backdrop-blur-md overflow-y-auto animate-fade-in">
-      <div className="relative w-full max-w-2xl bg-[#0B0D12] border border-white/10 rounded-3xl shadow-2xl overflow-hidden my-auto max-h-[92vh] flex flex-col">
+      <div className="relative w-full max-w-2xl bg-[#1E1E1E] border border-white/10 rounded-3xl shadow-2xl overflow-hidden my-auto max-h-[92vh] flex flex-col">
         {/* Cover Photo */}
         <div className="relative h-36 sm:h-48 w-full bg-slate-800 shrink-0">
           <img
@@ -68,7 +64,7 @@ export const PersonalDetailModal: React.FC<PersonalDetailModalProps> = ({
             alt={trainer.name}
             className="w-full h-full object-cover brightness-75"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-[#0B0D12] via-[#0B0D12]/40 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-t from-[#1E1E1E] via-[#1E1E1E]/40 to-transparent" />
           
           {/* Close button */}
           <button
@@ -87,26 +83,26 @@ export const PersonalDetailModal: React.FC<PersonalDetailModalProps> = ({
               <img
                 src={trainer.avatarUrl}
                 alt={trainer.name}
-                className="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl sm:rounded-3xl object-cover border-4 border-[#0B0D12] shadow-xl ring-2 ring-indigo-500/40"
+                className="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl sm:rounded-3xl object-cover border-4 border-[#1E1E1E] shadow-xl ring-2 ring-[#bdf900]/40"
               />
               <div className="mb-1">
                 <div className="flex items-center gap-1.5 flex-wrap">
                   <h2 className="text-xl sm:text-2xl font-black text-white">
                     {trainer.name}
                   </h2>
-                  <span className="flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
-                    <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
+                  <span className="flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-[#bdf900]/20 text-[#bdf900] border border-[#bdf900]/30">
+                    <ShieldCheck className="w-3.5 h-3.5 text-[#bdf900]" />
                     CREF {trainer.cref}
                   </span>
                 </div>
 
                 <div className="flex items-center gap-2 text-xs text-slate-400 mt-1">
                   <span className="flex items-center gap-1">
-                    <MapPin className="w-3.5 h-3.5 text-indigo-400" />
+                    <MapPin className="w-3.5 h-3.5 text-[#bdf900]" />
                     {trainer.neighborhood}, {trainer.city}
                   </span>
                   {trainer.distanceKm !== undefined && (
-                    <span className="px-1.5 py-0.2 rounded bg-indigo-500/20 text-indigo-300 text-[10px] font-semibold">
+                    <span className="px-1.5 py-0.2 rounded bg-[#bdf900]/20 text-[#bdf900] text-[10px] font-semibold">
                       {trainer.distanceKm} km de você
                     </span>
                   )}
@@ -138,7 +134,7 @@ export const PersonalDetailModal: React.FC<PersonalDetailModalProps> = ({
               {trainer.specialties.map(spec => (
                 <span
                   key={spec}
-                  className="px-3 py-1 rounded-xl text-xs font-semibold bg-indigo-950/60 text-indigo-300 border border-indigo-500/30 shadow-sm"
+                  className="px-3 py-1 rounded-xl text-xs font-semibold bg-[#bdf900]/15 text-[#bdf900] border border-[#bdf900]/30 shadow-sm"
                 >
                   {spec}
                 </span>
@@ -159,13 +155,13 @@ export const PersonalDetailModal: React.FC<PersonalDetailModalProps> = ({
           {/* Certifications & Credentials */}
           <div className="p-4 rounded-2xl bg-white/[0.03] border border-white/5 space-y-2.5">
             <h4 className="text-xs font-semibold uppercase tracking-wider text-slate-400 flex items-center gap-1.5">
-              <Award className="w-4 h-4 text-indigo-400" />
-              Certificações & Formação
+              <Award className="w-4 h-4 text-[#bdf900]" />
+              Certificações &amp; Formação
             </h4>
             <div className="space-y-1.5">
               {trainer.certifications.map((cert, idx) => (
                 <div key={idx} className="flex items-center gap-2 text-xs text-slate-300">
-                  <CheckCircle className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
+                  <CheckCircle className="w-3.5 h-3.5 text-[#bdf900] shrink-0" />
                   <span>{cert}</span>
                 </div>
               ))}
@@ -175,14 +171,14 @@ export const PersonalDetailModal: React.FC<PersonalDetailModalProps> = ({
           {/* Availability & Days */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div className="p-3.5 rounded-2xl bg-white/[0.03] border border-white/5 flex items-start gap-3">
-              <Calendar className="w-5 h-5 text-indigo-400 shrink-0 mt-0.5" />
+              <Calendar className="w-5 h-5 text-[#bdf900] shrink-0 mt-0.5" />
               <div>
                 <p className="text-[11px] uppercase font-bold text-slate-400 tracking-wider">Dias de Atendimento</p>
                 <p className="text-xs font-semibold text-white mt-0.5">{trainer.availability.days}</p>
               </div>
             </div>
             <div className="p-3.5 rounded-2xl bg-white/[0.03] border border-white/5 flex items-start gap-3">
-              <Clock className="w-5 h-5 text-indigo-400 shrink-0 mt-0.5" />
+              <Clock className="w-5 h-5 text-[#bdf900] shrink-0 mt-0.5" />
               <div>
                 <p className="text-[11px] uppercase font-bold text-slate-400 tracking-wider">Turnos Disponíveis</p>
                 <p className="text-xs font-semibold text-white mt-0.5">{trainer.availability.shifts.join(' • ')}</p>
@@ -209,7 +205,7 @@ export const PersonalDetailModal: React.FC<PersonalDetailModalProps> = ({
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent flex flex-col justify-end p-3">
-                      <span className="self-start px-2 py-0.5 rounded-lg text-[10px] font-bold bg-amber-500/90 text-black mb-1">
+                      <span className="self-start px-2 py-0.5 rounded-lg text-[10px] font-bold bg-[#bdf900] text-black mb-1">
                         {img.result}
                       </span>
                       <p className="text-xs text-white font-medium line-clamp-1">{img.caption}</p>
@@ -223,7 +219,7 @@ export const PersonalDetailModal: React.FC<PersonalDetailModalProps> = ({
           {/* Plans Section */}
           <div>
             <h4 className="text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2.5 flex items-center gap-1.5">
-              <Zap className="w-4 h-4 text-indigo-400" />
+              <Zap className="w-4 h-4 text-[#bdf900]" />
               Escolha seu Plano de Acompanhamento
             </h4>
             <div className="space-y-3">
@@ -235,7 +231,7 @@ export const PersonalDetailModal: React.FC<PersonalDetailModalProps> = ({
                     onClick={() => setSelectedPlanId(plan.id)}
                     className={`cursor-pointer rounded-2xl p-4 border transition-all ${
                       isSelected
-                        ? 'bg-indigo-950/40 border-indigo-500 shadow-lg shadow-indigo-950/40 ring-1 ring-indigo-500'
+                        ? 'bg-[#282828] border-[#bdf900] shadow-lg shadow-[#bdf900]/15 ring-1 ring-[#bdf900]'
                         : 'bg-white/[0.03] border-white/5 hover:border-white/20'
                     }`}
                   >
@@ -244,7 +240,7 @@ export const PersonalDetailModal: React.FC<PersonalDetailModalProps> = ({
                         <div className="flex items-center gap-2">
                           <h5 className="text-sm font-bold text-white">{plan.name}</h5>
                           {plan.isPopular && (
-                            <span className="px-2 py-0.5 rounded-full text-[9px] font-bold bg-amber-500/20 text-amber-300 border border-amber-500/30">
+                            <span className="px-2 py-0.5 rounded-full text-[9px] font-bold bg-[#bdf900]/20 text-[#bdf900] border border-[#bdf900]/30">
                               Mais Escolhido
                             </span>
                           )}
@@ -252,7 +248,7 @@ export const PersonalDetailModal: React.FC<PersonalDetailModalProps> = ({
                         <div className="mt-2 space-y-1">
                           {plan.features.map((feat, idx) => (
                             <div key={idx} className="flex items-center gap-2 text-xs text-slate-300">
-                              <CheckCircle className={`w-3.5 h-3.5 shrink-0 ${isSelected ? 'text-indigo-400' : 'text-slate-500'}`} />
+                              <CheckCircle className={`w-3.5 h-3.5 shrink-0 ${isSelected ? 'text-[#bdf900]' : 'text-slate-500'}`} />
                               <span>{feat}</span>
                             </div>
                           ))}
@@ -305,9 +301,9 @@ export const PersonalDetailModal: React.FC<PersonalDetailModalProps> = ({
 
           {/* Hire Success Message */}
           {hiredSuccess && (
-            <div className="p-4 rounded-2xl bg-emerald-950/60 border border-emerald-500/40 text-emerald-200 text-xs space-y-1 animate-fade-in">
-              <div className="flex items-center gap-2 font-bold text-sm text-emerald-300">
-                <Sparkles className="w-4 h-4 text-emerald-400" />
+            <div className="p-4 rounded-2xl bg-[#282828] border border-[#bdf900]/40 text-slate-200 text-xs space-y-1 animate-fade-in shadow-xl">
+              <div className="flex items-center gap-2 font-black text-sm text-[#bdf900]">
+                <Sparkles className="w-4 h-4 text-[#bdf900]" />
                 Solicitação de Acompanhamento Confirmada!
               </div>
               <p>
@@ -318,7 +314,7 @@ export const PersonalDetailModal: React.FC<PersonalDetailModalProps> = ({
         </div>
 
         {/* Modal Footer / CTAs */}
-        <div className="p-4 sm:p-5 border-t border-white/10 bg-[#0B0D12] flex flex-col sm:flex-row items-center justify-between gap-3 shrink-0">
+        <div className="p-4 sm:p-5 border-t border-white/10 bg-[#1E1E1E] flex flex-col sm:flex-row items-center justify-between gap-3 shrink-0">
           <div className="w-full sm:w-auto">
             <span className="text-[10px] uppercase font-bold text-slate-400 tracking-wider block">
               Plano Selecionado
@@ -338,7 +334,7 @@ export const PersonalDetailModal: React.FC<PersonalDetailModalProps> = ({
                 }}
                 className="flex-1 sm:flex-none px-4 py-2.5 rounded-xl bg-white/10 hover:bg-white/15 text-white text-xs font-bold flex items-center justify-center gap-2 transition-all active:scale-95"
               >
-                <MessageSquare className="w-4 h-4 text-indigo-400" />
+                <MessageSquare className="w-4 h-4 text-[#bdf900]" />
                 <span>Chat</span>
               </button>
             )}
@@ -346,21 +342,21 @@ export const PersonalDetailModal: React.FC<PersonalDetailModalProps> = ({
             <button
               onClick={handleHire}
               disabled={hiredSuccess}
-              className={`flex-1 sm:flex-none px-6 py-2.5 rounded-xl text-xs font-bold flex items-center justify-center gap-2 shadow-lg transition-all active:scale-95 ${
+              className={`flex-1 sm:flex-none px-6 py-2.5 rounded-xl text-xs font-black flex items-center justify-center gap-2 shadow-lg transition-all active:scale-95 ${
                 hiredSuccess
-                  ? 'bg-emerald-600 text-white cursor-default'
-                  : 'bg-gradient-to-r from-indigo-500 via-indigo-600 to-emerald-500 hover:from-indigo-400 hover:to-emerald-400 text-white shadow-indigo-950/60'
+                  ? 'bg-[#bdf900]/30 text-[#bdf900] border border-[#bdf900]/50 cursor-default'
+                  : 'bg-[#bdf900] hover:bg-[#bdf900]/90 text-black shadow-[#bdf900]/25'
               }`}
             >
               {hiredSuccess ? (
                 <>
-                  <CheckCircle className="w-4 h-4" />
+                  <CheckCircle className="w-4 h-4 stroke-[2.5]" />
                   <span>Acompanhamento Ativo!</span>
                 </>
               ) : (
                 <>
                   <span>Contratar Acompanhamento</span>
-                  <ChevronRight className="w-4 h-4" />
+                  <ChevronRight className="w-4 h-4 stroke-[2.5]" />
                 </>
               )}
             </button>
@@ -370,3 +366,5 @@ export const PersonalDetailModal: React.FC<PersonalDetailModalProps> = ({
     </div>
   );
 };
+
+export default PersonalDetailModal;
