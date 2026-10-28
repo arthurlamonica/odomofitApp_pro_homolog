@@ -1,6 +1,6 @@
-﻿import React, { useState } from 'react';
+import React, { useState } from 'react';
 import { Sidebar, type TabType } from './components/Sidebar';
-import { Header, type ViewportMode } from './components/Header';
+import { Header } from './components/Header';
 import { MetricCards } from './components/MetricCards';
 import { WorkoutBuilder } from './components/WorkoutBuilder';
 import { NutritionBuilder } from './components/NutritionBuilder';
@@ -18,7 +18,6 @@ import type { StudentRecord } from './types';
 
 export const App: React.FC = () => {
   const [activeTab, setActiveTab] = useState<TabType>('overview');
-  const [viewportMode, setViewportMode] = useState<ViewportMode>('desktop');
   const [toastMessage, setToastMessage] = useState<string | null>(null);
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
 
@@ -37,30 +36,9 @@ export const App: React.FC = () => {
     }
   };
 
-  const getFrameContainerClass = () => {
-    if (viewportMode === 'mobile') {
-      return 'w-full max-w-[430px] mx-auto my-0 lg:my-6 rounded-none lg:rounded-[44px] border-0 lg:border-8 border-[#2a2a2a] shadow-none lg:shadow-[0_25px_60px_-15px_rgba(0,0,0,0.9),0_0_40px_rgba(189,249,0,0.15)] overflow-x-hidden bg-[#1e1e1e] min-h-screen lg:min-h-[860px] relative flex flex-col transition-all duration-300';
-    }
-    if (viewportMode === 'tablet') {
-      return 'w-full max-w-[820px] mx-auto my-0 lg:my-6 rounded-none lg:rounded-[36px] border-0 lg:border-8 border-[#2a2a2a] shadow-none lg:shadow-[0_25px_60px_-15px_rgba(0,0,0,0.9),0_0_30px_rgba(189,249,0,0.12)] overflow-x-hidden bg-[#1e1e1e] min-h-screen relative flex flex-col transition-all duration-300';
-    }
-    return 'w-full min-h-screen bg-[#1e1e1e] flex flex-col transition-all duration-300';
-  };
-
   return (
-    <div className={`min-h-screen bg-[#1e1e1e] text-[#F4F7F0] bg-spatial-grid antialiased ${viewportMode !== 'desktop' ? 'p-0 lg:py-6' : ''}`}>
-      <div className={getFrameContainerClass()}>
-        {/* Dynamic Island bar in simulated mobile view */}
-        {viewportMode === 'mobile' && (
-          <div className="hidden lg:flex items-center justify-between px-7 pt-3 pb-1 text-[#9BA394] text-xs font-mono select-none bg-[#1e1e1e] border-b border-white/5">
-            <span>09:41</span>
-            <div className="w-24 h-5 rounded-full bg-black border border-white/10 flex items-center justify-center">
-              <span className="w-2 h-2 rounded-full bg-[#bdf900] animate-pulse" />
-            </div>
-            <span>5G 100%</span>
-          </div>
-        )}
-
+    <div className="min-h-screen bg-[#1e1e1e] text-[#F4F7F0] bg-spatial-grid antialiased">
+      <div className="w-full min-h-screen bg-[#1e1e1e] flex flex-col">
         <div className="flex flex-1 min-h-0 relative">
           {/* Navigation Sidebar & Mobile Floating Pill Dock */}
           <Sidebar 
@@ -70,8 +48,6 @@ export const App: React.FC = () => {
             criticalStudentsCount={mockStudents.filter(s => s.status === 'warning').length}
             mobileOpen={mobileSidebarOpen}
             onCloseMobile={() => setMobileSidebarOpen(false)}
-            forceMobileLayout={viewportMode === 'mobile' || viewportMode === 'tablet'}
-            viewportMode={viewportMode}
           />
 
           {/* Main Content Area */}
@@ -82,8 +58,6 @@ export const App: React.FC = () => {
               onNewNutritionClick={() => setActiveTab('nutrition')}
               activeTabTitle={getTabTitle(activeTab)}
               onToggleMobileSidebar={() => setMobileSidebarOpen(!mobileSidebarOpen)}
-              viewportMode={viewportMode}
-              onViewportChange={setViewportMode}
             />
 
             {toastMessage && (
@@ -137,18 +111,16 @@ export const App: React.FC = () => {
         </div>
 
         {/* Footer Instrument Bar (SKILL: GEMINI-Construtor-de-Sites) */}
-        {viewportMode === 'desktop' && (
-          <footer className="hidden lg:flex items-center justify-between px-8 py-4 border-t border-white/[0.06] bg-[#1e1e1e]/80 text-[11px] text-[#8B9484]">
-            <div className="flex items-center gap-4">
-              <DomoFitLogo size="sm" variant="icon" />
-              <span>DomoFit® PRO — Instrumento Digital de Alta Performance Biomecânica &amp; Nutricional</span>
-            </div>
-            <div className="flex items-center gap-2 font-mono text-[10px] text-[#bdf900] bg-[#282828] border border-[#bdf900]/25 px-3 py-1 rounded-full">
-              <span className="w-2 h-2 rounded-full bg-[#bdf900] animate-pulse" />
-              <span>SYSTEM OPERATIONAL • LATENCY 12ms</span>
-            </div>
-          </footer>
-        )}
+        <footer className="hidden lg:flex items-center justify-between px-8 py-4 border-t border-white/[0.06] bg-[#1e1e1e]/80 text-[11px] text-[#8B9484]">
+          <div className="flex items-center gap-4">
+            <DomoFitLogo size="sm" variant="icon" />
+            <span>DomoFit® PRO — Instrumento Digital de Alta Performance Biomecânica &amp; Nutricional</span>
+          </div>
+          <div className="flex items-center gap-2 font-mono text-[10px] text-[#bdf900] bg-[#282828] border border-[#bdf900]/25 px-3 py-1 rounded-full">
+            <span className="w-2 h-2 rounded-full bg-[#bdf900] animate-pulse" />
+            <span>SYSTEM OPERATIONAL • LATENCY 12ms</span>
+          </div>
+        </footer>
       </main>
     </div>
   </div>

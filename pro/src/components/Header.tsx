@@ -7,9 +7,6 @@ import {
   CreditCard,
   Utensils,
   Menu,
-  Smartphone,
-  Tablet,
-  Monitor,
   Flame
 } from 'lucide-react';
 import type { ProfessionalUser } from '../types';
@@ -22,8 +19,8 @@ interface HeaderProps {
   onNewNutritionClick: () => void;
   activeTabTitle: string;
   onToggleMobileSidebar: () => void;
-  viewportMode: ViewportMode;
-  onViewportChange: (mode: ViewportMode) => void;
+  viewportMode?: ViewportMode;
+  onViewportChange?: (mode: ViewportMode) => void;
 }
 
 export const Header: React.FC<HeaderProps> = ({ 
@@ -31,9 +28,7 @@ export const Header: React.FC<HeaderProps> = ({
   onNewWorkoutClick,
   onNewNutritionClick,
   activeTabTitle,
-  onToggleMobileSidebar,
-  viewportMode,
-  onViewportChange
+  onToggleMobileSidebar
 }) => {
   return (
     <header className="w-full flex flex-col gap-3 py-3 sm:py-4 px-3 sm:px-6 md:px-8 border-b border-white/[0.06] backdrop-blur-2xl sticky top-0 z-20 bg-[#1e1e1e]/90">
@@ -75,47 +70,6 @@ export const Header: React.FC<HeaderProps> = ({
           </div>
         </div>
 
-        {/* Center: Device Mode Switcher (Mobile / Tablet / Desktop) */}
-        <div className="flex items-center order-3 sm:order-2 w-full sm:w-auto justify-center sm:justify-start">
-          <div className="flex items-center gap-1 bg-[#282828] p-1 rounded-full border border-white/10 shadow-inner">
-            <button
-              onClick={() => onViewportChange('mobile')}
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[11px] font-bold transition-all ${
-                viewportMode === 'mobile'
-                  ? 'bg-[#bdf900] text-[#1e1e1e] shadow-[0_0_15px_rgba(189,249,0,0.35)]'
-                  : 'text-[#9BA394] hover:text-white'
-              }`}
-              title="Formato Celular (390px)"
-            >
-              <Smartphone className="w-3.5 h-3.5" />
-              <span>Mobile</span>
-            </button>
-            <button
-              onClick={() => onViewportChange('tablet')}
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[11px] font-bold transition-all ${
-                viewportMode === 'tablet'
-                  ? 'bg-[#bdf900] text-[#1e1e1e] shadow-[0_0_15px_rgba(189,249,0,0.35)]'
-                  : 'text-[#9BA394] hover:text-white'
-              }`}
-              title="Formato Tablet (768px)"
-            >
-              <Tablet className="w-3.5 h-3.5" />
-              <span>Tablet</span>
-            </button>
-            <button
-              onClick={() => onViewportChange('desktop')}
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[11px] font-bold transition-all ${
-                viewportMode === 'desktop'
-                  ? 'bg-[#bdf900] text-[#1e1e1e] shadow-[0_0_15px_rgba(189,249,0,0.35)]'
-                  : 'text-[#9BA394] hover:text-white'
-              }`}
-              title="Formato Desktop"
-            >
-              <Monitor className="w-3.5 h-3.5" />
-              <span>Desktop</span>
-            </button>
-          </div>
-        </div>
 
         {/* Right: Actions & Circular Notification Bell */}
         <div className="flex items-center gap-2 order-2 sm:order-3 ml-auto sm:ml-0">
