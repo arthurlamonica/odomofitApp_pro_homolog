@@ -6,33 +6,25 @@ import {
   Trophy, 
   User, 
   Send, 
-  Bell,
-  Smartphone,
-  Tablet,
-  Monitor
+  Bell
 } from 'lucide-react';
 import { DomoFitLogo } from './DomoFitLogo';
 import type { CurrentUserProfile } from '../types';
 
 export type UserAppTab = 'feed' | 'workout' | 'nutrition' | 'challenges' | 'profile' | 'chat';
-export type ViewportMode = 'mobile' | 'tablet' | 'responsive';
 
 interface AppNavigationProps {
   activeTab: UserAppTab;
   onTabChange: (tab: UserAppTab) => void;
   currentUser: CurrentUserProfile;
   unreadMessagesCount?: number;
-  viewportMode: ViewportMode;
-  onViewportChange: (mode: ViewportMode) => void;
 }
 
 export const AppNavigation: React.FC<AppNavigationProps> = ({
   activeTab,
   onTabChange,
   currentUser,
-  unreadMessagesCount = 0,
-  viewportMode,
-  onViewportChange
+  unreadMessagesCount = 0
 }) => {
   const tabs = [
     { id: 'feed' as UserAppTab, label: 'Feed', icon: Home },
@@ -49,40 +41,6 @@ export const AppNavigation: React.FC<AppNavigationProps> = ({
         <div className="max-w-2xl mx-auto flex items-center justify-between">
           <div onClick={() => onTabChange('feed')} className="cursor-pointer active:scale-95 transition-transform">
             <DomoFitLogo size="sm" variant="full" badgeText="APP" />
-          </div>
-
-          {/* Center: Device Simulator Switcher (Visible on desktop/wide screens) */}
-          <div className="hidden lg:flex items-center gap-1 bg-white/[0.04] p-1 rounded-2xl border border-white/5">
-            <button
-              onClick={() => onViewportChange('mobile')}
-              className={`flex items-center gap-1 px-2.5 py-1 rounded-xl text-[10px] font-bold transition-all ${
-                viewportMode === 'mobile' ? 'bg-[#bdf900] text-black shadow-md shadow-[#bdf900]/20' : 'text-slate-400 hover:text-white'
-              }`}
-              title="Visualização iPhone / Smartphone"
-            >
-              <Smartphone className="w-3.5 h-3.5" />
-              <span>Mobile</span>
-            </button>
-            <button
-              onClick={() => onViewportChange('tablet')}
-              className={`flex items-center gap-1 px-2.5 py-1 rounded-xl text-[10px] font-bold transition-all ${
-                viewportMode === 'tablet' ? 'bg-[#bdf900] text-black shadow-md shadow-[#bdf900]/20' : 'text-slate-400 hover:text-white'
-              }`}
-              title="Visualização iPad / Tablet"
-            >
-              <Tablet className="w-3.5 h-3.5" />
-              <span>Tablet</span>
-            </button>
-            <button
-              onClick={() => onViewportChange('responsive')}
-              className={`flex items-center gap-1 px-2.5 py-1 rounded-xl text-[10px] font-bold transition-all ${
-                viewportMode === 'responsive' ? 'bg-[#bdf900] text-black shadow-md shadow-[#bdf900]/20' : 'text-slate-400 hover:text-white'
-              }`}
-              title="Visualização 100% Fluida"
-            >
-              <Monitor className="w-3.5 h-3.5" />
-              <span>Fluido</span>
-            </button>
           </div>
 
           <div className="flex items-center gap-1">
